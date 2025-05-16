@@ -120,171 +120,101 @@ export default function Footer() {
   };
 
   return (
-    <footer className="lg:container-fixed lg:px-40 px-5 bg-black text-white">
-      <div className="lg:pt-12 md:pt-10 pb-10">
-        <div className="hidden md:flex flex-col lg:flex-row lg:justify-between gap-4">
-          <ul className="flex-1 grid grid-cols-6 lg:flex lg:flex-row lg:gap-x-11 md:gap-x-6">
-            {footerMenus.map((menu) => (
-              <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
-                <h3 className="body-3 lg:body-4 font-semibold">{menu.title}</h3>
-                <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
-                  {menu.links.map((link) => (
-                    <li key={link.label}>
-                      <Link href={link.url} className="body-3 text-gray-700">
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-          <div className="flex md:absolute md:right-4 lg:relative lg-right-0 gap-4">
-            <FamilySelect
-              options={[
-                {
-                  label: "관련사이트",
-                  value: "family",
-                },
-              ]}
-              placeholder="관련사이트"
-              className="bg-fill-inverse-muted rounded-[20px] flex items-center justify-between text-white body-5 border-none"
-            />
-            <button
-              onClick={scrollToTop}
-              className="w-[72px] px-4 py-2 bg-fill-inverse-muted rounded-[20px] hidden lg:flex items-center justify-center body-5"
-            >
-              <span>TOP</span>
-              <Img
-                src="/images/icon/ic_inverse_top_arrow.svg"
-                alt="arrow-up"
-                width={16}
-                height={16}
-              />
-            </button>
-          </div>
-        </div>
-
-        {/* 모바일 상단 레이아웃 */}
-        <div className="md:hidden flex flex-col gap-10">
-          <Link
-            href="/"
-            className="block w-[111px] h-12 bg-gray-600 text-sm flex items-center justify-center"
+    <footer className="lg:container-fixed px-5 sm:px-10 lg:px-30 sm:pt-[62px] sm:pb-13 py-10 lg:py-12 bg-black text-white">
+      <div className="hidden sm:flex flex-row justify-between">
+        <ul className="flex-1 flex space-between lg:gap-x-11 gap-y-10 gap-x-[38px]">
+          {footerMenus.map((menu) => (
+            <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
+              <h3 className="body-3 font-semibold whitespace-nowrap tracking-[-0.05rem]">
+                {menu.title}
+              </h3>
+              <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
+                {menu.links.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.url} className="body-3 text-gray-700">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+        <div className="hidden min-[1100px]:flex gap-4">
+          <FamilySelect
+            options={[
+              {
+                label: "FAMILY SITE",
+                value: "family",
+              },
+            ]}
+            placeholder="FAMILY SITE"
+            className="w-[206px] h-12 bg-fill-inverse-muted rounded-[20px] flex items-center justify-between text-white body-5 border-none"
+          />
+          <button
+            onClick={scrollToTop}
+            className="w-18 h-12 px-4 py-2 bg-fill-inverse-muted rounded-[20px] flex items-center justify-center body-5"
           >
-            LOGO
-          </Link>
+            <span>TOP</span>
+            <Img
+              src="/images/icon/ic_inverse_top_arrow.svg"
+              alt="arrow-up"
+              width={16}
+              height={16}
+            />
+          </button>
         </div>
       </div>
-
-      {/* 하단 정보 영역 */}
-      <div className="py-8 md:py-6 lg:py-5">
-        {/* PC & Tablet 하단 레이아웃 */}
-        <div className="hidden md:flex flex-row justify-between items-center">
-          <div className="flex flex-col gap-1.25 text-gray-500 w-full">
-            <div className="flex justify-between items-center w-full">
-              <ul className="flex items-center gap-2.5 body-5 flex-wrap text-gray-800">
-                <li>상호명 이모션글로벌</li>
-                <li className="relative before:content-['|'] before:mx-2 before:text-gray-800">
-                  대표 이모션
-                </li>
-                <li className="relative before:content-['|'] before:mx-2 before:text-gray-800">
-                  사업자등록번호 123-45-67890
-                </li>
-                <li className="relative before:content-['|'] before:mx-2 before:text-gray-800">
-                  이메일 emotion@emotion.co.kr
-                </li>
-                <li className="relative before:content-['|'] before:mx-2 before:text-gray-800">
-                  주소 강남구 언주로 637, 싸이칸홀딩스타워
-                </li>
-              </ul>
-              <div className="flex gap-4 self-start">
-                {snsLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.url}
-                    aria-label={link.name}
-                    className="text-gray-400 hover:text-white"
-                  >
-                    {link.icon}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="border-t border-gray-800 pt-2.5 mt-5 flex justify-between items-center">
-              <p className="mt-2.5 text-xs lg:text-sm text-gray-500">
-                © SAMSUNG SMARTWAY. All rights reserved.
-              </p>
-              <div className="flex items-center">
-                <Link
-                  href="/privacy"
-                  className={`text-xs lg:text-sm font-bold`}
-                >
-                  개인정보처리방침
-                </Link>
-                <Link
-                  href="/terms"
-                  className={`text-xs lg:text-sm relative before:content-['|'] before:mx-5 before:text-gray-700`}
-                >
-                  이용약관
-                </Link>
-                <Link
-                  href="/reject-email"
-                  className={`text-xs lg:text-sm relative before:content-['|'] before:mx-5 before:text-gray-700`}
-                >
-                  이메일무단수집거부
-                </Link>
-              </div>
-            </div>
+      <div className="pt-0 sm:pt-10 flex flex-col gap-1.25 text-gray-500 w-full">
+        <div className="flex flex-wrap sm:gap-y-5 gap-y-15 justify-between items-center w-full">
+          <ul className="flex items-center gap-2.5 body-5 flex-wrap text-gray-800">
+            <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
+              상호명 이모션글로벌
+            </li>
+            <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
+              대표 이모션
+            </li>
+            <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
+              사업자등록번호 123-45-67890
+            </li>
+            <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
+              이메일 emotion@emotion.co.kr
+            </li>
+            <li>주소 강남구 언주로 637, 싸이칸홀딩스타워</li>
+          </ul>
+          <div className="flex gap-4 self-start">
+            {snsLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.url}
+                aria-label={link.name}
+                className="text-gray-400 hover:text-white"
+              >
+                {link.icon}
+              </Link>
+            ))}
           </div>
-          {/* SNS 링크 (Tablet: 회사정보 우측, PC: 회사정보 우측) */}
         </div>
 
-        {/* 모바일 하단 레이아웃 */}
-        <div className="md:hidden flex flex-col gap-5">
-          {/* 모바일: 패밀리사이트 버튼, SNS 아이콘이 회사정보보다 위로 이동 */}
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-4 self-start">
-              {snsLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.url}
-                  aria-label={link.name}
-                  className="text-gray-400 hover:text-white"
-                >
-                  {link.icon}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1 text-sm text-gray-400">
-            <span>상호명 이모션글로벌</span>
-            <span>대표 이모션</span>
-            <span>사업자등록번호 123-45-67890</span>
-            <span>이메일 emotion@emotion.co.kr</span>
-            <span>주소 강남구 언주로 637, 싸이칸홀딩스타워</span>
-          </div>
-
-          <div className="mt-1 pt-4 border-t border-gray-800">
-            <div className="flex flex-col items-start gap-1.25 text-xs">
-              {legalLinks.map((link, index) => (
-                <Link
-                  key={link.label}
-                  href={link.url}
-                  className={`hover:text-gray-200 transition-colors ${
-                    index === 0
-                      ? "font-semibold text-gray-300"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <p className="mt-2.5 text-sm text-gray-500">
-              © SAMSUNG SMARTWAY. All rights reserved.
-            </p>
+        <div className="text-gray-800 border-t border-gray-800 pt-2.5 mt-5 flex justify-between items-center flex-wrap gap-y-1.25">
+          <p className="sm:order-2 order-1 body-5 font-poppins">
+            © SAMSUNG SMARTWAY. All rights reserved.
+          </p>
+          <div className="flex items-center sm:order-1 order-2">
+            <Link href="/privacy" className={`caption-1 lg:body-5 font-bold`}>
+              개인정보처리방침
+            </Link>
+            <Link
+              href="/terms"
+              className={`caption-1 lg:body-5 relative before:content-['|'] before:mx-5 before:text-gray-700`}
+            >
+              이용약관
+            </Link>
+            <span
+              className={`caption-1 lg:body-5 relative before:content-['|'] before:mx-5 before:text-gray-700`}
+            >
+              이메일무단수집거부
+            </span>
           </div>
         </div>
       </div>
