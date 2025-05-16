@@ -29,6 +29,7 @@ const FormSelect = ({
   descriptionClassName,
   required = false,
   disabled = false,
+  theme = "light",
   ...props
 }) => {
   return (
@@ -38,14 +39,12 @@ const FormSelect = ({
       render={({ field, fieldState: { error } }) => (
         <FormItem className={cn(className)}>
           {label && (
-            <div className="flex items-center mb-1.5">
+            <div className="flex items-center mb-2">
               <FormLabel
                 className={cn(
-                  "text-sm font-medium text-gray-800",
-                  { "text-destructive": !!error },
                   labelClassName,
                   required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5"
+                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
                 )}
               >
                 {label}
@@ -56,21 +55,24 @@ const FormSelect = ({
             onValueChange={field.onChange}
             defaultValue={field.value}
             disabled={disabled || props.disabled}
+            theme={theme}
             {...props}
           >
             <FormControl>
               <SelectTrigger
                 className={cn(selectTriggerClassName)}
                 disabled={disabled || props.disabled}
+                theme={theme}
               >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent theme={theme}>
               {items.map((item) => (
                 <SelectItem
                   key={item.value}
                   value={item.value}
+                  theme={theme}
                   disabled={item.disabled}
                 >
                   {item.label}

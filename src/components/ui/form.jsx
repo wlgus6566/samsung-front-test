@@ -52,23 +52,19 @@ function FormItem({ className, ...props }) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div
-        data-slot="form-item"
-        className={cn("grid gap-2", className)}
-        {...props}
-      />
+      <div data-slot="form-item" className={cn("grid", className)} {...props} />
     </FormItemContext.Provider>
   );
 }
 
-function FormLabel({ className, ...props }) {
+function FormLabel({ className, size = "default", ...props }) {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
       data-slot="form-label"
       data-error={!!error}
-      className={cn("data-[error=true]:text-destructive", className)}
+      className={cn("mt-2", size === "lg" ? "body-4" : "body-5", className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -119,7 +115,7 @@ function FormMessage({ className, ...props }) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-destructive text-sm", className)}
+      className={cn("text-red-600 caption-1 mt-1.5", className)}
       {...props}
     >
       {body}

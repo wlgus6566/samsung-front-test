@@ -14,6 +14,7 @@ const FormRadio = ({
   control,
   name,
   label,
+  size = "default",
   description = "",
   items = [],
   className,
@@ -30,15 +31,17 @@ const FormRadio = ({
       render={({ field }) => (
         <FormItem className={cn(wrapClassName)}>
           {label && (
-            <FormLabel
-              className={cn(
-                labelClassName,
-                required &&
-                  "after:content-['*'] after:text-destructive after:ml-0.5"
-              )}
-            >
-              {label}
-            </FormLabel>
+            <div className="flex items-center mb-2">
+              <FormLabel
+                className={cn(
+                  labelClassName,
+                  required &&
+                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
+                )}
+              >
+                {label}
+              </FormLabel>
+            </div>
           )}
           <FormControl>
             <RadioGroup
@@ -53,17 +56,20 @@ const FormRadio = ({
               {items.map((item) => (
                 <FormItem
                   key={item.value}
-                  className="flex items-center space-x-0 space-y-0"
+                  className="flex items-center space-x-2 space-y-0"
                 >
                   <div className="flex items-center h-5">
                     <FormControl>
                       <RadioGroupItem
                         value={item.value}
                         disabled={item.disabled}
+                        size={size}
                       />
                     </FormControl>
                   </div>
-                  <FormLabel className="text-sm font-normal">
+                  <FormLabel
+                    className={`mt-0 ${size === "lg" ? "body-4" : "body-5"}`}
+                  >
                     {item.label}
                   </FormLabel>
                 </FormItem>

@@ -5,35 +5,42 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 function Input({
-  className, // div wrapper에 적용될 클래스
-  inputClassName, // input element에 적용될 클래스
+  className,
+  inputClassName,
   type = "text",
   placeholder,
-  onSearch, // search 타입일 때 아이콘 클릭 시 호출
-  leftIcon, // 좌측 아이콘
-  rightIcon, // 우측 아이콘 (search 타입과 함께 사용 시 주의)
-  size = "md", // 'md' (default), 'lg'
-  // value, onChange 등 나머지 inputProps는 자동으로 input 태그에 전달됨
+  onSearch,
+  leftIcon,
+  rightIcon,
+  size = "md",
+  value,
+  onChange,
   ...inputProps
 }) {
+  const inputRef = React.useRef(null);
   const hasLeftIcon = !!leftIcon;
-  const hasRightIcon = !!rightIcon || type === "search";
-
-  // Size-specific styles
   const sizeStyles = {
     md: {
       height: "h-12",
       textSize: "text-sm",
       rounded: "rounded-xl",
+      iconRight: "right-4",
     },
     lg: {
-      height: "h-14", // 56px
-      textSize: "text-base", // 16px
+      height: "h-14",
+      textSize: "text-base",
       rounded: "rounded-2xl",
+      iconRight: "right-5",
     },
   };
 
-  const currentSizeStyle = sizeStyles[size] || sizeStyles.md;
+  const currentSize = sizeStyles[size] || sizeStyles.md;
+
+  const handleClear = () => {
+    const event = { target: { value: "" } };
+    onChange?.(event);
+    inputRef.current?.focus();
+  };
 
   return (
     <div className={cn("relative w-full", className)}>
@@ -41,23 +48,26 @@ function Input({
         <div
           className={cn(
             "absolute top-1/2 -translate-y-1/2",
-            size === "lg" ? "left-5" : "left-4", // lg: 20px, md: 16px
-            currentSizeStyle.iconSize
+            size === "lg" ? "left-5" : "left-4"
           )}
         >
           {leftIcon}
         </div>
       )}
+
       <input
+        ref={inputRef}
         type={type}
         placeholder={placeholder}
+        value={value}
+        onChange={onChange}
         className={cn(
           "w-full border bg-white text-black placeholder:text-gray-400 px-4",
-          currentSizeStyle.height, // h-12 or h-14
-          currentSizeStyle.textSize, // text-sm or text-base,
-          currentSizeStyle.rounded,
+          currentSize.height,
+          currentSize.textSize,
+          currentSize.rounded,
           "border-gray-300",
-          "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10",
+          "focus:border-blue-500",
           "transition-colors duration-150 ease-in-out",
           "outline-none appearance-none",
           "disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-400",
@@ -69,27 +79,46 @@ function Input({
         )}
         {...inputProps}
       />
+
+      {/* ❌ X 아이콘: 입력 중일 때만 표시 */}
+      {type === "search" && value && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className={cn(
+            "absolute top-1/2 -translate-y-1/2 cursor-pointer right-11"
+          )}
+        >
+          <Image
+            src="/images/icon/ic_default_close_circle.svg"
+            alt="clear"
+            width={24}
+            height={24}
+          />
+        </button>
+      )}
+
+      {/* 🔍 돋보기 아이콘 */}
       {!rightIcon && type === "search" && (
         <Image
-          src="/images/icon/ic_basic_20_search_black.svg"
+          src="/images/icon/ic_default_search.svg"
           alt="search"
           role="button"
-          width={size === "lg" ? 24 : 20}
-          height={size === "lg" ? 24 : 20}
+          width={24}
+          height={24}
           onClick={onSearch}
           className={cn(
             "absolute top-1/2 -translate-y-1/2 cursor-pointer",
-            size === "lg" ? "right-5" : "right-4", // lg: 20px, md: 16px
-            currentSizeStyle.iconSize
+            currentSize.iconRight
           )}
         />
       )}
+
       {rightIcon && (
         <div
           className={cn(
             "absolute top-1/2 -translate-y-1/2",
-            size === "lg" ? "right-5" : "right-4",
-            currentSizeStyle.iconSize
+            currentSize.iconRight
           )}
         >
           {rightIcon}

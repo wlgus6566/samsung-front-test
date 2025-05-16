@@ -34,14 +34,12 @@ const FormTextarea = ({
       render={({ field, fieldState: { error } }) => (
         <FormItem className={cn(className)}>
           {label && (
-            <div className="flex items-center mb-1.5">
+            <div className="flex items-center mb-2">
               <FormLabel
                 className={cn(
-                  "text-sm font-medium text-gray-800",
-                  { "text-destructive": !!error },
                   labelClassName,
                   required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5"
+                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
                 )}
               >
                 {label}
@@ -62,12 +60,7 @@ const FormTextarea = ({
             {action && action}
           </div>
           {description && !error && (
-            <FormDescription
-              className={cn(
-                "text-xs text-gray-600 mt-1.5",
-                descriptionClassName
-              )}
-            >
+            <FormDescription className={cn("", descriptionClassName)}>
               {description}
             </FormDescription>
           )}

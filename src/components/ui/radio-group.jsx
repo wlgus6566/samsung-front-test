@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { CircleIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 
 function RadioGroup({ className, ...props }) {
@@ -14,21 +13,32 @@ function RadioGroup({ className, ...props }) {
   );
 }
 
-function RadioGroupItem({ className, ...props }) {
+function RadioGroupItem({ className, size = "default", ...props }) {
+  const isLg = size === "lg";
+
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 bg-background",
+        "group shrink-0 rounded-full border transition-all outline-none",
+        "focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+        isLg ? "size-6" : "size-5",
+        "bg-white border-gray-300 text-gray-900",
+        "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400",
         className
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator
-        data-slot="radio-group-indicator"
-        className="relative flex items-center justify-center"
-      >
-        <CircleIcon className="fill-primary absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
+      <RadioGroupPrimitive.Indicator className="relative flex items-center justify-center">
+        <CircleIcon
+          className={cn(
+            isLg ? "size-4" : "size-3",
+            // 기본 fill
+            "fill-white stroke-none ",
+            // disabled + checked 일 때
+            "group-data-[state=checked]:group-disabled:fill-gray-300 group-data-[state=checked]:fill-blue-500"
+          )}
+        />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

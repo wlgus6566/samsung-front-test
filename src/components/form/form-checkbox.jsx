@@ -19,6 +19,9 @@ const FormCheckbox = ({
   className,
   labelClassName,
   descriptionClassName,
+  required = false,
+  size = "default",
+  disabled = false,
 }) => {
   return (
     <FormField
@@ -27,44 +30,58 @@ const FormCheckbox = ({
       render={() => (
         <FormItem>
           {label && (
-            <FormLabel className={cn(labelClassName)}>{label}</FormLabel>
+            <div className="flex items-center mb-2">
+              <FormLabel
+                className={cn(
+                  labelClassName,
+                  required &&
+                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
+                )}
+              >
+                {label}
+              </FormLabel>
+            </div>
           )}
-          {items.map((item) => (
-            <FormField
-              key={item.id}
-              control={control}
-              name={name}
-              render={({ field }) => {
-                return (
-                  <FormItem
-                    key={item.id}
-                    className="flex flex-row items-start space-x-0 space-y-0"
-                  >
-                    <div className="flex items-center h-5">
-                      <FormControl>
-                        <Checkbox
-                          className={cn("", className)}
-                          checked={field.value?.includes(item.id)}
-                          onCheckedChange={(checked) => {
-                            return checked
-                              ? field.onChange([...field.value, item.id])
-                              : field.onChange(
-                                  field.value?.filter(
-                                    (value) => value !== item.id
-                                  )
-                                );
-                          }}
-                        />
-                      </FormControl>
-                    </div>
-                    <FormLabel className="text-sm font-normal">
-                      {item.label}
-                    </FormLabel>
-                  </FormItem>
-                );
-              }}
-            />
-          ))}
+          <div className="flex gap-5">
+            {items.map((item) => (
+              <FormField
+                key={item.value}
+                control={control}
+                name={name}
+                render={({ field }) => {
+                  return (
+                    <FormItem
+                      key={item.value}
+                      className="flex items-center gap-2"
+                    >
+                      <div className="flex items-center h-5">
+                        <FormControl>
+                          <Checkbox
+                            className={cn("", className)}
+                            checked={field.value?.includes(item.value)}
+                            size={size}
+                            disabled={disabled || item.disabled}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, item.value])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value) => value !== item.value
+                                    )
+                                  );
+                            }}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormLabel size={size} className="mt-0">
+                        {item.label}
+                      </FormLabel>
+                    </FormItem>
+                  );
+                }}
+              />
+            ))}
+          </div>
 
           {description && (
             <FormDescription className={cn(descriptionClassName)}>

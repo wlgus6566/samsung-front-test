@@ -35,14 +35,14 @@ const FormInput = ({
       render={({ field, fieldState: { error } }) => (
         <FormItem className={cn(className)}>
           {label && (
-            <div className="flex items-center mb-1.5">
+            <div className="flex items-center mb-2">
               <FormLabel
                 className={cn(
                   "body-5 font-medium",
                   { "text-destructive": !!error },
                   labelClassName,
                   required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5"
+                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
                 )}
               >
                 {label}
@@ -50,7 +50,7 @@ const FormInput = ({
               {labelSide && <div className="ml-auto">{labelSide}</div>}
             </div>
           )}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <FormControl>
               <Input
                 type={type}

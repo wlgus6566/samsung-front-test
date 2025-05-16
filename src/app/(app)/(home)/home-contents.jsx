@@ -8,7 +8,9 @@ import { Form } from "@/components/ui/form";
 import FormInput from "@/components/form/form-input";
 import FormTextarea from "@/components/form/form-textarea";
 import FormSelect from "@/components/form/form-select";
-
+import FormRadio from "@/components/form/form-radio";
+import FormCheckbox from "@/components/form/form-checkbox";
+import { Switch } from "@/components/ui/switch";
 // 카테고리 옵션
 const categoryItems = [
   { label: "일반", value: "general" },
@@ -16,6 +18,25 @@ const categoryItems = [
   { label: "질문", value: "question" },
   { label: "기타", value: "etc" },
   { label: "비활성화된 옵션", value: "disabled_option", disabled: true },
+];
+
+const radioItems = [
+  { label: "옵션 1", value: "option1", disabled: false },
+  { label: "옵션 2", value: "option2", disabled: false },
+  { label: "옵션 3", value: "option3", disabled: false },
+];
+
+const radioItems2 = [
+  { label: "옵션 1", value: "option1", disabled: true },
+  { label: "옵션 2", value: "option2", disabled: true },
+  { label: "옵션 3", value: "option3", disabled: true },
+];
+
+const checkboxItems = [
+  { label: "옵션 1", value: "option1" },
+  { label: "옵션 2", value: "option2" },
+  { label: "옵션 3", value: "option3" },
+  { label: "옵션 4", value: "option4", disabled: true },
 ];
 
 // Zod 스키마 정의
@@ -29,12 +50,29 @@ const createFormSchema = z.object({
     .string()
     .min(1, { message: "내용을 입력해 주세요." })
     .max(5000, { message: "내용은 5000자 이내로 입력해주세요." }),
+  radio: z.string().min(1, { message: "라디오 그룹을 선택해주세요." }),
+  radio_disabled_example: z
+    .string()
+    .min(1, { message: "라디오 그룹을 선택해주세요." }),
   email: z
     .string()
     .email({ message: "올바른 이메일 주소를 입력해주세요." })
     .optional()
     .or(z.literal("")),
+  checkbox: z.array(z.string()).min(1, { message: "체크박스를 선택해주세요." }),
+  checkbox_disabled_example: z
+    .array(z.string())
+    .min(1, { message: "체크박스를 선택해주세요." }),
+  category_black_theme: z
+    .string()
+    .min(1, { message: "카테고리를 선택해주세요." }),
 });
+
+const categoryItems1 = [
+  { label: "일반", value: "general" },
+  { label: "기술", value: "tech" },
+  { label: "질문", value: "question" },
+];
 
 export default function HomeContentsForm() {
   // 1. 폼 정의
@@ -45,6 +83,10 @@ export default function HomeContentsForm() {
       category: "",
       contents: "",
       email: "",
+      radio: "option1",
+      radio_disabled_example: "option3",
+      checkbox: ["option1"],
+      checkbox_disabled_example: ["option1"],
     },
     mode: "onChange",
   });
@@ -108,6 +150,48 @@ export default function HomeContentsForm() {
             disabled={true}
           />
 
+          <FormSelect
+            control={form.control}
+            name="category_black_theme"
+            label="카테고리 (블랙 테마)"
+            placeholder="선택 불가"
+            items={categoryItems1}
+            theme="dark"
+          />
+          <FormRadio
+            control={form.control}
+            name="radio"
+            label="라디오 그룹"
+            items={radioItems}
+          />
+          <FormRadio
+            control={form.control}
+            size="lg"
+            name="radio_disabled_example"
+            label="라디오 그룹 (Disabled 예시)"
+            items={radioItems2}
+            disabled={true}
+          />
+          <FormCheckbox
+            control={form.control}
+            name="checkbox"
+            label="체크박스"
+            items={checkboxItems}
+            required
+            size="lg"
+          />
+          <FormCheckbox
+            control={form.control}
+            name="checkbox_disabled_example"
+            label="체크박스 (Disabled 예시)"
+            items={checkboxItems}
+            required
+            disabled={true}
+          />
+          <div className="flex gap-2">
+            <Switch />
+            <Switch size="lg" />
+          </div>
           <Button type="submit" className="w-full md:w-auto">
             제출하기
           </Button>
