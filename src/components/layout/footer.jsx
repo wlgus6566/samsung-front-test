@@ -2,32 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-// import Image from "next/image"; //  SNS 아이콘 등에 필요시 사용
-// import { Instagram, Youtube, Twitter, Facebook } from "lucide-react"; // lucide-react 아이콘 예시
-
-// 임시 아이콘 (추후 실제 아이콘으로 교체)
-const InstagramIcon = () => (
-  <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs">
-    IG
-  </span>
-);
-const YoutubeIcon = () => (
-  <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs">
-    YT
-  </span>
-);
-const TwitterIcon = () => (
-  <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs">
-    TW
-  </span>
-);
-const FacebookIcon = () => (
-  <span className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center text-xs">
-    FB
-  </span>
-);
-const ArrowDownIcon = () => <span>⌄</span>; // 패밀리사이트용 아래 화살표
-const ArrowUpIcon = () => <span>↑</span>; // 간단한 텍스트 아이콘
+import Img from "@/components/ui/img";
+import { FamilySelect } from "@/components/ui/family-select";
 
 export default function Footer() {
   const footerMenus = [
@@ -89,10 +65,54 @@ export default function Footer() {
   ];
 
   const snsLinks = [
-    { name: "instagram", url: "#", icon: <InstagramIcon /> },
-    { name: "youtube", url: "#", icon: <YoutubeIcon /> },
-    { name: "twitter", url: "#", icon: <TwitterIcon /> },
-    { name: "facebook", url: "#", icon: <FacebookIcon /> },
+    {
+      name: "instagram",
+      url: "#",
+      icon: (
+        <Img
+          src="/images/icon/ic_inverse_instagram.svg"
+          alt="instagram"
+          width={24}
+          height={24}
+        />
+      ),
+    },
+    {
+      name: "youtube",
+      url: "#",
+      icon: (
+        <Img
+          src="/images/icon/ic_inverse_youtube.svg"
+          alt="youtube"
+          width={24}
+          height={24}
+        />
+      ),
+    },
+    {
+      name: "twitter",
+      url: "#",
+      icon: (
+        <Img
+          src="/images/icon/ic_inverse_twitter.svg"
+          alt="twitter"
+          width={24}
+          height={24}
+        />
+      ),
+    },
+    {
+      name: "facebook",
+      url: "#",
+      icon: (
+        <Img
+          src="/images/icon/ic_inverse_facebook.svg"
+          alt="facebook"
+          width={24}
+          height={24}
+        />
+      ),
+    },
   ];
 
   const scrollToTop = () => {
@@ -100,43 +120,47 @@ export default function Footer() {
   };
 
   return (
-    <footer className="lg:container-fixed md:px-10 px-5 bg-black text-white">
+    <footer className="lg:container-fixed lg:px-40 px-5 bg-black text-white">
       <div className="lg:pt-12 md:pt-10 pb-10">
         <div className="hidden md:flex flex-col lg:flex-row lg:justify-between gap-4">
-          <div className="flex">
-            <Link href="/" className="w-[111px] h-12 bg-gray-600">
-              LOGO
-            </Link>
-            <ul className="flex-1 grid grid-cols-6 lg:flex lg:flex-row lg:gap-x-11 md:gap-x-6 lg:ml-20">
-              {footerMenus.map((menu) => (
-                <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
-                  <h3 className="body-3 lg:body-4 font-semibold">
-                    {menu.title}
-                  </h3>
-                  <ul className="flex flex-col gap-1 lg:gap-1.5">
-                    {menu.links.map((link) => (
-                      <li key={link.label}>
-                        <Link href={link.url} className="body-3 text-gray-700">
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="flex-1 grid grid-cols-6 lg:flex lg:flex-row lg:gap-x-11 md:gap-x-6">
+            {footerMenus.map((menu) => (
+              <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
+                <h3 className="body-3 lg:body-4 font-semibold">{menu.title}</h3>
+                <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
+                  {menu.links.map((link) => (
+                    <li key={link.label}>
+                      <Link href={link.url} className="body-3 text-gray-700">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
           <div className="flex md:absolute md:right-4 lg:relative lg-right-0 gap-4">
-            <button className="w-full md:w-[168px] h-10 border border-gray-700 bg-gray-800 rounded-full flex items-center justify-between px-4 md:px-5 text-xs md:text-sm text-white hover:border-white transition-colors">
-              <span>Family Site</span>
-              <ArrowDownIcon />
-            </button>
+            <FamilySelect
+              options={[
+                {
+                  label: "관련사이트",
+                  value: "family",
+                },
+              ]}
+              placeholder="관련사이트"
+              className="bg-fill-inverse-muted rounded-[20px] flex items-center justify-between text-white body-5 border-none"
+            />
             <button
               onClick={scrollToTop}
-              className="w-full md:w-18 h-10.5 border border-gray-700 bg-gray-800 rounded-full hidden lg:flex items-center justify-center text-2xs"
+              className="w-[72px] px-4 py-2 bg-fill-inverse-muted rounded-[20px] hidden lg:flex items-center justify-center body-5"
             >
               <span>TOP</span>
-              <ArrowUpIcon />
+              <Img
+                src="/images/icon/ic_inverse_top_arrow.svg"
+                alt="arrow-up"
+                width={16}
+                height={16}
+              />
             </button>
           </div>
         </div>
@@ -220,10 +244,6 @@ export default function Footer() {
         <div className="md:hidden flex flex-col gap-5">
           {/* 모바일: 패밀리사이트 버튼, SNS 아이콘이 회사정보보다 위로 이동 */}
           <div className="flex flex-col gap-3">
-            <button className="w-full h-10 border border-gray-700 bg-gray-800 rounded-full flex items-center justify-between px-5 text-sm text-white">
-              <span>관련사이트</span>
-              <ArrowDownIcon />
-            </button>
             <div className="flex gap-4 self-start">
               {snsLinks.map((link) => (
                 <Link
