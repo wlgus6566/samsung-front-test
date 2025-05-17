@@ -142,7 +142,7 @@ export function DataTable({
         )}
       </div>
 
-      <div className="rounded-md overflow-hidden bg-background">
+      <div className="rounded-md overflow-hidden bg-white">
         <Table className="w-full table-fixed min-w-[1000px]">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -148,12 +148,13 @@ export default function Footer() {
                 value: "family",
               },
             ]}
+            theme={"dark"}
             placeholder="FAMILY SITE"
-            className="w-[206px] h-12 bg-fill-inverse-muted rounded-[20px] flex items-center justify-between text-white body-5 border-none"
+            className="w-[206px] h-12 "
           />
           <button
             onClick={scrollToTop}
-            className="w-18 h-12 px-4 py-2 bg-fill-inverse-muted rounded-[20px] flex items-center justify-center body-5"
+            className="w-18 h-12 bg-fill-inverse-muted rounded-[20px] flex items-center justify-center body-5"
           >
             <span>TOP</span>
             <Img
@@ -167,7 +168,7 @@ export default function Footer() {
       </div>
       <div className="pt-0 sm:pt-10 flex flex-col gap-1.25 text-gray-500 w-full">
         <div className="flex flex-wrap sm:gap-y-5 gap-y-15 justify-between items-center w-full">
-          <ul className="flex items-center gap-2.5 body-5 flex-wrap text-gray-800">
+          <ul className="flex items-center body-5 flex-wrap text-gray-800">
             <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
               상호명 이모션글로벌
             </li>

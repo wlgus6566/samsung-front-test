@@ -267,8 +267,8 @@ export default function Header() {
           <div className="flex items-center gap-15">
             <Link href="/" className="flex items-center">
               <Img
-                src="/images/logo_samsung_smartfactory.svg"
-                alt="삼성 스마트공장 지원사업"
+                src="/temp/logo.png"
+                alt="삼성 스마트공장"
                 width={111}
                 height={40}
                 priority
@@ -409,8 +409,8 @@ export default function Header() {
               className="flex items-center"
             >
               <Img
-                src="/images/logo_samsung_smartfactory_color.svg"
-                alt="삼성 스마트공장 지원사업"
+                src="/temp/logo.png"
+                alt="삼성 스마트공장"
                 width={148}
                 height={26}
               />

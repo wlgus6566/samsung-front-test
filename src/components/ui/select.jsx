@@ -2,7 +2,7 @@ import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import Img from "@/components/ui/img";
 function Select({ ...props }) {
   return <SelectPrimitive.Root {...props} />;
 }
@@ -33,8 +33,8 @@ function SelectTrigger({
         "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-200 disabled:text-gray-400",
         // Dark theme styles
         isDark &&
-          "bg-gray-800 border-gray-700 text-gray-50 placeholder:text-gray-400",
-        isDark && "focus:border-blue-500 focus:ring-blue-500/20",
+          isDark &&
+          "bg-gray-900 border-none text-white focus:border-gray-500 focus:border-gray-500",
         isDark &&
           "disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500",
         className
@@ -46,7 +46,7 @@ function SelectTrigger({
       <SelectPrimitive.Icon asChild>
         <ChevronDownIcon
           className={cn(
-            "size-5",
+            "size-6",
             disabled
               ? isDark
                 ? "text-gray-600"
@@ -73,11 +73,11 @@ function SelectContent({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "relative z-50 min-w-[8rem] overflow-hidden rounded-xl border bg-white shadow-lg",
+          "w-[var(--radix-select-trigger-width)] relative z-50 overflow-hidden rounded-[20px] border bg-white",
           // Light theme (default)
           "border-gray-200 text-gray-800",
           // Dark theme styles
-          isDark && "bg-gray-800 border-gray-700 text-gray-50",
+          isDark && "bg-gray-900 border-none text-white",
           // Animations and positioning
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -111,11 +111,11 @@ function SelectLabel({ className, theme = "light", ...props }) {
   return (
     <SelectPrimitive.Label
       className={cn(
-        "py-1.5 pl-8 pr-2 text-sm font-semibold",
+        "py-1.5 pl-8 pr-2 body-5 font-semibold",
         // Light theme (default)
-        "text-gray-500",
+        "text-gray-900",
         // Dark theme styles
-        isDark && "text-gray-400",
+        isDark && "text-white",
         className
       )}
       {...props}
@@ -155,6 +155,12 @@ function SelectItem({
     >
       <span className="absolute right-3 flex h-6 w-6 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
+          <Img
+            src="/images/icon/ic_default_check.svg"
+            alt="arrow-up"
+            width={20}
+            height={20}
+          />
           <CheckIcon className="size-5" />
         </SelectPrimitive.ItemIndicator>
       </span>

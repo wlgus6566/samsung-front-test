@@ -12,15 +12,16 @@ export function FamilySelect({
   options,
   placeholder,
   className,
+  theme,
 }) {
   return (
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className={cn(className)}>
+    <Select value={value} onValueChange={onChange} theme={theme}>
+      <SelectTrigger className={cn(className)} theme={theme}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent theme={theme}>
         {options.map((opt, index) => (
-          <SelectItem key={index} value={opt.value}>
+          <SelectItem key={index} value={opt.value} theme={theme}>
             {opt.label}
           </SelectItem>
         ))}

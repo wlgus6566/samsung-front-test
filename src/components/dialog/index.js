@@ -2,6 +2,7 @@
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -12,6 +13,9 @@ import { useDialogStore } from "@/store/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useMemo } from "react";
+import { XIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 export default function DialogBase({
   name,
   title,
@@ -19,37 +23,74 @@ export default function DialogBase({
   footer,
   children,
   className,
+  contentClassName,
+  titleClassName,
+  descriptionClassName,
   ...rest
 }) {
   const { dialogList, dialogClose } = useDialogStore();
   const isOpen = useMemo(() => {
     return dialogList.some((dialog) => dialog.name === name);
   }, [dialogList, name]);
+
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={(open) => !open && dialogClose(name)}
+      onOpenChange={(open) => {
+        if (!open) {
+          dialogClose(name);
+        }
+      }}
       {...rest}
     >
       <DialogContent
         className={cn(
-          "md:max-w-[600px] max-md:max-w-full! max-md:rounded-none p-0 overflow-hidden",
+          "md:max-w-[680px] max-md:max-w-full! max-md:rounded-none p-6 overflow-hidden rounded-lg shadow-xl",
           className
         )}
+        onInteractOutside={(e) => {
+          // 기본 닫힘 방지 (필요에 따라)
+          // e.preventDefault();
+        }}
       >
         <div className={cn("flex flex-col md:max-h-[90vh]", "max-md:h-screen")}>
-          <DialogHeader className="pt-6 px-6 pb-3 shrink-0 z-10 shadow-[0_.5rem_1rem_rgba(255,255,255,1)] dark:shadow-[0_.5rem_1rem_rgba(0,0,0,1)] ">
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+          <DialogHeader className="relative shrink-0 z-10 pt-6">
+            <DialogTitle
+              className={cn(
+                "text-gray-900 body-1 font-semibold",
+                titleClassName
+              )}
+            >
+              {title}
+            </DialogTitle>
+            {/* <DialogClose asChild className="absolute top-3.5 right-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100"
+              >
+                <XIcon className="h-6 w-6" />
+                <span className="sr-only">닫기</span>
+              </Button>
+            </DialogClose> */}
           </DialogHeader>
-          <ScrollArea className="px-0 flex-1 h-0 my-[1px]">
-            <div className="px-6 py-5">{children}</div>
-          </ScrollArea>
-          {footer && (
-            <DialogFooter className="px-6 py-4 z-10 shadow-[0_-.5rem_1rem_rgba(255,255,255,1)] dark:shadow-[0_-.5rem_1rem_rgba(0,0,0,1)]">
-              {footer}
-            </DialogFooter>
+
+          {description && (
+            <DialogDescription
+              className={cn(
+                "px-6 pt-4 pb-2 text-sm text-gray-600 leading-5",
+                descriptionClassName
+              )}
+            >
+              {description}
+            </DialogDescription>
           )}
+
+          <ScrollArea className="px-0 flex-1 h-0 my-[1px]">
+            <div className={cn("", contentClassName)}>{children}</div>
+          </ScrollArea>
+
+          {footer && <DialogFooter className="z-10">{footer}</DialogFooter>}
         </div>
       </DialogContent>
     </Dialog>
