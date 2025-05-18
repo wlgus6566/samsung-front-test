@@ -16,6 +16,8 @@ export function SearchBarProvider({
   children,
   defaultSearchField = "searchWord",
 }) {
+  const [searchField, setSearchField] = useState(defaultSearchField);
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -144,6 +146,8 @@ export function SearchBarProvider({
   }, [router, statusOptionsMap]);
 
   const value = {
+    searchField,
+    setSearchField,
     // 상태
     date,
     setDate,
