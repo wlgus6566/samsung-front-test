@@ -12,7 +12,7 @@ import FormRadio from "@/components/form/form-radio";
 import FormCheckbox from "@/components/form/form-checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useDialogStore } from "@/store/dialog";
-import { SmartFactoryCertificationDialog } from "@/components/dialog/SmartFactoryCertificationDialog";
+import { SmartFactoryCertificationDialog } from "@/components/dialog/smart-factory-certification-dialog";
 
 const categoryItems = [
   { label: "일반", value: "general" },
