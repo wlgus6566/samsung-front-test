@@ -130,7 +130,7 @@ export default function HomeContentsForm() {
       <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
 
       <h2 className="text-xl font-bold mt-8 mb-4">SearchBar 컴포넌트 예시</h2>
-      <SearchBar defaultSearchField="category">
+      <SearchBar defaultSearchField="searchWord">
         <div className="flex gap-2 items-end">
           <SearchBar.Status
             label="구분"

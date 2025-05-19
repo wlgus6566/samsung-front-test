@@ -16,25 +16,24 @@ export function SearchBarProvider({
   children,
   defaultSearchField = "searchWord",
 }) {
-  const [searchField, setSearchField] = useState(defaultSearchField);
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // 상태 관리
+  // 🆕 상태 추가
+  const [searchField, setSearchField] = useState(defaultSearchField); // 검색 조건 (예: name, email)
+  const [searchText, setSearchText] = useState(""); // 검색어
+
   const [date, setDate] = useState(null);
-  const [searchText, setSearchText] = useState("");
-  // 여러 상태 필터를 위한 객체 기반 상태
-  const [statusMap, setStatusMap] = useState({}); // { [field]: value }
-  const [statusOptionsMap, setStatusOptionsMap] = useState({}); // { [field]: options }
 
-  // URL 검색 파라미터에서 초기값 설정
+  const [statusMap, setStatusMap] = useState({});
+  const [statusOptionsMap, setStatusOptionsMap] = useState({});
+
+  // 🧠 URL에서 초기값 세팅
   useEffect(() => {
-    // 검색어 설정
-    const searchValue = searchParams.get(defaultSearchField) || "";
-    setSearchText(searchValue);
+    // 검색 조건 및 값 초기화
+    const initialSearchValue = searchParams.get(searchField) || "";
+    setSearchText(initialSearchValue);
 
-    // 여러 상태 필터 초기화
     const newStatusMap = { ...statusMap };
     Object.keys(statusOptionsMap).forEach((field) => {
       const value = searchParams.get(field) || "all";
@@ -42,7 +41,6 @@ export function SearchBarProvider({
     });
     setStatusMap(newStatusMap);
 
-    // 날짜 범위 설정
     const beginDt = searchParams.get("beginDt");
     const endDt = searchParams.get("endDt");
     if (beginDt) {
@@ -59,13 +57,9 @@ export function SearchBarProvider({
       setDate(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    searchParams,
-    defaultSearchField,
-    Object.keys(statusOptionsMap).join(","),
-  ]);
+  }, [searchParams, searchField, Object.keys(statusOptionsMap).join(",")]);
 
-  // URL 파라미터 보정: 최초 마운트 시 필수 필드가 없으면 push
+  // 🧹 상태 필터 기본값 보정
   useEffect(() => {
     if (!Object.keys(statusOptionsMap).length) return;
     const params = new URLSearchParams(searchParams.toString());
@@ -80,31 +74,32 @@ export function SearchBarProvider({
       }
     });
     if (shouldPush) {
-      // 페이지 초기화
       params.set("page", "1");
       router.push(`?${params.toString()}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusOptionsMap, searchParams]);
 
-  // 필터별 상태 설정 함수
   const setStatus = useCallback((field, value) => {
     setStatusMap((prev) => ({ ...prev, [field]: value }));
   }, []);
+
   const setStatusOptions = useCallback((field, options) => {
     setStatusOptionsMap((prev) => ({ ...prev, [field]: options }));
   }, []);
 
-  // 검색 실행 함수
+  // 🔍 검색 실행
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams(searchParams.toString());
-    // 검색어 설정
-    if (searchText) {
-      params.set(defaultSearchField, searchText);
-    } else {
-      params.delete(defaultSearchField);
+
+    // 현재 선택된 검색 필드에 검색어를 넣음
+    if (searchText && searchField) {
+      params.set(searchField, searchText);
+    } else if (searchField) {
+      params.delete(searchField);
     }
-    // 여러 상태 필터 파라미터 설정
+
+    // 필터 처리
     Object.entries(statusMap).forEach(([field, value]) => {
       if (value && value !== "all") {
         params.set(field, value);
@@ -112,7 +107,8 @@ export function SearchBarProvider({
         params.delete(field);
       }
     });
-    // 날짜 파라미터 설정
+
+    // 날짜 처리
     if (date?.from) {
       params.set("beginDt", format(date.from, "yyyy-MM-dd"));
       if (date.to) {
@@ -124,40 +120,38 @@ export function SearchBarProvider({
       params.delete("beginDt");
       params.delete("endDt");
     }
-    // 페이지 초기화
-    params.set("page", "1");
-    // URL 업데이트
-    router.push(`?${params.toString()}`);
-  }, [router, searchParams, date, searchText, defaultSearchField, statusMap]);
 
-  // 초기화 함수
+    params.set("page", "1");
+    router.push(`?${params.toString()}`);
+  }, [router, searchParams, searchText, searchField, date, statusMap]);
+
+  // 🔄 초기화
   const handleReset = useCallback(() => {
     setDate(null);
     setSearchText("");
-    // 모든 상태 필터 초기화
+    setSearchField(defaultSearchField);
     const resetStatusMap = {};
     Object.keys(statusOptionsMap).forEach((field) => {
       resetStatusMap[field] = "all";
     });
     setStatusMap(resetStatusMap);
+
     const params = new URLSearchParams();
     params.set("page", "1");
     router.push(`?${params.toString()}`);
-  }, [router, statusOptionsMap]);
+  }, [router, defaultSearchField, statusOptionsMap]);
 
   const value = {
     searchField,
     setSearchField,
-    // 상태
-    date,
-    setDate,
     searchText,
     setSearchText,
+    date,
+    setDate,
     statusMap,
     setStatus,
     statusOptionsMap,
     setStatusOptions,
-    // 기능
     handleSearch,
     handleReset,
   };
@@ -169,7 +163,6 @@ export function SearchBarProvider({
   );
 }
 
-// 커스텀 훅 - 컨텍스트 사용
 export function useSearchBar() {
   const context = useContext(SearchBarContext);
   if (!context) {
