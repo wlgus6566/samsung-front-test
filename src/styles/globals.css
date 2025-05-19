@@ -90,6 +90,7 @@
 
 @layer base {
   body {
+    min-height: 100vh;
     font-size: var(--text-sm);
     line-height: 1.55;
     font-family: var(--font-samsung);

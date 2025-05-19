@@ -5,30 +5,30 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex body-3 items-center justify-center whitespace-nowrap font-[600] transition-all disabled:pointer-events-none outline-none focus-visible:ring-2 focus-visible:ring-primary-blue focus-visible:ring-offset-2 disabled:cursor-not-allowed text-white",
+  "inline-flex items-center justify-center whitespace-nowrap font-semibold transition-all disabled:pointer-events-none outline-none focus-visible:ring-2 focus-visible:ring-primary-blue focus-visible:ring-offset-2 disabled:cursor-not-allowed text-white",
   {
     variants: {
       variant: {
         brand:
-          "bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "border border-bg-blue-500 bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
         primary:
-          "bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "border border-gray-300 bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
         secondary:
-          "bg-green-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "border border-gray-300 bg-green-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
         outline:
-          "border border-gray-300 text-gray-800 disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
+          "border border-gray-300 text-black disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
         link: "text-primary-blue underline-offset-4 hover:brightness-[85%] hover:underline disabled:text-gray-500]",
       },
       size: {
-        lg: "h-16 px-8 py-4 rounded-2xl text-sm",
-        default: "h-12 px-6 py-4.25 rounded-xl text-xs",
-        sm: "px-4 py-2 rounded-[10px] body-5",
+        lg: "h-15 px-8 py-4 rounded-[20px] body-3",
+        md: "h-11 px-6 py-3 rounded-[16px] body-4",
+        sm: "h-9 px-4 py-1.75 rounded-[12px] body-5",
         icon: "size-9 rounded-md",
       },
     },
     defaultVariants: {
       variant: "primary",
-      size: "default",
+      size: "md",
     },
   }
 );
@@ -36,7 +36,7 @@ const buttonVariants = cva(
 function Button({
   className,
   variant,
-  size,
+  size = "md",
   asChild = false,
   children,
   ...props

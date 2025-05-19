@@ -263,7 +263,7 @@ export default function Header() {
         ref={headerRef}
         onMouseLeave={handleHeaderMouseLeave}
       >
-        <div className="relative h-25 flex items-center justify-between container-fixed px-5 sm:px-10 lg:px-40">
+        <div className="relative h-25 flex items-center justify-between max-w-[1760px] mx-auto px-5 sm:px-10">
           <div className="flex items-center gap-15">
             <Link href="/" className="flex items-center">
               <Img
@@ -360,11 +360,11 @@ export default function Header() {
           currentMenuIndex !== null &&
           gnbMenu[currentMenuIndex]?.children && (
             <div
-              className="mega-menu-wrapper absolute top-25 left-[50%] translate-x-[-50%] w-full max-w-[1920px] px-40 ml-[171px] bg-white z-10 border-t border-gray-300"
+              className="mega-menu-wrapper absolute top-25 w-full bg-white z-10 border-t border-gray-300"
               onMouseEnter={() => handleMenuMouseEnter(currentMenuIndex)}
               onMouseLeave={handleHeaderMouseLeave}
             >
-              <div className="flex flex-row gap-25">
+              <div className="flex flex-row gap-25 max-w-[1920px] ml-[171px] px-40">
                 {gnbMenu[currentMenuIndex].children.map(
                   (subMenuItem, subMenuIndex) => (
                     <div key={subMenuIndex} className="flex flex-col gap-1">
@@ -462,7 +462,6 @@ export default function Header() {
                       console.log("Mobile Search Enter:", mobileSearchInput);
                     }
                   }}
-                  classNameWrapper="relative"
                   inputClassName="h-12 rounded-full pl-4 pr-12 text-sm"
                   icon={
                     <button
