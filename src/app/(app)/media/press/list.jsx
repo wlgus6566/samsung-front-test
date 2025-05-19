@@ -1,31 +1,79 @@
 "use client";
 
-export default function MediaResultsList({ initialData }) {
-  //   const router = useRouter();
-  //   const searchParams = useSearchParams();
-
-  //   const searchWord = searchParams.get("searchWord") || "";
-  //   const currentPage = parseInt(searchParams.get("currentPage") || "1", 10);
-
-  //   const [input, setInput] = useState(searchWord);
-
-  //   useEffect(() => {
-  //     setInput(searchWord);
-  //   }, [searchWord]);
-  //   const { data, error, isLoading } = useSWR(
-  //     `/api/v1/bbs/NEWS?searchWord=${encodeURIComponent(searchWord)}&currentPage=${currentPage}&size=10`,
-  //     fetcher,
-  //     {
-  //       fallbackData: initialData,
-  //       dedupingInterval: 1000,
-  //     }
-  //   );
-
-  //const { list, ...paginationData } = data;
-
+import SearchBar from "@/components/search-bar";
+import Pagination from "@/components/ui/pagination";
+export default function PressResultsList({ initialData }) {
   return (
-    <div>
-      <h2>미디어&우수사례</h2>
-    </div>
+    <>
+      <SearchBar defaultSearchField="searchWord">
+        <div className="flex gap-2 items-end">
+          <SearchBar.Status
+            label="구분"
+            wrapClassName="w-[calc((100%-24px)/4)]"
+            field="category"
+            placeholder="구분 선택"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.SearchInput placeholder="검색어를 입력하세요 (예 : 금형, AI, 자동차부품, 생산성 향상)" />
+        </div>
+        <div className="flex gap-2 items-end mt-3.5">
+          <SearchBar.Status
+            label="업종"
+            wrapClassName="flex-1"
+            field="status1"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="기술 분야"
+            wrapClassName="flex-1"
+            field="status2"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="기업 규모"
+            wrapClassName="flex-1"
+            field="status3"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="성과 유형"
+            wrapClassName="flex-1"
+            field="status4"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+        </div>
+        <SearchBar.Actions />
+      </SearchBar>
+      <Pagination
+        pageNum={1}
+        pageSize={10}
+        totalCount={1}
+        goToPage={() => {}}
+      />
+    </>
   );
 }

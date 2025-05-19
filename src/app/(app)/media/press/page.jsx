@@ -1,7 +1,30 @@
-import React from "react";
+import PressResultsList from "@/app/(app)/media/press/list";
+import fetcher from "@/lib/fetcher";
+import { Suspense } from "react";
+import Loading from "@/components/ui/loading";
+export const revalidate = 60;
 
-const MediaPage = () => {
-  return <div>MediaPage</div>;
-};
+export default async function MediaPressPage({ searchParams }) {
+  const params = await searchParams;
+  const currentPage = parseInt(params.currentPage || "1", 10);
 
-export default MediaPage;
+  // const initialData = await fetcher(
+  //   `/api/v1/bbs/NEWS?currentPage=${currentPage}&size=10`
+  // );
+
+  const initialData = {
+    list: [],
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+    },
+  };
+
+  console.log(initialData);
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <PressResultsList initialData={initialData} />
+    </Suspense>
+  );
+}

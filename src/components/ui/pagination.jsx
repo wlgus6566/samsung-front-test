@@ -77,8 +77,12 @@ export default function Pagination({
         disabled={localPageNum === 1}
       >
         <Img
-          src={`/images/icon/ic_page_pprev_${localPageNum === 1 ? "disabled" : "black"}.svg`}
+          src={`/images/icon/ic_page_next.svg`}
+          // src={`/images/icon/ic_page_pprev_${
+          //   localPageNum === 1 ? "disabled" : "black"
+          // }.svg`}
           alt="처음으로"
+          className={"rotate-180"}
           width={30}
           height={40}
           key={`pprev-${localPageNum === 1 ? "disabled" : "black"}`}
@@ -90,7 +94,11 @@ export default function Pagination({
         disabled={localPageNum === 1}
       >
         <Img
-          src={`/images/icon/ic_page_prev_${localPageNum === 1 ? "disabled" : "black"}.svg`}
+          src={`/images/icon/ic_page_next.svg`}
+          className={"rotate-180"}
+          // src={`/images/icon/ic_page_prev_${
+          //   localPageNum === 1 ? "disabled" : "black"
+          // }.svg`}
           alt="이전"
           width={30}
           height={40}
@@ -98,32 +106,26 @@ export default function Pagination({
         />
       </button>
       <div className="box flex gap-[5px]">
-        {pageList.length > 0 ? (
-          pageList.map((el) => {
-            return (
-              <button
-                type="button"
-                className={`$${
-                  localPageNum === el ? "active" : ""
-                } rounded-[50%] w-[40px] h-[40px] flex justify-center items-center ${
-                  localPageNum === el
-                    ? "bg-primary text-white"
-                    : "bg-white text-gray-800"
-                } font-bold`}
-                key={el}
-                onClick={() => {
-                  goPage(el);
-                }}
-              >
-                {el}
-              </button>
-            );
-          })
-        ) : (
-          <div className="rounded-[50%] w-[40px] h-[40px] flex justify-center items-center bg-primary text-white">
-            1
-          </div>
-        )}
+        {pageList.map((el) => {
+          return (
+            <button
+              type="button"
+              className={`$${
+                localPageNum === el ? "active" : ""
+              } rounded-[50%] w-[40px] h-[40px] flex justify-center items-center ${
+                localPageNum === el
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-800"
+              } font-bold`}
+              key={el}
+              onClick={() => {
+                goPage(el);
+              }}
+            >
+              {el}
+            </button>
+          );
+        })}
       </div>
       <button
         type="button"
@@ -131,12 +133,18 @@ export default function Pagination({
         disabled={localPageNum === totalPageSizeInt}
       >
         <Img
-          src={`/images/icon/ic_page_prev_${localPageNum === totalPageSizeInt || totalPageSizeInt == 0 ? "disabled" : "black"}.svg`}
+          src={`/images/icon/ic_page_next.svg`}
+          // src={`/images/icon/ic_page_prev_${
+          //   localPageNum === totalPageSizeInt || totalPageSizeInt == 0
+          //     ? "disabled"
+          //     : "black"
+          // }.svg`}
           alt="다음"
-          className="rotate-180"
           width={30}
           height={40}
-          key={`next-${localPageNum === totalPageSizeInt ? "disabled" : "black"}`}
+          key={`next-${
+            localPageNum === totalPageSizeInt ? "disabled" : "black"
+          }`}
         />
       </button>
       <button
@@ -148,12 +156,18 @@ export default function Pagination({
         disabled={localPageNum === totalPageSizeInt}
       >
         <Img
-          src={`/images/icon/ic_page_pprev_${localPageNum === totalPageSizeInt || totalPageSizeInt == 0 ? "disabled" : "black"}.svg`}
+          src={`/images/icon/ic_page_last.svg`}
+          // src={`/images/icon/ic_page_pprev_${
+          //   localPageNum === totalPageSizeInt || totalPageSizeInt == 0
+          //     ? "disabled"
+          //     : "black"
+          // }.svg`}
           alt="마지막으로"
-          className="rotate-180"
           width={30}
           height={40}
-          key={`pprev-last-${localPageNum === totalPageSizeInt ? "disabled" : "black"}`}
+          key={`pprev-last-${
+            localPageNum === totalPageSizeInt ? "disabled" : "black"
+          }`}
         />
       </button>
     </div>
