@@ -11,12 +11,7 @@ import { Actions } from "./actions";
 function SearchBar({ children, className, defaultSearchField = "searchWord" }) {
   return (
     <SearchBarProvider defaultSearchField={defaultSearchField}>
-      <div
-        className={cn(
-          "flex flex-row p-4 gap-2 rounded-md bg-white flex-wrap items-end",
-          className
-        )}
-      >
+      <div className={cn("bg-blue-50 p-10 rounded-[20px]", className)}>
         {children}
       </div>
     </SearchBarProvider>

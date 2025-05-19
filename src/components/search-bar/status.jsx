@@ -67,12 +67,7 @@ export function Status({
   }, [didSetDefault, contextValue, firstValue]);
 
   return (
-    <div
-      className={cn(
-        "flex flex-col max-md:w-full min-w-[120px] gap-1",
-        wrapClassName
-      )}
-    >
+    <div className={cn("flex flex-col gap-1", wrapClassName)}>
       {label && (
         <Label className="text-xs font-medium text-muted-foreground">
           {label}

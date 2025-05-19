@@ -22,7 +22,8 @@ export function SearchInput({ label, wrapClassName, className, placeholder }) {
         </Label>
       )}
       <Input
-        type="text"
+        type="search"
+        size="lg"
         placeholder={placeholder || "검색어를 입력해 주세요"}
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}

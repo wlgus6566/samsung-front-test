@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { useDialogStore } from "@/store/dialog";
 import { SmartFactoryCertificationDialog } from "@/components/dialog/smart-factory-certification-dialog";
 import SearchBar from "@/components/search-bar";
+
 const categoryItems = [
   { label: "일반", value: "general" },
   { label: "기술", value: "tech" },
@@ -113,23 +114,83 @@ export default function HomeContentsForm() {
     { id: "email", label: "이메일" },
     { id: "phone", label: "연락처" },
   ];
+
+  const handleSearch = (params) => {
+    console.log("검색 파라미터:", params);
+    // 여기에 실제 검색 API 호출 로직을 추가
+  };
+
+  const handleReset = () => {
+    console.log("검색 조건 초기화됨");
+    // 초기화 후 추가 작업이 필요한 경우
+  };
+
   return (
     <div className="container mx-auto p-4 md:p-8">
       <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
-      <SearchBar defaultSearchField="name">
-        <SearchBar.DateRange label="가입일" />
-        <SearchBar.Field options={fieldOptions} />
-        <SearchBar.Status
-          label="상태"
-          field="status"
-          placeholder="계정 상태"
-          options={[
-            { value: "all", label: "전체" },
-            { value: "active", label: "활성" },
-            { value: "inactive", label: "비활성" },
-          ]}
-        />
-        <SearchBar.SearchInput placeholder="이름, 이메일 검색" />
+
+      <h2 className="text-xl font-bold mt-8 mb-4">SearchBar 컴포넌트 예시</h2>
+      <SearchBar defaultSearchField="category">
+        <div className="flex gap-2 items-end">
+          <SearchBar.Status
+            label="구분"
+            wrapClassName="w-[calc((100%-24px)/4)]"
+            field="category"
+            placeholder="구분 선택"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.SearchInput placeholder="검색어를 입력하세요 (예 : 금형, AI, 자동차부품, 생산성 향상)" />
+        </div>
+        <div className="flex gap-2 items-end mt-3.5">
+          <SearchBar.Status
+            label="업종"
+            wrapClassName="flex-1"
+            field="status1"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="기술 분야"
+            wrapClassName="flex-1"
+            field="status2"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="기업 규모"
+            wrapClassName="flex-1"
+            field="status3"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+          <SearchBar.Status
+            label="성과 유형"
+            wrapClassName="flex-1"
+            field="status4"
+            placeholder="전체"
+            options={[
+              { value: "all", label: "전체" },
+              { value: "active", label: "활성" },
+              { value: "inactive", label: "비활성" },
+            ]}
+          />
+        </div>
         <SearchBar.Actions />
       </SearchBar>
       <div className="border rounded p-4 bg-white shadow">
@@ -137,6 +198,7 @@ export default function HomeContentsForm() {
           🔍 검색 결과 영역입니다 (여기에 리스트 렌더링)
         </p>
       </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormInput
