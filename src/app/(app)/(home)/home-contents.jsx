@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { useDialogStore } from "@/store/dialog";
 import { SmartFactoryCertificationDialog } from "@/components/dialog/smart-factory-certification-dialog";
 import SearchBar from "@/components/search-bar";
+import { Badge } from "@/components/ui/badge";
 
 const categoryItems = [
   { label: "일반", value: "general" },
@@ -127,8 +128,6 @@ export default function HomeContentsForm() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
-
       <h2 className="text-xl font-bold mt-8 mb-4">SearchBar 컴포넌트 예시</h2>
       <SearchBar defaultSearchField="searchWord">
         <div className="flex gap-2 items-end">
@@ -193,12 +192,38 @@ export default function HomeContentsForm() {
         </div>
         <SearchBar.Actions />
       </SearchBar>
-      <div className="border rounded p-4 bg-white shadow">
-        <p className="text-gray-600">
-          🔍 검색 결과 영역입니다 (여기에 리스트 렌더링)
-        </p>
+      <h2 className="text-lg font-bold my-8">Badge 컴포넌트 예시</h2>
+      <div className="border rounded p-6 bg-white shadow mb-8">
+        <div className="flex flex-wrap gap-3 mb-6">
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Medium 사이즈</p>
+            <div className="flex gap-2">
+              <Badge type="blue">blue</Badge>
+              <Badge type="green">green</Badge>
+              <Badge type="red">red</Badge>
+              <Badge type="gray">gray</Badge>
+            </div>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Small 사이즈</p>
+            <div className="flex gap-2">
+              <Badge type="blue" size="small">
+                blue
+              </Badge>
+              <Badge type="green" size="small">
+                green
+              </Badge>
+              <Badge type="red" size="small">
+                red
+              </Badge>
+              <Badge type="gray" size="small">
+                gray
+              </Badge>
+            </div>
+          </div>
+        </div>
       </div>
-
+      <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormInput

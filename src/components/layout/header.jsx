@@ -360,11 +360,11 @@ export default function Header() {
           currentMenuIndex !== null &&
           gnbMenu[currentMenuIndex]?.children && (
             <div
-              className="mega-menu-wrapper absolute top-25 left-0 w-full bg-white z-10 border-t border-gray-300"
+              className="mega-menu-wrapper absolute top-25 left-[50%] translate-x-[-50%] w-full max-w-[1920px] px-40 ml-[171px] bg-white z-10 border-t border-gray-300"
               onMouseEnter={() => handleMenuMouseEnter(currentMenuIndex)}
               onMouseLeave={handleHeaderMouseLeave}
             >
-              <div className="ml-[296px] flex flex-row gap-25">
+              <div className="flex flex-row gap-25">
                 {gnbMenu[currentMenuIndex].children.map(
                   (subMenuItem, subMenuIndex) => (
                     <div key={subMenuIndex} className="flex flex-col gap-1">

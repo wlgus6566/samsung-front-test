@@ -126,7 +126,7 @@ export default function Footer() {
           {footerMenus.map((menu) => (
             <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
               <h3 className="body-3 font-semibold whitespace-nowrap tracking-[-0.05rem]">
-                {menu.title}
+                <Link href={menu.links[0].url}>{menu.title}</Link>
               </h3>
               <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
                 {menu.links.map((link) => (
