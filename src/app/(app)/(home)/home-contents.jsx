@@ -312,68 +312,16 @@ export default function HomeContentsForm() {
           />
           <FormFile
             control={form.control}
-            name="imagesOnly"
-            label="이미지 파일 업로드"
-            required
-            maxfilecount={2}
             maxfilesize={1}
-            maxtotalsize={5}
-            minwidth={200}
-            minheight={200}
-            allowedExtensions={[
-              "jpg",
-              "jpeg",
-              "png",
-              "gif",
-              "bmp",
-              "tif",
-              "webp",
-            ]}
-            accept=".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp"
-            description="이미지 권장 사이즈: 가로 200px X 세로 200px / 1MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 1개"
-          />
-          <FormFile
-            control={form.control}
-            name="imagesOnly1"
-            label="4개 이미지 파일 업로드"
-            required
-            maxfilecount={4}
-            maxfilesize={3}
-            maxtotalsize={12}
+            maxtotalsize={2}
+            maxfilecount={3}
             minwidth={600}
-            minheight={600}
-            allowedExtensions={[
-              "jpg",
-              "jpeg",
-              "png",
-              "gif",
-              "bmp",
-              "tif",
-              "webp",
-            ]}
-            accept=".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp"
-            description="이미지 최소 사이즈: 600px X 세로 600px / 3MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 최대 4개"
+            minheight={400}
+            name="files"
+            label="파일 업로드"
+            description="파일을 업로드해주세요."
           />
-          <FormFile
-            control={form.control}
-            name="documentsOnly"
-            fileType="document"
-            label="문서 파일 업로드"
-            maxfilecount={2}
-            maxfilesize={5}
-            maxtotalsize={10}
-            allowedExtensions={[
-              "pdf",
-              "doc",
-              "docx",
-              "xls",
-              "xlsx",
-              "ppt",
-              "pptx",
-            ]}
-            accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx"
-            description="첨부파일은 최대 2개, 1개 파일당 5MB 이하의 문서 파일만 업로드 가능합니다."
-          />
+
           <div className="flex gap-2">
             <Switch />
             <Switch size="lg" />
