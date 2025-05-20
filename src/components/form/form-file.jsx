@@ -64,6 +64,8 @@ const FormFile = ({
   fileType = "image",
   minwidth = 600,
   minheight = 600,
+  maxfilesize = 1,
+  maxtotalsize = 3,
   ...props
 }) => {
   const isImageType = fileType === "image";
@@ -82,8 +84,76 @@ const FormFile = ({
             (file) => file && file.name
           );
 
+          const currentFiles = Array.isArray(field.value)
+            ? field.value
+            : field.value
+            ? [field.value]
+            : [];
+
+          // 🔸 중복 파일 제거
+          const isDuplicate = (file) => {
+            return currentFiles.some(
+              (existingFile) =>
+                existingFile.name === file.name &&
+                existingFile.size === file.size
+            );
+          };
+
+          const filteredFiles = selectedFiles.filter(
+            (file) => !isDuplicate(file)
+          );
+
+          if (filteredFiles.length !== selectedFiles.length) {
+            toast.error("이미 업로드된 파일이 포함되어 있습니다.");
+          }
+
+          // 🔸 병합 후 개수 검사
+          const newFiles = [...currentFiles, ...filteredFiles];
+          if (newFiles.length > maxfilecount) {
+            toast.error(
+              `파일은 최대 ${maxfilecount}개까지 업로드할 수 있습니다.`
+            );
+            return;
+          }
+
+          // 🔸 확장자 유효성 검사
+          for (const file of filteredFiles) {
+            const extension = getFileExtension(file.name);
+            if (!allowedExtensions.includes(extension)) {
+              toast.error(
+                "유효한 파일 형식이 아닙니다. 파일 형식을 다시 확인해 주세요."
+              );
+              return;
+            }
+          }
+
+          // 🔸 파일당 용량 검사 (MB → Byte)
+          const maxFileSizeBytes = maxfilesize * 1024 * 1024;
+          for (const file of filteredFiles) {
+            if (file.size > maxFileSizeBytes) {
+              toast.error(
+                `파일은 1개당 ${maxfilesize}MB를 초과할 수 없습니다.`
+              );
+              return;
+            }
+          }
+
+          // 🔸 총 용량 검사 (MB → Byte)
+          const maxTotalSizeBytes = maxtotalsize * 1024 * 1024;
+          const totalSizeBytes = newFiles.reduce(
+            (sum, file) => sum + file.size,
+            0
+          );
+          if (totalSizeBytes > maxTotalSizeBytes) {
+            toast.error(
+              `총 업로드 용량은 ${maxtotalsize}MB를 초과할 수 없습니다.`
+            );
+            return;
+          }
+
+          // 🔸 이미지일 경우 사이즈 검사
           if (isImageType) {
-            for (const file of selectedFiles) {
+            for (const file of filteredFiles) {
               try {
                 await validateImageDimensions(file, minwidth, minheight);
               } catch {
@@ -95,17 +165,12 @@ const FormFile = ({
             }
           }
 
-          const currentFiles = Array.isArray(field.value)
-            ? field.value
-            : field.value
-            ? [field.value]
-            : [];
-          const newFiles = [...currentFiles, ...selectedFiles];
+          // 🔸 업데이트
           field.onChange(newFiles);
           setFileList(newFiles);
 
           const newPreviewUrls = {};
-          selectedFiles.forEach((file, index) => {
+          filteredFiles.forEach((file, index) => {
             newPreviewUrls[currentFiles.length + index] =
               URL.createObjectURL(file);
           });
@@ -257,7 +322,7 @@ const FormFile = ({
                   <div className="mt-2">
                     <div
                       className={cn(
-                        "flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 mb-2",
+                        "flex items-center py-3.25 px-4 border border-gray-300 rounded-[16px] cursor-pointer",
                         currentFileCount >= maxfilecount &&
                           "opacity-50 cursor-not-allowed"
                       )}
@@ -267,25 +332,34 @@ const FormFile = ({
                         }
                       }}
                     >
-                      <span className="text-sm font-medium text-gray-700">
+                      <Img
+                        src="/images/icon/ic_default_search.svg"
+                        alt="파일 첨부"
+                        width={24}
+                        height={24}
+                      />
+                      <span className="body-5 font-medium text-gray-500 ml-2">
                         파일 첨부
                       </span>
                     </div>
 
                     {validFiles.length > 0 && (
-                      <div className="space-y-2 border rounded-md p-2">
+                      <div className="space-y-1 border border-gray-300 rounded-[16px] mt-2">
                         {validFiles.map((file, index) => {
                           const fileName = getFileName(file);
                           return (
                             <div
                               key={index}
-                              className="flex items-center justify-between py-2 px-3 border-b last:border-b-0"
+                              className="flex items-center justify-between py-3.25 px-4 border-b last:border-b-0"
                             >
-                              <div className="flex items-center gap-2 overflow-hidden">
-                                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
-                                  <Check className="h-3 w-3 text-white" />
-                                </div>
-                                <span className="truncate text-sm">
+                              <div className="flex items-center gap-1 overflow-hidden">
+                                <Img
+                                  src="/images/icon/ic_close_circle_24.svg"
+                                  alt="파일 첨부"
+                                  width={24}
+                                  height={24}
+                                />
+                                <span className="body-5 font-medium text-black">
                                   {fileName}
                                 </span>
                               </div>
@@ -295,10 +369,10 @@ const FormFile = ({
                                 onClick={() => handleRemoveFile(index)}
                               >
                                 <Img
-                                  src="/images/icon/ic_x_circle.svg"
+                                  src="/images/icon/ic_default_close.svg"
                                   alt="파일 삭제"
-                                  width={20}
-                                  height={20}
+                                  width={16}
+                                  height={16}
                                 />
                               </button>
                             </div>

@@ -11,6 +11,7 @@ import FormSelect from "@/components/form/form-select";
 import FormRadio from "@/components/form/form-radio";
 import FormCheckbox from "@/components/form/form-checkbox";
 import FormFile from "@/components/form/form-file";
+import FormEmail from "@/components/form/form-email";
 import { Switch } from "@/components/ui/switch";
 import { useDialogStore } from "@/store/dialog";
 import { SmartFactoryCertificationDialog } from "@/components/dialog/smart-factory-certification-dialog";
@@ -235,9 +236,16 @@ export default function HomeContentsForm() {
             control={form.control}
             name="title"
             label="제목"
-            size="lg"
             placeholder="제목을 입력하세요"
             required
+          />
+          <FormEmail
+            control={form.control}
+            name="email"
+            label="대표자 이메일"
+            placeholder="이메일 입력"
+            required
+            description="입력하신 이메일로 상품 증정 정보와 해당 상품의 고객 문의이 내용이 발송됩니다. 정확한 이메일 주소를 입력해 주세요."
           />
           <FormSelect
             control={form.control}
@@ -255,13 +263,6 @@ export default function HomeContentsForm() {
             placeholder="내용을 입력하세요"
             required
             maxLength={5000}
-          />
-          <FormInput
-            control={form.control}
-            name="email"
-            label="이메일 (선택)"
-            placeholder="example@example.com"
-            type="email"
           />
           <FormSelect
             control={form.control}
@@ -308,15 +309,15 @@ export default function HomeContentsForm() {
             items={checkboxItems}
             required
             disabled={true}
-          />{" "}
+          />
           <FormFile
             control={form.control}
             name="imagesOnly"
             label="이미지 파일 업로드"
             required
-            maxfilecount={1}
-            maxfilesize={10}
-            maxtotalsize={10}
+            maxfilecount={2}
+            maxfilesize={1}
+            maxtotalsize={5}
             minwidth={200}
             minheight={200}
             allowedExtensions={[
@@ -329,7 +330,7 @@ export default function HomeContentsForm() {
               "webp",
             ]}
             accept=".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp"
-            description="이미지 권장 사이즈: 가로 200px X 세로 200px / 10MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 1개"
+            description="이미지 권장 사이즈: 가로 200px X 세로 200px / 1MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 1개"
           />
           <FormFile
             control={form.control}

@@ -62,7 +62,7 @@ function Input({
         value={value}
         onChange={onChange}
         className={cn(
-          "w-full border bg-white text-black placeholder:text-gray-400 px-4",
+          "w-full border bg-white text-black placeholder:text-gray-700 px-4",
           currentSize.height,
           currentSize.textSize,
           currentSize.rounded,
