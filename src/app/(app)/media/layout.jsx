@@ -5,7 +5,7 @@ import Loading from "@/components/ui/loading";
 import Contents from "@/components/layout/contents";
 export const revalidate = 60;
 
-export default async function MediaListPage({ searchParams }) {
+export default async function DetailLayout({ searchParams, children }) {
   //const params = await searchParams;
   //const currentPage = parseInt(params.currentPage || "1", 10);
   const initialData = [];
@@ -21,7 +21,7 @@ export default async function MediaListPage({ searchParams }) {
         title="보도자료"
         description="스마트공장과 관련된 주요 언론 보도를 한눈에 확인하세요. 성과와 변화, 그리고 현장의 이야기가 담긴 생생한 뉴스입니다"
       >
-        <MediaResultsList initialData={initialData} />
+        {children}
       </Contents>
     </Suspense>
   );

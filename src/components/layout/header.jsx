@@ -79,12 +79,27 @@ export default function Header() {
         {
           label: "지원 프로그램",
           url: "/business/program",
-          description: "스마트공장의 개념과 운영 방식 소개",
+          description: "스마트공장 지원 프로그램 안내",
+        },
+        {
+          label: "현황 제안",
+          url: "/business/status",
+          description: "스마트공장 현황 제안",
+        },
+        {
+          label: "스마트365센터 안내",
+          url: "/business/center",
+          description: "스마트365센터 이용 안내",
         },
         {
           label: "지원절차 안내",
           url: "/business/process",
-          description: "스마트공장의 개념과 현황 방식 소개",
+          description: "스마트공장 지원절차 안내",
+        },
+        {
+          label: "갤러리탭",
+          url: "/business/gallery",
+          description: "스마트공장 갤러리",
         },
       ],
     },
@@ -98,19 +113,29 @@ export default function Header() {
           description: "스마트제조혁신의 보도자료를 소개",
         },
         {
-          label: "성과스토리",
+          label: "보도자료 상세",
+          url: "/media/press/detail",
+          description: "스마트제조혁신의 보도자료 상세내용",
+        },
+        {
+          label: "성공스토리",
           url: "/media/story",
-          description: "스마트제조혁신의 성과 사례를 소개",
+          description: "스마트제조혁신의 성공 사례를 소개",
         },
         {
           label: "업종별 우수사례",
           url: "/media/case-by-industry",
           description: "스마트제조혁신의 업종별 우수사례를 소개",
         },
+        {
+          label: "업종별 우수사례 상세",
+          url: "/media/case-by-industry/detail",
+          description: "업종별 우수사례 상세 내용",
+        },
       ],
     },
     {
-      label: "인재교육",
+      label: "인재교육(인적양성)",
       url: "/education",
       children: [
         {
@@ -119,56 +144,81 @@ export default function Header() {
           description: "스마트제조혁신 전문가 양성과정 소개",
         },
         {
-          label: "재직자특화교육",
+          label: "직무별특화교육",
           url: "/education/worker",
-          description: "스마트제조혁신 재직자특화 과정 소개",
+          description: "스마트제조혁신 직무별 특화 과정 소개",
         },
         {
-          label: "산업·산단 벤처기업",
-          url: "/education/venture",
-          description: "스마트제조혁신 산업 및 벤처기업 교육 소개",
+          label: "삼성 사업장 벤치마킹",
+          url: "/education/samsung",
+          description: "삼성 사업장 벤치마킹 교육 안내",
         },
         {
-          label: "우수기업 벤처기업",
+          label: "우수기업 벤치마킹",
           url: "/education/excellent",
-          description: "스마트제조혁신 우수기업 벤처기업 교육 소개",
+          description: "우수기업 벤치마킹 교육 안내",
+        },
+        {
+          label: "우수기업 벤치마킹 신청",
+          url: "/education/excellent/apply",
+          description: "우수기업 벤치마킹 신청 페이지",
         },
       ],
     },
     {
-      label: "스마트제조엑스포",
+      label: "스마트비즈엑스포",
       url: "/expo",
       children: [
         {
-          label: "스마트제조엑스포 소개",
+          label: "스마트비즈엑스포 소개",
           url: "/expo/about",
-          description: "스마트제조엑스포 소개",
+          description: "스마트비즈엑스포 소개",
         },
         {
-          label: "스마트제조엑스포 참여안내",
+          label: "스마트비즈엑스포 참여안내",
           url: "/expo/guide",
-          description: "스마트제조엑스포 참여안내",
+          description: "스마트비즈엑스포 참여안내",
+        },
+        {
+          label: "스마트비즈엑스포 신청",
+          url: "/expo/apply",
+          description: "스마트비즈엑스포 참가 신청",
         },
       ],
     },
     {
-      label: "동향/성장",
-      url: "/trend",
+      label: "동반성장",
+      url: "/growth",
       children: [
         {
           label: "판로지원",
-          url: "/trend/market",
-          description: "스마트제조혁신의 판로지원 동향 소개",
+          url: "/growth/market",
+          description: "판로지원 프로그램 안내",
         },
         {
-          label: "고객분석 마당",
-          url: "/trend/customer",
-          description: "스마트제조혁신 고객분석 동향 소개",
+          label: "판로지원 신청",
+          url: "/growth/market/apply",
+          description: "판로지원 프로그램 신청",
         },
         {
-          label: "글로벌 홍보/방송",
-          url: "/trend/global",
-          description: "스마트제조혁신 글로벌 홍보 소개",
+          label: "교차협력 마당",
+          url: "/growth/cooperation",
+          description: "교차협력 마당 안내",
+        },
+        {
+          label: "교차협력 사용 신청",
+          url: "/growth/cooperation/apply",
+          description: "교차협력 사용 신청",
+        },
+        {
+          label: "글로벌 홍보 방송",
+          url: "/growth/global",
+          description: "글로벌 홍보 방송 안내",
+        },
+        {
+          label: "어워즈 TV 신청",
+          url: "/growth/awards",
+          description: "어워즈 TV 신청",
         },
       ],
     },
@@ -182,9 +232,19 @@ export default function Header() {
           description: "스마트제조혁신 공지사항",
         },
         {
+          label: "상세",
+          url: "/support/notice/detail",
+          description: "공지사항 상세보기",
+        },
+        {
           label: "자료실",
           url: "/support/resources",
           description: "스마트제조혁신 관련 자료실",
+        },
+        {
+          label: "상세",
+          url: "/support/resources/detail",
+          description: "자료실 상세보기",
         },
         {
           label: "FAQ",

@@ -12,9 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { File, Trash2 } from "lucide-react";
+import { File, Trash2, Plus } from "lucide-react";
 import fetcher from "@/lib/fetcher";
 import { toast } from "sonner";
+import Img from "@/components/ui/img";
 
 // 파일 사이즈 포맷팅 함수
 const formatFileSize = (size) => {
@@ -45,8 +46,9 @@ const FormFile = ({
   minheight = 400,
   action,
   required,
-  accept = ".jpg, .jpeg, .gif, .png",
+  accept = ".jpg, .jpeg, .gif, .png, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx",
   wrapClassName,
+  fileType = "image", // 'image' 또는 'document' 중 하나를 선택
   ...props
 }) => {
   return (
@@ -57,6 +59,8 @@ const FormFile = ({
         const [fileList, setFileList] = useState([]);
         const [uploading, setUploading] = useState(false);
         const [errors, setErrors] = useState(null);
+        const [previewUrls, setPreviewUrls] = useState({});
+        const [imageErrors, setImageErrors] = useState({});
 
         // 파일 크기 검증 (MB 단위)
         const validateFileSize = (file) => {
@@ -78,6 +82,49 @@ const FormFile = ({
 
         const getFileExtension = (filename) =>
           filename.split(".").pop()?.toLowerCase();
+
+        // 이미지 파일인지 확인
+        const isImageFile = (filename) => {
+          if (!filename) return false;
+          const extension = getFileExtension(filename);
+          return ["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(
+            extension
+          );
+        };
+
+        // 미리보기 URL 생성 함수 (FileReader 사용)
+        const createPreviewUrl = (file) => {
+          if (!file) return Promise.resolve(null);
+
+          // 브라우저 환경에서만 실행
+          if (typeof window === "undefined") return Promise.resolve(null);
+
+          return new Promise((resolve) => {
+            try {
+              // File 객체인지 확인
+              if (
+                file instanceof Blob ||
+                (file.name && file.type && file.size)
+              ) {
+                console.log("FileReader로 파일 읽기:", file.name);
+                const reader = new FileReader();
+                reader.onload = () => {
+                  resolve(reader.result);
+                };
+                reader.onerror = () => {
+                  console.error("FileReader 오류:", reader.error);
+                  resolve(null);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                resolve(null);
+              }
+            } catch (error) {
+              console.error("미리보기 URL 생성 오류:", error);
+              resolve(null);
+            }
+          });
+        };
 
         // 파일 업로드 함수
         const uploadFiles = async (files) => {
@@ -138,13 +185,26 @@ const FormFile = ({
         // 이미지 최소 크기 검사
         const checkImageDimensions = (file, minwidth, minheight) => {
           return new Promise((resolve) => {
+            if (!file || typeof window === "undefined") {
+              resolve({ isValid: false });
+              return;
+            }
+
             const img = new Image();
+            const objectUrl = URL.createObjectURL(file);
+
             img.onload = () => {
               const isValid = img.width >= minwidth && img.height >= minheight;
+              URL.revokeObjectURL(objectUrl); // 사용 후 메모리 해제
               resolve({ isValid, width: img.width, height: img.height });
             };
-            img.onerror = () => resolve({ isValid: false });
-            img.src = URL.createObjectURL(file);
+
+            img.onerror = () => {
+              URL.revokeObjectURL(objectUrl); // 에러시에도 메모리 해제
+              resolve({ isValid: false });
+            };
+
+            img.src = objectUrl;
           });
         };
 
@@ -202,19 +262,48 @@ const FormFile = ({
             return;
           }
 
-          // 이미지 크기 검사
-          for (const file of selectedFiles) {
-            const { isValid, width, height } = await checkImageDimensions(
-              file,
-              minwidth || 0,
-              minheight || 0
-            );
+          // 이미지 타입인 경우 이미지 크기 검사
+          if (fileType === "image") {
+            for (const file of selectedFiles) {
+              if (isImageFile(file.name)) {
+                const { isValid, width, height } = await checkImageDimensions(
+                  file,
+                  minwidth || 0,
+                  minheight || 0
+                );
 
-            if (!isValid) {
-              const errorMsg = `이미지 최소 크기는 ${minwidth}x${minheight}px 이상이어야 합니다. 현재: ${width}x${height}`;
-              toast.error(errorMsg);
-              setErrors(errorMsg);
-              return;
+                if (!isValid) {
+                  const errorMsg = `이미지 최소 크기는 ${minwidth}x${minheight}px 이상이어야 합니다. 현재: ${width}x${height}`;
+                  toast.error(errorMsg);
+                  setErrors(errorMsg);
+                  return;
+                }
+              }
+            }
+          }
+
+          // 이미지 파일 미리보기 생성
+          if (fileType === "image") {
+            try {
+              const previewPromises = selectedFiles.map(async (file) => {
+                const fileId = file.name;
+                return { fileId, dataUrl: await createPreviewUrl(file) };
+              });
+
+              // 모든 미리보기 처리 완료 후 한 번에 상태 업데이트
+              const results = await Promise.all(previewPromises);
+
+              setPreviewUrls((prevUrls) => {
+                const newUrls = { ...prevUrls };
+                results.forEach(({ fileId, dataUrl }) => {
+                  if (dataUrl) {
+                    newUrls[fileId] = dataUrl;
+                  }
+                });
+                return newUrls;
+              });
+            } catch (error) {
+              console.error("미리보기 생성 오류:", error);
             }
           }
 
@@ -231,6 +320,22 @@ const FormFile = ({
           setErrors(null);
 
           const newFiles = [...fileList];
+          const fileToRemove = newFiles[index];
+
+          // 파일 미리보기 URL 정리
+          if (fileType === "image" && fileToRemove) {
+            const fileId = fileToRemove.name || `file-${index}`;
+            if (previewUrls[fileId]) {
+              // blob URL인 경우에만 메모리 해제
+              if (previewUrls[fileId].startsWith("blob:")) {
+                URL.revokeObjectURL(previewUrls[fileId]);
+              }
+              const newPreviewUrls = { ...previewUrls };
+              delete newPreviewUrls[fileId];
+              setPreviewUrls(newPreviewUrls);
+              console.log("previewUrls:", newPreviewUrls);
+            }
+          }
 
           // 모든 파일을 delYn으로 표시하도록 변경 (실제 배열에서 제거하지 않음)
           newFiles[index] = {
@@ -238,11 +343,31 @@ const FormFile = ({
             delYn: true,
           };
 
+          console.log("newFiles:", newFiles);
+
           // 전체 파일 목록을 유지하면서 form value 업데이트 (삭제된 파일도 포함)
           field.onChange(newFiles.length > 0 ? newFiles : undefined);
 
           // UI 표시를 위해 fileList 업데이트
           setFileList(newFiles);
+        };
+
+        // 파일 구분 식별자 생성 - 간소화
+        const getFileIdentifier = (file, index) => {
+          if (!file) return `empty-${index}`;
+
+          // 파일 이름이 있으면 이름 사용
+          if (file.name) {
+            return file.name;
+          }
+
+          // 서버 파일 객체인 경우
+          if (file.fileOriginalName) {
+            return file.fileOriginalName;
+          }
+
+          // 식별자가 없는 경우 인덱스 기반으로 생성
+          return `file-${index}`;
         };
 
         // 파일 이름 표시 함수
@@ -263,6 +388,16 @@ const FormFile = ({
           return "파일";
         };
 
+        // 이미지 오류 처리 함수 (수정)
+        const handleImageError = (fileId) => {
+          console.log("이미지 로드 실패:", fileId);
+
+          setImageErrors((prev) => ({
+            ...prev,
+            [fileId]: true,
+          }));
+        };
+
         // 필드 값이 변경되면 fileList 상태 업데이트
         useEffect(() => {
           try {
@@ -273,24 +408,75 @@ const FormFile = ({
                 : [field.value];
 
               // fileList는 모든 파일 포함 (삭제 표시된 파일도 포함)
-              setFileList(
-                files.filter(
-                  (file) =>
-                    file !== null &&
-                    file !== undefined &&
-                    typeof file === "object" &&
-                    (("name" in file && file.name) ||
-                      ("fileOriginalName" in file && file.fileOriginalName))
-                )
+              const filteredFiles = files.filter(
+                (file) =>
+                  file !== null &&
+                  file !== undefined &&
+                  typeof file === "object" &&
+                  (("name" in file && file.name) ||
+                    ("fileOriginalName" in file && file.fileOriginalName))
               );
+
+              setFileList(filteredFiles);
+
+              // 이미지 파일 미리보기 생성
+              if (fileType === "image") {
+                const validFilesForPreview = filteredFiles.filter(
+                  (file) => !file.delYn
+                );
+
+                // 모든 미리보기 요청을 비동기로 생성
+                const loadPreviews = async () => {
+                  try {
+                    const previewPromises = validFilesForPreview.map(
+                      async (file) => {
+                        const fileId = getFileIdentifier(file, 0);
+                        return {
+                          fileId,
+                          dataUrl: await createPreviewUrl(file),
+                        };
+                      }
+                    );
+
+                    // 모든 미리보기 처리 완료 후 한 번에 상태 업데이트
+                    const results = await Promise.all(previewPromises);
+
+                    // 기존 상태를 유지하면서 새 미리보기 추가
+                    setPreviewUrls((prevUrls) => {
+                      const newUrls = { ...prevUrls };
+                      results.forEach(({ fileId, dataUrl }) => {
+                        if (dataUrl) {
+                          newUrls[fileId] = dataUrl;
+                        }
+                      });
+                      return newUrls;
+                    });
+                  } catch (error) {
+                    console.error("미리보기 로드 오류:", error);
+                  }
+                };
+
+                loadPreviews();
+              }
             } else {
               setFileList([]);
+              setPreviewUrls({});
             }
           } catch (error) {
             console.error("파일 목록 처리 중 오류:", error);
             setFileList([]);
           }
-        }, [field.value]);
+        }, [field.value, fileType]);
+
+        // URL 메모리 해제 로직은 Data URL 사용으로 필요 없어짐
+        useEffect(() => {
+          return () => {
+            // FileReader는 자동으로 가비지 컬렉션되므로 명시적인 정리가 필요 없음
+          };
+        }, []);
+
+        // 필터링된 유효한 파일 목록
+        const validFiles = fileList.filter((file) => !file.delYn);
 
         return (
           <FormItem className={cn(wrapClassName)}>
@@ -308,126 +494,189 @@ const FormFile = ({
                 {labelSide && labelSide}
               </div>
             )}
-            <div className="flex items-center gap-2">
-              <FormControl>
+
+            <FormControl>
+              <div>
                 <Input
+                  id={`file-input-${name}`}
                   type="file"
-                  className={cn("cursor-pointer", className)}
+                  className="hidden"
                   onChange={handleFileChange}
-                  value="" // 항상 빈 값으로 설정하여 같은 파일 재선택 가능
+                  multiple={maxfilecount > 1}
                   disabled={uploading}
                   {...props}
                   accept={accept}
                 />
-              </FormControl>
-              {action && action}
-            </div>
 
-            {fileList.length > 0 && (
-              <ul className="space-y-2 rounded-md border px-2 py-1">
-                {fileList.map((file, index) => {
-                  // 파일이 삭제 표시되었는지 확인
-                  const isDeleted =
-                    file &&
-                    typeof file === "object" &&
-                    "delYn" in file &&
-                    file.delYn === true;
-
-                  return (
-                    <li
-                      key={index}
-                      className={cn(
-                        "flex items-center justify-between gap-2 text-sm w-full",
-                        isDeleted &&
-                          "text-muted-foreground line-through opacity-70"
-                      )}
-                    >
-                      <div className="flex items-center gap-2 overflow-hidden w-full">
-                        <File className="h-4 w-4 shrink-0" />
-
-                        {file && file.filePath && !isDeleted ? (
-                          <a
-                            href={file.filePath}
-                            download={getFileName(file)}
-                            target="_blank"
-                            className="truncate w-0 flex-1 cursor-pointer hover:underline"
-                          >
-                            {getFileName(file)}
-                          </a>
-                        ) : (
-                          <span className="truncate w-0 flex-1">
-                            {getFileName(file)}
-                          </span>
-                        )}
-                        {file &&
-                        typeof file === "object" &&
-                        "fileSize" in file ? (
-                          <span className="text-xs text-muted-foreground">
-                            ({formatFileSize(file.fileSize)})
-                          </span>
-                        ) : file &&
-                          typeof file === "object" &&
-                          "size" in file ? (
-                          <span className="text-xs text-muted-foreground">
-                            ({formatFileSize(file.size)})
-                          </span>
-                        ) : null}
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() => {
-                          if (isDeleted) {
-                            // 삭제된 파일 복구
-                            const newFiles = [...fileList];
-                            newFiles[index] = {
-                              ...newFiles[index],
-                              delYn: false,
-                            };
-
-                            // 전체 파일 목록 업데이트 (복구된 파일 포함)
-                            field.onChange(newFiles);
-                            setFileList(newFiles);
-                          } else {
-                            // 파일 삭제
-                            handleRemoveFile(index);
-                          }
-                        }}
-                        type="button"
+                {/* 이미지 업로드 UI */}
+                {fileType === "image" && (
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {validFiles.length < maxfilecount && (
+                      <div
+                        className="w-[120px] h-[120px] relative overflow-hidden bg-blue-50 aspect-square border border-gray-300 border-dashed rounded-[8px] flex items-center justify-center cursor-pointer"
+                        onClick={() =>
+                          document.getElementById(`file-input-${name}`).click()
+                        }
                       >
-                        {isDeleted ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-rotate-ccw"
+                        <div className="flex flex-col items-center justify-center">
+                          <Plus className="h-6 w-6 text-gray-400 mb-1" />
+                          <span className="text-xs text-gray-500">
+                            이미지 업로드
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {validFiles.map((file, index) => {
+                      const fileId = getFileIdentifier(file, index);
+                      const previewUrl = previewUrls[fileId];
+                      const hasError = imageErrors[fileId];
+
+                      return (
+                        <div
+                          key={`${fileId}-${index}`}
+                          className="w-[120px] h-[120px] relative overflow-hidden bg-gray-100 aspect-square border border-gray-300 rounded-[8px] flex items-center justify-center"
+                        >
+                          {previewUrl && !hasError ? (
+                            <img
+                              src={previewUrl}
+                              alt={getFileName(file)}
+                              className="w-full h-full object-cover"
+                              onError={() => handleImageError(fileId)}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center">
+                              <File className="h-6 w-6 text-gray-400 mb-1" />
+                              <span className="text-xs text-gray-500 line-clamp-2 max-w-full">
+                                {getFileName(file)}
+                              </span>
+                            </div>
+                          )}
+
+                          <button
+                            type="button"
+                            className="absolute top-2 right-2 rounded-full bg-black bg-opacity-50 p-1"
+                            onClick={() => handleRemoveFile(index)}
                           >
-                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                            <path d="M3 3v5h5" />
-                          </svg>
-                        ) : (
-                          <Trash2 className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M12 4L4 12"
+                                stroke="white"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path
+                                d="M4 4L12 12"
+                                stroke="white"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* 문서 파일 업로드 UI */}
+                {fileType === "document" && (
+                  <div className="mt-2">
+                    <div
+                      className={cn(
+                        "flex items-center py-3 px-4 border border-gray-300 rounded-[8px] cursor-pointer",
+                        validFiles.length >= maxfilecount &&
+                          "opacity-50 cursor-not-allowed"
+                      )}
+                      onClick={() => {
+                        if (validFiles.length < maxfilecount) {
+                          document.getElementById(`file-input-${name}`).click();
+                        }
+                      }}
+                    >
+                      <Img
+                        src="/images/icon/ic_default_search.svg"
+                        alt="파일 첨부"
+                        width={24}
+                        height={24}
+                      />
+                      <span className="ml-2 text-gray-500">파일 찾기</span>
+                    </div>
+
+                    {validFiles.length > 0 && (
+                      <ul className="mt-2 border border-gray-300 rounded-[8px] divide-y divide-gray-300">
+                        {validFiles.map((file, index) => (
+                          <li
+                            key={index}
+                            className="flex items-center justify-between p-3 text-sm"
+                          >
+                            <div className="flex items-center gap-2 overflow-hidden">
+                              <File className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                              <span className="truncate">
+                                {getFileName(file)}
+                              </span>
+                              {file &&
+                              typeof file === "object" &&
+                              "fileSize" in file ? (
+                                <span className="text-xs text-gray-500 flex-shrink-0">
+                                  ({formatFileSize(file.fileSize)})
+                                </span>
+                              ) : file &&
+                                typeof file === "object" &&
+                                "size" in file ? (
+                                <span className="text-xs text-gray-500 flex-shrink-0">
+                                  ({formatFileSize(file.size)})
+                                </span>
+                              ) : null}
+                            </div>
+                            <button
+                              type="button"
+                              className="ml-2 p-1"
+                              onClick={() =>
+                                handleRemoveFile(
+                                  fileList.findIndex(
+                                    (f) =>
+                                      (f.name === file.name &&
+                                        f.size === file.size) ||
+                                      (f.fileOriginalName ===
+                                        file.fileOriginalName &&
+                                        f.fileSize === file.fileSize)
+                                  )
+                                )
+                              }
+                            >
+                              <Img
+                                src="/images/icon/ic_default_close.svg"
+                                alt="삭제"
+                                width={16}
+                                height={16}
+                              />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+            </FormControl>
 
             {errors && (
-              <p className="text-sm font-medium text-destructive">{errors}</p>
+              <p className="text-sm font-medium text-destructive mt-1">
+                {errors}
+              </p>
             )}
 
             {description && (
-              <FormDescription className={cn(descriptionClassName)}>
+              <FormDescription className={cn("mt-1", descriptionClassName)}>
                 {description}
               </FormDescription>
             )}

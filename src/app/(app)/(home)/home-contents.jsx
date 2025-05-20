@@ -312,13 +312,22 @@ export default function HomeContentsForm() {
           />
           <FormFile
             control={form.control}
-            maxfilesize={1}
-            maxtotalsize={2}
+            maxfilesize={3}
+            maxtotalsize={3}
             maxfilecount={3}
-            minwidth={600}
-            minheight={400}
+            minwidth={200}
+            minheight={200}
             name="files"
             label="파일 업로드"
+            description="파일을 업로드해주세요."
+          />
+
+          <FormFile
+            control={form.control}
+            maxfilecount={2}
+            name="files2"
+            label="파일 업로드"
+            fileType="document"
             description="파일을 업로드해주세요."
           />
 
