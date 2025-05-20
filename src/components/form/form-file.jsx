@@ -46,11 +46,14 @@ const FormFile = ({
   minheight = 400,
   action,
   required,
-  accept = ".jpg, .jpeg, .gif, .png, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx",
   wrapClassName,
   fileType = "image", // 'image' 또는 'document' 중 하나를 선택
   ...props
 }) => {
+  const accept =
+    fileType === "image"
+      ? ".jpg, .jpeg, .gif, .png"
+      : ".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx";
   return (
     <FormField
       control={control}
@@ -555,7 +558,7 @@ const FormFile = ({
 
                           <button
                             type="button"
-                            className="absolute top-2 right-2 rounded-full bg-black bg-opacity-50 p-1"
+                            className="absolute top-2 right-2 rounded-full bg-black bg-opacity-40 p-1"
                             onClick={() => handleRemoveFile(index)}
                           >
                             <svg
@@ -592,7 +595,7 @@ const FormFile = ({
                   <div className="mt-2">
                     <div
                       className={cn(
-                        "flex items-center py-3 px-4 border border-gray-300 rounded-[8px] cursor-pointer",
+                        "flex items-center py-3 px-4 border border-gray-300 rounded-[16px] cursor-pointer",
                         validFiles.length >= maxfilecount &&
                           "opacity-50 cursor-not-allowed"
                       )}
@@ -612,7 +615,7 @@ const FormFile = ({
                     </div>
 
                     {validFiles.length > 0 && (
-                      <ul className="mt-2 border border-gray-300 rounded-[8px] divide-y divide-gray-300">
+                      <ul className="mt-1 border border-gray-300 rounded-[8px] divide-y divide-gray-300">
                         {validFiles.map((file, index) => (
                           <li
                             key={index}

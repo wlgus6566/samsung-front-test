@@ -97,7 +97,7 @@ function FormDescription({ className, ...props }) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("caption-1 text-gray-800", className)}
+      className={cn("caption-1 font-medium text-gray-800", className)}
       {...props}
     />
   );

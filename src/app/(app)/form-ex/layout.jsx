@@ -1,5 +1,3 @@
-import MediaResultsList from "@/app/(app)/media/press/list";
-import fetcher from "@/lib/fetcher";
 import { Suspense } from "react";
 import Loading from "@/components/ui/loading";
 import Contents from "@/components/layout/contents";

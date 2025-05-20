@@ -70,7 +70,7 @@ function Input({
           "focus:border-blue-500",
           "transition-colors duration-150 ease-in-out",
           "outline-none appearance-none",
-          "disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-400",
+          "disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-700 disabled:border-gray-300",
           {
             "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden":
               type === "search",

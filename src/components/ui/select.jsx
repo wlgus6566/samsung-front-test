@@ -3,6 +3,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Img from "@/components/ui/img";
+
 function Select({ ...props }) {
   return <SelectPrimitive.Root {...props} />;
 }
@@ -19,24 +20,34 @@ function SelectTrigger({
   className,
   children,
   disabled,
+  size = "md",
   theme = "light",
   ...props
 }) {
   const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-14 w-full items-center justify-between rounded-xl border bg-white px-4 py-3.5 text-sm placeholder:text-gray-400 outline-none",
+        "flex w-full items-center justify-between border bg-white placeholder:text-gray-400 outline-none",
+
+        // 사이즈별 스타일
+        isLarge
+          ? "h-14 rounded-xl px-4 py-4 text-base"
+          : "h-12 rounded-lg px-4 py-3 text-sm",
+
         // Light theme (default)
         "border-gray-300 text-gray-800",
         "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10",
         "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-200 disabled:text-gray-400",
+
         // Dark theme styles
         isDark &&
-          isDark &&
           "bg-gray-900 border-none text-white focus:border-gray-500 focus:border-gray-500",
         isDark &&
           "disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500",
+
         className
       )}
       disabled={disabled}
@@ -46,7 +57,7 @@ function SelectTrigger({
       <SelectPrimitive.Icon asChild>
         <ChevronDownIcon
           className={cn(
-            "size-6",
+            isLarge ? "size-6" : "size-5",
             disabled
               ? isDark
                 ? "text-gray-600"
@@ -66,9 +77,12 @@ function SelectContent({
   children,
   position = "popper",
   theme = "light",
+  size = "md",
   ...props
 }) {
   const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -90,7 +104,7 @@ function SelectContent({
         position={position}
         {...props}
       >
-        <SelectScrollUpButton theme={theme} />
+        <SelectScrollUpButton theme={theme} size={size} />
         <SelectPrimitive.Viewport
           className={cn(
             "p-0",
@@ -100,26 +114,9 @@ function SelectContent({
         >
           {children}
         </SelectPrimitive.Viewport>
-        <SelectScrollDownButton theme={theme} />
+        <SelectScrollDownButton theme={theme} size={size} />
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
-  );
-}
-
-function SelectLabel({ className, theme = "light", ...props }) {
-  const isDark = theme === "dark";
-  return (
-    <SelectPrimitive.Label
-      className={cn(
-        "py-1.5 pl-8 pr-2 body-5 font-semibold",
-        // Light theme (default)
-        "text-gray-900",
-        // Dark theme styles
-        isDark && "text-white",
-        className
-      )}
-      {...props}
-    />
   );
 }
 
@@ -128,18 +125,29 @@ function SelectItem({
   children,
   disabled,
   theme = "light",
+  size = "md",
   ...props
 }) {
   const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-lg py-3 px-4 text-sm outline-none data-[disabled]:pointer-events-none",
+        "relative flex w-full cursor-default select-none items-center rounded-lg outline-none data-[disabled]:pointer-events-none",
+
+        // 사이즈별 패딩 스타일
+        "px-4 py-3",
+
+        // 사이즈별 텍스트 스타일
+        isLarge ? "text-base" : "text-sm",
+
         // Light theme (default)
         "focus:bg-gray-50 focus:text-gray-900",
         "data-[highlighted]:bg-gray-50 data-[highlighted]:text-gray-900",
-        "data-[state=checked]:text-black data-[state=checked]:font-semibold",
+        "data-[state=checked]:font-semibold data-[state=checked]:text-black",
         "data-[disabled]:text-gray-500 data-[disabled]:hover:bg-transparent data-[disabled]:hover:text-gray-500",
+
         // Dark theme styles
         isDark && "text-gray-100",
         isDark &&
@@ -148,6 +156,7 @@ function SelectItem({
           "data-[state=checked]:text-white data-[state=checked]:font-semibold",
         isDark &&
           "data-[disabled]:text-gray-600 data-[disabled]:hover:bg-transparent",
+
         className
       )}
       disabled={disabled}
@@ -158,13 +167,38 @@ function SelectItem({
           <Img
             src="/images/icon/ic_default_check.svg"
             alt="arrow-up"
-            width={20}
-            height={20}
+            width={isLarge ? 24 : 20}
+            height={isLarge ? 24 : 20}
           />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
+  );
+}
+
+function SelectLabel({ className, theme = "light", size = "md", ...props }) {
+  const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
+  return (
+    <SelectPrimitive.Label
+      className={cn(
+        "py-1.5 pl-8 pr-2 font-semibold",
+
+        // 사이즈별 텍스트 스타일
+        isLarge ? "text-base" : "text-sm",
+
+        // Light theme (default)
+        "text-gray-900",
+
+        // Dark theme styles
+        isDark && "text-white",
+
+        className
+      )}
+      {...props}
+    />
   );
 }
 
@@ -185,8 +219,15 @@ function SelectSeparator({ className, theme = "light", ...props }) {
   );
 }
 
-function SelectScrollUpButton({ className, theme = "light", ...props }) {
+function SelectScrollUpButton({
+  className,
+  theme = "light",
+  size = "md",
+  ...props
+}) {
   const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
   return (
     <SelectPrimitive.ScrollUpButton
       className={cn(
@@ -199,13 +240,20 @@ function SelectScrollUpButton({ className, theme = "light", ...props }) {
       )}
       {...props}
     >
-      <ChevronUpIcon className="size-5" />
+      <ChevronUpIcon className={isLarge ? "size-6" : "size-5"} />
     </SelectPrimitive.ScrollUpButton>
   );
 }
 
-function SelectScrollDownButton({ className, theme = "light", ...props }) {
+function SelectScrollDownButton({
+  className,
+  theme = "light",
+  size = "md",
+  ...props
+}) {
   const isDark = theme === "dark";
+  const isLarge = size === "lg";
+
   return (
     <SelectPrimitive.ScrollDownButton
       className={cn(
@@ -218,7 +266,7 @@ function SelectScrollDownButton({ className, theme = "light", ...props }) {
       )}
       {...props}
     >
-      <ChevronDownIcon className="size-5" />
+      <ChevronDownIcon className={isLarge ? "size-6" : "size-5"} />
     </SelectPrimitive.ScrollDownButton>
   );
 }

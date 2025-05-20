@@ -29,7 +29,8 @@
     "**/*.js",
     "**/*.jsx",
     ".next/types/**/*.ts",
-    "src/app/(app)/(detail)"
+    "src/app/(app)/(detail)",
+    "src/app/(app)/form-ex"
   ],
   "exclude": ["node_modules"]
 }

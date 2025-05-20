@@ -318,15 +318,15 @@ export default function HomeContentsForm() {
             minwidth={200}
             minheight={200}
             name="files"
-            label="파일 업로드"
-            description="파일을 업로드해주세요."
+            label="이미지 업로드"
+            description="이미지를 업로드해주세요."
           />
 
           <FormFile
             control={form.control}
             maxfilecount={2}
             name="files2"
-            label="파일 업로드"
+            label="상품 설명 파일 첨부"
             fileType="document"
             description="파일을 업로드해주세요."
           />
