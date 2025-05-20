@@ -11,22 +11,40 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { File, Trash2 } from "lucide-react";
-import fetcher from "@/lib/fetcher";
+import { File, Check } from "lucide-react";
+import Img from "@/components/ui/img";
 import { toast } from "sonner";
 
-// 파일 사이즈 포맷팅 함수
 const formatFileSize = (size) => {
   if (!size || typeof size !== "number") return "";
+  if (size < 1024) return `${size} B`;
+  if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+  return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+};
 
-  if (size < 1024) {
-    return `${size} B`;
-  } else if (size < 1024 * 1024) {
-    return `${(size / 1024).toFixed(2)} KB`;
-  } else {
-    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  }
+const getFileExtension = (filename) => filename.split(".").pop()?.toLowerCase();
+
+const isImageFile = (filename) => {
+  if (!filename) return false;
+  const extension = getFileExtension(filename);
+  return ["jpg", "jpeg", "png", "gif", "bmp", "tif", "webp"].includes(
+    extension
+  );
+};
+
+const validateImageDimensions = (file, minwidth, minheight) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      if (img.width >= minwidth && img.height >= minheight) {
+        resolve(true);
+      } else {
+        reject();
+      }
+    };
+    img.onerror = () => reject();
+    img.src = URL.createObjectURL(file);
+  });
 };
 
 const FormFile = ({
@@ -38,15 +56,18 @@ const FormFile = ({
   className,
   labelClassName,
   descriptionClassName,
-  maxFileSize = 20,
-  maxFileCount = 1,
-  action,
+  maxfilecount = 4,
   required,
-  accept = ".jpg, .jpeg, .gif, .png",
+  accept = ".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp",
+  allowedExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "tif", "webp"],
   wrapClassName,
+  fileType = "image",
+  minwidth = 600,
+  minheight = 600,
   ...props
 }) => {
-  console.log(maxFileCount);
+  const isImageType = fileType === "image";
+  const isDocumentType = fileType === "document";
 
   return (
     <FormField
@@ -54,190 +75,90 @@ const FormFile = ({
       name={name}
       render={({ field }) => {
         const [fileList, setFileList] = useState([]);
-        const [uploading, setUploading] = useState(false);
-        const [errors, setErrors] = useState(null);
+        const [previewUrls, setPreviewUrls] = useState({});
 
-        // 파일 크기 검증 (MB 단위)
-        const validateFileSize = (file) => {
-          // 파일 크기를 MB 단위로 변환 (1MB = 1024 * 1024 바이트)
-          const fileSizeInMB = file.size / (1024 * 1024);
-          return fileSizeInMB <= maxFileSize;
-        };
-
-        // 파일 업로드 함수
-        const uploadFiles = async (files) => {
-          if (!files || files.length === 0) return [];
-
-          try {
-            setUploading(true);
-
-            const formData = new FormData();
-            for (const file of files) {
-              // 이미 서버에서 받은 파일이 아닌 경우만 추가
-              if (!file.fileOriginalName) {
-                formData.append("files", file);
-              }
-            }
-
-            // 새 파일이 없는 경우 업로드 생략
-            if (formData.getAll("files").length === 0) {
-              return [];
-            }
-
-            // API 호출하여 파일 업로드
-            const uploadedFiles = await fetcher("/api/file/uploads", {
-              method: "POST",
-              body: formData,
-            });
-
-            return uploadedFiles;
-          } catch (error) {
-            console.error("파일 업로드 중 오류 발생:", error);
-            toast.error("파일 업로드에 실패했습니다");
-            return [];
-          } finally {
-            setUploading(false);
-          }
-        };
-
-        // 유효한 파일만 필터링하는 함수
-        const getValidFiles = (files) => {
-          if (!files) return [];
-
-          const filesArray = Array.isArray(files) ? files : [files];
-          return filesArray.filter(
-            (file) =>
-              file &&
-              typeof file === "object" &&
-              (("name" in file && file.name) ||
-                ("fileOriginalName" in file && file.fileOriginalName)) &&
-              (!("delYn" in file) || file.delYn !== true)
-          );
-        };
-
-        // 현재 파일 수 계산 (실제 유효한 파일만)
-        const countValidFiles = (files) => {
-          return getValidFiles(files).length;
-        };
-
-        // 파일 변경 핸들러
         const handleFileChange = async (e) => {
-          // 오류 상태 초기화
-          setErrors(null);
-
           const selectedFiles = Array.from(e.target.files || []).filter(
             (file) => file && file.name
-          ); // 유효한 파일만 필터링
-
-          if (selectedFiles.length === 0) return;
-
-          // 현재 유효한 파일 수 계산 (삭제되지 않은 파일)
-          const currentCount = countValidFiles(field.value);
-
-          // 파일 수 검증
-          if (currentCount + selectedFiles.length > maxFileCount) {
-            const errorMsg = `최대 ${maxFileCount}개의 파일만 업로드할 수 있습니다`;
-            setErrors(errorMsg);
-            toast.error(errorMsg);
-            return;
-          }
-
-          // 파일 크기 검증
-          const oversizedFiles = selectedFiles.filter(
-            (file) => !validateFileSize(file)
           );
-          if (oversizedFiles.length > 0) {
-            const errorMsg = `파일 크기는 ${maxFileSize}MB 이하여야 합니다`;
-            setErrors(errorMsg);
-            toast.error(errorMsg);
-            return;
+
+          if (isImageType) {
+            for (const file of selectedFiles) {
+              try {
+                await validateImageDimensions(file, minwidth, minheight);
+              } catch {
+                toast.error(
+                  "알맞은 이미지 사이즈가 아닙니다. 이미지 사이즈를 다시 확인해 주세요."
+                );
+                return;
+              }
+            }
           }
 
-          // 파일 업로드 API 호출
-          const uploadedFiles = await uploadFiles(selectedFiles);
-
-          // 현재 전체 파일 목록 가져오기 (삭제된 파일 포함)
           const currentFiles = Array.isArray(field.value)
             ? field.value
             : field.value
             ? [field.value]
             : [];
-
-          // 새 파일 목록 생성
-          let newFiles;
-
-          newFiles = [...currentFiles, ...uploadedFiles];
-
-          field.onChange(newFiles.length > 0 ? newFiles : undefined);
+          const newFiles = [...currentFiles, ...selectedFiles];
+          field.onChange(newFiles);
           setFileList(newFiles);
+
+          const newPreviewUrls = {};
+          selectedFiles.forEach((file, index) => {
+            newPreviewUrls[currentFiles.length + index] =
+              URL.createObjectURL(file);
+          });
+          setPreviewUrls((prev) => ({ ...prev, ...newPreviewUrls }));
         };
 
-        // 파일 삭제 핸들러
         const handleRemoveFile = (index) => {
-          // 오류 상태 초기화
-          setErrors(null);
-
           const newFiles = [...fileList];
-
-          // 모든 파일을 delYn으로 표시하도록 변경 (실제 배열에서 제거하지 않음)
-          newFiles[index] = {
-            ...newFiles[index],
-            delYn: true,
-          };
-
-          // 전체 파일 목록을 유지하면서 form value 업데이트 (삭제된 파일도 포함)
-          field.onChange(newFiles.length > 0 ? newFiles : undefined);
-
-          // UI 표시를 위해 fileList 업데이트
+          newFiles.splice(index, 1);
+          field.onChange(newFiles);
           setFileList(newFiles);
+
+          if (previewUrls[index]) {
+            URL.revokeObjectURL(previewUrls[index]);
+            const newPreviewUrls = { ...previewUrls };
+            delete newPreviewUrls[index];
+            setPreviewUrls(newPreviewUrls);
+          }
         };
 
-        // 파일 이름 표시 함수
-        const getFileName = (file) => {
-          // File 객체인 경우 (안전하게 체크)
-          if (
-            file &&
-            typeof file === "object" &&
-            "name" in file &&
-            typeof file.name === "string"
-          ) {
-            return file.name;
-          }
-          // 서버에서 받은 파일 객체인 경우
-          if (file && typeof file === "object" && "fileOriginalName" in file) {
-            return file.fileOriginalName || "파일";
-          }
-          return "파일";
-        };
-
-        // 필드 값이 변경되면 fileList 상태 업데이트
         useEffect(() => {
-          try {
-            if (field.value) {
-              // 배열이 아닌 경우 배열로 변환
-              const files = Array.isArray(field.value)
-                ? field.value
-                : [field.value];
-
-              // fileList는 모든 파일 포함 (삭제 표시된 파일도 포함)
-              setFileList(
-                files.filter(
-                  (file) =>
-                    file !== null &&
-                    file !== undefined &&
-                    typeof file === "object" &&
-                    (("name" in file && file.name) ||
-                      ("fileOriginalName" in file && file.fileOriginalName))
-                )
-              );
-            } else {
-              setFileList([]);
-            }
-          } catch (error) {
-            console.error("파일 목록 처리 중 오류:", error);
+          if (field.value) {
+            const files = Array.isArray(field.value)
+              ? field.value
+              : [field.value];
+            setFileList(files);
+            const newPreviewUrls = {};
+            files.forEach((file, index) => {
+              if (
+                typeof window !== "undefined" &&
+                window.File &&
+                file instanceof window.File
+              ) {
+                newPreviewUrls[index] = URL.createObjectURL(file);
+              }
+            });
+            setPreviewUrls(newPreviewUrls);
+          } else {
             setFileList([]);
+            setPreviewUrls({});
           }
+
+          return () => {
+            Object.values(previewUrls).forEach((url) => {
+              if (url && url.startsWith("blob:")) URL.revokeObjectURL(url);
+            });
+          };
         }, [field.value]);
+
+        const getFileName = (file) =>
+          file.name || file.fileOriginalName || "파일";
+        const validFiles = fileList;
+        const currentFileCount = validFiles.length;
 
         return (
           <FormItem className={cn(wrapClassName)}>
@@ -255,129 +176,147 @@ const FormFile = ({
                 {labelSide && labelSide}
               </div>
             )}
-            <div className="flex items-center gap-2">
-              <FormControl>
+
+            <FormControl>
+              <div>
                 <Input
+                  id={`file-input-${name}`}
                   type="file"
-                  className={cn("cursor-pointer", className)}
+                  className="hidden"
                   onChange={handleFileChange}
-                  value="" // 항상 빈 값으로 설정하여 같은 파일 재선택 가능
-                  disabled={uploading}
+                  multiple={maxfilecount > 1}
                   {...props}
                   accept={accept}
                 />
-              </FormControl>
-              {action && action}
-            </div>
 
-            {fileList.length > 0 && (
-              <ul className="space-y-2 rounded-md border px-2 py-1">
-                {fileList.map((file, index) => {
-                  // 파일이 삭제 표시되었는지 확인
-                  const isDeleted =
-                    file &&
-                    typeof file === "object" &&
-                    "delYn" in file &&
-                    file.delYn === true;
-
-                  return (
-                    <li
-                      key={index}
-                      className={cn(
-                        "flex items-center justify-between gap-2 text-sm w-full",
-                        isDeleted &&
-                          "text-muted-foreground line-through opacity-70"
-                      )}
-                    >
-                      <div className="flex items-center gap-2 overflow-hidden w-full">
-                        <File className="h-4 w-4 shrink-0" />
-
-                        {file && file.filePath && !isDeleted ? (
-                          <a
-                            href={file.filePath}
-                            download={getFileName(file)}
-                            target="_blank"
-                            className="truncate w-0 flex-1 cursor-pointer hover:underline"
-                          >
-                            {getFileName(file)}
-                          </a>
-                        ) : (
-                          <span className="truncate w-0 flex-1">
-                            {getFileName(file)}
-                          </span>
-                        )}
-                        {file &&
-                        typeof file === "object" &&
-                        "fileSize" in file ? (
-                          <span className="text-xs text-muted-foreground">
-                            ({formatFileSize(file.fileSize)})
-                          </span>
-                        ) : file &&
-                          typeof file === "object" &&
-                          "size" in file ? (
-                          <span className="text-xs text-muted-foreground">
-                            ({formatFileSize(file.size)})
-                          </span>
-                        ) : null}
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6"
-                        onClick={() => {
-                          if (isDeleted) {
-                            // 삭제된 파일 복구
-                            const newFiles = [...fileList];
-                            newFiles[index] = {
-                              ...newFiles[index],
-                              delYn: false,
-                            };
-
-                            // 전체 파일 목록 업데이트 (복구된 파일 포함)
-                            field.onChange(newFiles);
-                            setFileList(newFiles);
-                          } else {
-                            // 파일 삭제
-                            handleRemoveFile(index);
-                          }
-                        }}
-                        type="button"
+                {/* 이미지 업로드 UI */}
+                {isImageType && (
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    {fileList.length < maxfilecount && (
+                      <div
+                        className="w-30 h-30 relative overflow-hidden bg-blue-50 aspect-square border-1 border-gray-300 border-dashed rounded-[16px] flex items-center justify-center cursor-pointer"
+                        onClick={() =>
+                          document.getElementById(`file-input-${name}`).click()
+                        }
                       >
-                        {isDeleted ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-rotate-ccw"
-                          >
-                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                            <path d="M3 3v5h5" />
-                          </svg>
-                        ) : (
-                          <Trash2 className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                        <Img
+                          src="/images/icon/ic_image_plus.png"
+                          alt="파일 추가"
+                          width={60}
+                          height={60}
+                        />
+                      </div>
+                    )}
 
-            {errors && (
-              <p className="text-sm font-medium text-destructive">{errors}</p>
-            )}
+                    {fileList.map((file, index) => {
+                      const fileName = getFileName(file);
+                      const previewUrl = previewUrls[index];
+                      return (
+                        <div
+                          key={index}
+                          className="w-30 h-30 relative overflow-hidden bg-blue-50 aspect-square border-1 border-gray-300 border-dashed rounded-[16px] flex items-center justify-center cursor-pointer"
+                        >
+                          {previewUrl ? (
+                            <img
+                              src={previewUrl}
+                              alt={fileName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center">
+                              <File className="h-10 w-10 text-gray-400 mb-2" />
+                              <span className="text-xs text-gray-500 line-clamp-2 max-w-full">
+                                {fileName}
+                              </span>
+                              <span className="text-xs text-gray-400 mt-1">
+                                ({formatFileSize(file.size || file.fileSize)})
+                              </span>
+                            </div>
+                          )}
+
+                          <button
+                            type="button"
+                            className="absolute top-1 right-1 rounded-full"
+                            onClick={() => handleRemoveFile(index)}
+                          >
+                            <Img
+                              src="/images/icon/ic_x_circle.svg"
+                              alt="파일 삭제"
+                              width={20}
+                              height={20}
+                            />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* 문서 업로드 UI */}
+                {isDocumentType && (
+                  <div className="mt-2">
+                    <div
+                      className={cn(
+                        "flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 mb-2",
+                        currentFileCount >= maxfilecount &&
+                          "opacity-50 cursor-not-allowed"
+                      )}
+                      onClick={() => {
+                        if (currentFileCount < maxfilecount) {
+                          document.getElementById(`file-input-${name}`).click();
+                        }
+                      }}
+                    >
+                      <span className="text-sm font-medium text-gray-700">
+                        파일 첨부
+                      </span>
+                    </div>
+
+                    {validFiles.length > 0 && (
+                      <div className="space-y-2 border rounded-md p-2">
+                        {validFiles.map((file, index) => {
+                          const fileName = getFileName(file);
+                          return (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between py-2 px-3 border-b last:border-b-0"
+                            >
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+                                  <Check className="h-3 w-3 text-white" />
+                                </div>
+                                <span className="truncate text-sm">
+                                  {fileName}
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                className="ml-2 flex-shrink-0 text-gray-500 hover:text-gray-700"
+                                onClick={() => handleRemoveFile(index)}
+                              >
+                                <Img
+                                  src="/images/icon/ic_x_circle.svg"
+                                  alt="파일 삭제"
+                                  width={20}
+                                  height={20}
+                                />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </FormControl>
 
             {description && (
-              <FormDescription className={cn(descriptionClassName)}>
+              <FormDescription className={cn("mt-2", descriptionClassName)}>
                 {description}
               </FormDescription>
             )}
+
             <FormMessage />
           </FormItem>
         );

@@ -38,7 +38,7 @@ const FormInput = ({
             <div className="flex items-center mb-2">
               <FormLabel
                 className={cn(
-                  "body-5 font-medium",
+                  "body-3 font-semibold ",
                   { "text-destructive": !!error },
                   labelClassName,
                   required &&

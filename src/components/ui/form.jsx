@@ -64,7 +64,7 @@ function FormLabel({ className, size = "default", ...props }) {
     <Label
       data-slot="form-label"
       data-error={!!error}
-      className={cn("mt-2", size === "lg" ? "body-4" : "body-5", className)}
+      className={cn("mt-2 body-3 font-semibold ", className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -97,7 +97,7 @@ function FormDescription({ className, ...props }) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("caption-2 text-gray-800", className)}
       {...props}
     />
   );
