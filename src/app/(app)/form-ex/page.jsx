@@ -4,17 +4,22 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/form/form-input";
 import FormEmail from "@/components/form/form-email";
-import FormAddress from "@/components/form/form-address";
 import FormSelect from "@/components/form/form-select";
 import FormTextarea from "@/components/form/form-textarea";
 import FormFile from "@/components/form/form-file";
+import FormPhone from "@/components/form/form-phone";
 import { Form } from "@/components/ui/form";
-import Col, { LeftCont, RightCont } from "@/components/layout/col-layout";
+import FormPrivacyConsent from "@/components/form/form-privacy-consent";
+import FormLayout from "@/components/layout/form-layout";
 export default function FormExPage() {
   const form = useForm({
     defaultValues: {
       companyName: "이모션",
-      representativeName: "",
+      representativePhone: {
+        phone1: "010",
+        phone2: "",
+        phone3: "",
+      },
       email: "",
       zipCode: "",
       address: "서울특별시 강남구 언주로 637 싸이칸홀딩스타워",
@@ -25,6 +30,7 @@ export default function FormExPage() {
       mainMarket: "",
       companyDescription: "",
       companyFile: undefined,
+      privacyConsent: false,
     },
   });
 
@@ -38,16 +44,10 @@ export default function FormExPage() {
   }));
 
   return (
-    <Col>
-      <LeftCont>
-        <span className="block text-primary-blue font-semibold body-2 font-poppins">
-          01
-        </span>
-        <h3 className="heading-4 font-bold text-black">기업 기본 정보</h3>
-      </LeftCont>
-      <RightCont>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-11">
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormLayout num={"01"} title="기업 기본 정보">
             {/* 기업명 및 대표자명 */}
             <div className="flex gap-5">
               <div className="flex-1">
@@ -69,6 +69,13 @@ export default function FormExPage() {
                 />
               </div>
             </div>
+
+            <FormPhone
+              control={form.control}
+              name="representativePhone"
+              label="대표자 연락처"
+              required
+            />
 
             {/* 대표자 이메일 */}
             <div>
@@ -167,6 +174,7 @@ export default function FormExPage() {
                 <div className="self-end">
                   <Button
                     variant="outline"
+                    type="button"
                     className="border-blue-500 text-blue-500 h-12 mt-8"
                   >
                     추가하기
@@ -201,23 +209,25 @@ export default function FormExPage() {
                 description="파일 형식 제한: 10MB 이내의 pdf, hwp, doc, docx, ppt, pptx, jpg, jpeg, png, zip 파일 1개"
               />
             </div>
+          </FormLayout>
+          <FormLayout num={"02"} title="개인정보 수집 동의">
+            <FormPrivacyConsent
+              control={form.control}
+              name="privacyConsent"
+              required
+            />
+          </FormLayout>
 
-            <div className="flex justify-center gap-4">
-              <Button
-                size="lg"
-                type="button"
-                variant="outline"
-                className="px-14"
-              >
-                이전으로
-              </Button>
-              <Button size="lg" type="submit" className="px-14">
-                제출하기
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </RightCont>
-    </Col>
+          <div className="flex justify-center gap-4">
+            <Button size="lg" type="button" variant="outline" className="px-14">
+              이전으로
+            </Button>
+            <Button size="lg" type="submit" className="px-14">
+              제출하기
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 }
