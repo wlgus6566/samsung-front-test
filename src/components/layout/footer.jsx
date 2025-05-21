@@ -141,13 +141,13 @@ export default function Footer() {
           <ul className="flex-1 flex space-between lg:gap-x-11 gap-y-10 gap-x-[38px]">
             {footerMenus.map((menu) => (
               <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
-                <h3 className="body-3 font-semibold whitespace-nowrap tracking-[-0.05rem]">
+                <h3 className="text-sm font-semibold whitespace-nowrap tracking-[-0.05rem]">
                   <Link href={menu.links[0].url}>{menu.title}</Link>
                 </h3>
                 <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
                   {menu.links.map((link) => (
                     <li key={link.url}>
-                      <Link href={link.url} className="body-3 text-gray-700">
+                      <Link href={link.url} className="text-sm text-gray-700">
                         {link.label}
                       </Link>
                     </li>
@@ -170,7 +170,7 @@ export default function Footer() {
             />
             <button
               onClick={scrollToTop}
-              className="w-18 h-12 bg-fill-inverse-muted rounded-[20px] flex items-center justify-center body-5"
+              className="w-18 h-12 bg-fill-inverse-muted rounded-[20px] flex items-center justify-center text-2xs"
             >
               <span>TOP</span>
               <Img
@@ -184,7 +184,7 @@ export default function Footer() {
         </div>
         <div className="pt-0 sm:pt-10 flex flex-col gap-1.25 text-gray-500 w-full">
           <div className="flex flex-wrap sm:gap-y-5 gap-y-15 justify-between items-center w-full">
-            <ul className="flex items-center body-5 flex-wrap text-gray-800">
+            <ul className="flex items-center text-2xs flex-wrap text-gray-800">
               <li className="relative after:content-['|'] after:mx-2 after:text-gray-800">
                 상호명 삼성전자
               </li>
@@ -214,21 +214,24 @@ export default function Footer() {
           </div>
 
           <div className="text-gray-800 border-t border-gray-800 pt-2.5 mt-5 flex justify-between items-center flex-wrap gap-y-1.25">
-            <p className="sm:order-2 order-1 body-5 font-poppins">
+            <p className="sm:order-2 order-1 text-2xs font-poppins">
               © SAMSUNG SMARTWAY. All rights reserved.
             </p>
             <div className="flex items-center sm:order-1 order-2">
-              <Link href="/privacy" className={`caption-1 lg:body-5 font-bold`}>
+              <Link
+                href="/privacy"
+                className={`text-3xs lg:text-2xs font-bold`}
+              >
                 개인정보처리방침
               </Link>
               <Link
                 href="/terms"
-                className={`caption-1 lg:body-5 relative before:content-['|'] before:mx-5 before:text-gray-700`}
+                className={`text-3xs lg:text-2xs relative before:content-['|'] before:mx-5 before:text-gray-700`}
               >
                 이용약관
               </Link>
               <span
-                className={`caption-1 lg:body-5 relative before:content-['|'] before:mx-5 before:text-gray-700`}
+                className={`text-3xs lg:text-2xs relative before:content-['|'] before:mx-5 before:text-gray-700`}
               >
                 이메일무단수집거부
               </span>

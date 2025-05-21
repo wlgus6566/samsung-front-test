@@ -140,7 +140,7 @@ function SelectItem({
         "px-4 py-3",
 
         // 사이즈별 텍스트 스타일
-        isLarge ? "text-base" : "text-sm",
+        isLarge ? "text-sm" : "text-2xs",
 
         // Light theme (default)
         "focus:bg-gray-50 focus:text-gray-900",

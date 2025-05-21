@@ -3,10 +3,10 @@ import * as React from "react";
 export const LeftCont = ({ num, title }) => {
   return (
     <div>
-      <span className="block text-primary-blue font-semibold body-2 font-poppins">
+      <span className="block text-primary-blue font-semibold text-md font-poppins">
         {num}
       </span>
-      <h3 className="heading-4 font-bold text-black">{title}</h3>
+      <h3 className="text-lg font-bold text-black">{title}</h3>
     </div>
   );
 };

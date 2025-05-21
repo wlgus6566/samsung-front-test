@@ -354,7 +354,7 @@ export default function Header() {
                       <Link
                         href={menuItem.url || menuItem.children[0]?.url || "/"}
                         className={cn(
-                          "body-3 flex items-center h-full transition-colors duration-200 py-9 whitespace-nowrap",
+                          "text-sm flex items-center h-full transition-colors duration-200 py-9 whitespace-nowrap",
                           mounted &&
                             (menuIndex === currentMenuIndex || isActiveMenu)
                             ? "text-primary-blue"
@@ -438,11 +438,11 @@ export default function Header() {
                             : "text-black hover:text-primary-blue"
                         )}
                       >
-                        <span className="body-3 font-semibold">
+                        <span className="text-sm font-semibold">
                           {subMenuItem.label}
                         </span>
                         {subMenuItem.description && (
-                          <p className="body-5 text-gray-500 mt-1">
+                          <p className="text-2xs text-gray-500 mt-1">
                             {subMenuItem.description}
                           </p>
                         )}
@@ -537,7 +537,7 @@ export default function Header() {
                   }
                 />
                 <div className="mt-4">
-                  <h3 className="body-4 font-semibold">추천 검색어</h3>
+                  <h3 className="text-xs font-semibold">추천 검색어</h3>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {recommendedKeywords.map((keyword, index) => (
                       <Button
@@ -582,7 +582,7 @@ export default function Header() {
                             : "font-medium"
                         )}
                       >
-                        <span className="body-2">{menuItem.label}</span>
+                        <span className="text-md">{menuItem.label}</span>
                         {menuItem.children && menuItem.children.length > 0 && (
                           <Img
                             src="/images/icon/ic_default_down_angle.svg"
@@ -608,7 +608,7 @@ export default function Header() {
                                   href={subItem.url}
                                   onClick={handleMobileLinkClick}
                                   className={cn(
-                                    "block py-2.5 px-5 pl-10 text-base",
+                                    "block py-2.5 px-5 text-xs",
                                     isCurrentPath(subItem.url)
                                       ? "text-primary-blue font-medium"
                                       : "text-gray-700 hover:text-primary-blue"

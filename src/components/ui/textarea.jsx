@@ -33,9 +33,9 @@ function Textarea({
         placeholder={placeholder}
         maxLength={maxLength}
         className={cn(
-          "w-full border bg-white text-black placeholder:text-gray-700 placeholder:body-5 p-4",
+          "w-full border bg-white text-black placeholder:text-gray-700 placeholder:text-2xs p-4",
           "h-32", // 기본 높이 설정
-          "body-5",
+          "text-2xs",
           "rounded-xl",
           "border-gray-300",
           "focus:border-primary-blue focus:ring-1 focus:ring-primary-blue",
@@ -48,7 +48,7 @@ function Textarea({
         {...props}
       />
       {maxLength && (
-        <div className="absolute bottom-4 right-4 text-[12px] text-gray-700">
+        <div className="absolute bottom-4 right-4 text-3xs text-gray-700">
           <span className="text-black font-semibold">{charCount}</span>/
           {maxLength}
         </div>

@@ -99,7 +99,7 @@ export default function HeadBreadcrumb() {
   return (
     <div className="flex justify-end">
       <Breadcrumb className="flex items-center py-3.75">
-        <BreadcrumbList className="heading-5 flex items-center">
+        <BreadcrumbList className="text-md flex items-center">
           <BreadcrumbLink href="/" className="flex items-center gap-1">
             <Img
               src="/images/icon/ic_inverse_home.svg"

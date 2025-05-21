@@ -22,13 +22,13 @@ function Input({
   const sizeStyles = {
     md: {
       height: "h-12",
-      textSize: "text-sm",
+      textSize: "text-2xs",
       rounded: "rounded-xl",
       iconRight: "right-4",
     },
     lg: {
       height: "h-14",
-      textSize: "text-base",
+      textSize: "text-xs",
       rounded: "rounded-2xl",
       iconRight: "right-5",
     },

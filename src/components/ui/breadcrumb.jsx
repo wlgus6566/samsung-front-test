@@ -13,7 +13,7 @@ function BreadcrumbList({ className, ...props }) {
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "text-muted-foreground flex flex-wrap items-center break-words",
+        "text-gray-700 flex flex-wrap items-center break-words",
         className
       )}
       {...props}

@@ -75,28 +75,21 @@
   --color-alpha-black-75: rgba(0, 0, 0, 0.75);
   --color-yellow-500: rgba(255, 187, 0, 1);
   --color-alpha-white-28: rgba(255, 255, 255, 0.28);
+  /* 타이포그래피 공통 변수 */
   --text-4xl: 3.75rem; /* 60px */
+  --text-4xl--line-height: 4.5rem; /* 72px */
   --text-3xl: 3.25rem; /* 52px */
+  --text-3xl--line-height: 4rem; /* 64px */
   --text-2xl: 2.5rem; /* 40px */
+  --text-2xl--line-height: 3.25rem; /* 52px */
   --text-xl: 2.25rem; /* 36px */
+  --text-xl--line-height: 2.75rem; /* 44px */
   --text-lg: 2rem; /* 32px */
-  --text-ml: 1.5rem; /* 24px */
-  --text-md: 1.25rem; /* 20px */
+  --text-lg--line-height: 2.625rem; /* 42px */
   --text-sm: 1.125rem; /* 18px */
+  --text-sm--line-height: 1.75rem; /* 28px */
   --text-xs: 1rem; /* 16px */
-  --text-2xs: 0.875rem; /* 14px */
-  --text-3xs: 0.75rem; /* 12px */
-  --leading-16: 4.5rem; /* 72px */
-  --leading-15: 4rem; /* 64px */
-  --leading-12: 3.25rem; /* 52px */
-  --leading-10: 2.75rem; /* 44px */
-  --leading-9\.5: 2.625rem; /* 42px */
-  --leading-9: 2.25rem; /* 36px */
-  --leading-8: 2rem; /* 32px */
-  --leading-7: 1.75rem; /* 28px */
-  --leading-6: 1.5rem; /* 24px */
-  --leading-5\.5: 1.375rem; /* 22px */
-  --leading-5: 1.25rem; /* 20px */
+  --text-xs--line-height: 1.5rem; /* 24px */
 
   /* Shadow Variables */
   --shadow-xs: 0px 0px 6px 0px rgba(0, 0, 0, 0.06);

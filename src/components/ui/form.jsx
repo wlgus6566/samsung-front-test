@@ -65,7 +65,7 @@ function FormLabel({ className, size = "default", required, ...props }) {
       data-slot="form-label"
       data-error={!!error}
       className={cn(
-        "mb-2 body-3 font-semibold",
+        "mb-2 text-sm font-semibold",
         required &&
           "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600",
         className
@@ -102,7 +102,7 @@ function FormDescription({ className, ...props }) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("caption-1 font-medium text-gray-800 mt-2", className)}
+      className={cn("text-3xs font-medium text-gray-800 mt-2", className)}
       {...props}
     />
   );
@@ -120,7 +120,7 @@ function FormMessage({ className, ...props }) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-red-600 caption-1 mt-1.5", className)}
+      className={cn("text-red-600 text-3xs mt-1.5", className)}
       {...props}
     >
       {body}
