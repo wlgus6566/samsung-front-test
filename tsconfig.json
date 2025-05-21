@@ -30,7 +30,7 @@
     "**/*.jsx",
     ".next/types/**/*.ts",
     "src/app/(app)/(detail)",
-    "src/app/(app)/form-ex"
+    "src/app/(app)/example"
   ],
   "exclude": ["node_modules"]
 }

@@ -6,7 +6,7 @@ export const revalidate = 60;
 export default async function DetailLayout({ children }) {
   return (
     <Suspense fallback={<Loading />}>
-      <Contents title="폼 예시" description="폼 예시">
+      <Contents title="예시" description="예시입니다.">
         {children}
       </Contents>
     </Suspense>
