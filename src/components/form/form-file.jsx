@@ -212,7 +212,7 @@ const FormFile = ({
 
         // 파일 변경 핸들러
         const handleFileChange = async (e) => {
-          setErrors(null);
+          setError(null);
           const selectedFiles = Array.from(e.target.files || []).filter(
             (file) => file && file.name
           );
@@ -226,7 +226,7 @@ const FormFile = ({
               const errorMsg =
                 "유효한 파일 형식이 아닙니다. 파일 형식을 다시 확인해 주세요.";
               toast.error(errorMsg);
-              setErrors(errorMsg);
+              setError(errorMsg);
               return;
             }
           }
@@ -236,7 +236,7 @@ const FormFile = ({
           if (currentCount + selectedFiles.length > maxfilecount) {
             const errorMsg = `최대 ${maxfilecount}개의 파일만 업로드할 수 있습니다`;
             toast.error(errorMsg);
-            setErrors(errorMsg);
+            setError(errorMsg);
             return;
           }
 
@@ -246,7 +246,7 @@ const FormFile = ({
             if (fileSizeMB > maxfilesize) {
               const errorMsg = `파일은 1개당 ${maxfilesize}MB를 초과할 수 없습니다.`;
               toast.error(errorMsg);
-              setErrors(errorMsg);
+              setError(errorMsg);
               return;
             }
           }
@@ -260,7 +260,7 @@ const FormFile = ({
           if (totalSizeMB > maxtotalsize) {
             const errorMsg = `총 업로드 용량은 ${maxtotalsize}MB를 초과할 수 없습니다.`;
             toast.error(errorMsg);
-            setErrors(errorMsg);
+            setError(errorMsg);
             return;
           }
 
@@ -277,7 +277,7 @@ const FormFile = ({
                 if (!isValid) {
                   const errorMsg = `이미지 최소 크기는 ${minwidth}x${minheight}px 이상이어야 합니다. 현재: ${width}x${height}`;
                   toast.error(errorMsg);
-                  setErrors(errorMsg);
+                  setError(errorMsg);
                   return;
                 }
               }
@@ -319,7 +319,7 @@ const FormFile = ({
         // 파일 삭제 핸들러
         const handleRemoveFile = (index) => {
           // 오류 상태 초기화
-          setErrors(null);
+          setError(null);
 
           const newFiles = [...fileList];
           const fileToRemove = newFiles[index];
@@ -506,16 +506,18 @@ const FormFile = ({
                   <div className="flex flex-wrap gap-4 mt-2">
                     {validFiles.length < maxfilecount && (
                       <div
-                        className="w-[120px] h-[120px] relative overflow-hidden bg-blue-50 aspect-square border border-gray-300 border-dashed rounded-[8px] flex items-center justify-center cursor-pointer"
+                        className="w-32 h-32 relative overflow-hidden bg-blue-50 aspect-square border border-gray-300 border-dashed rounded-[8px] flex items-center justify-center cursor-pointer"
                         onClick={() =>
                           document.getElementById(`file-input-${name}`).click()
                         }
                       >
                         <div className="flex flex-col items-center justify-center">
-                          <Plus className="h-6 w-6 text-gray-400 mb-1" />
-                          <span className="text-xs text-gray-500">
-                            이미지 업로드
-                          </span>
+                          <Img
+                            src="/images/icon/ic_image_plus.png"
+                            alt="이미지 첨부"
+                            width={60}
+                            height={60}
+                          />
                         </div>
                       </div>
                     )}
@@ -548,31 +550,15 @@ const FormFile = ({
 
                           <button
                             type="button"
-                            className="absolute top-2 right-2 rounded-full bg-black bg-opacity-40 p-1"
+                            className="absolute top-2 right-2 rounded-full"
                             onClick={() => handleRemoveFile(index)}
                           >
-                            <svg
-                              width="16"
-                              height="16"
-                              viewBox="0 0 16 16"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 4L4 12"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M4 4L12 12"
-                                stroke="white"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                            <Img
+                              src="/images/icon/ic_image_close.svg"
+                              alt="삭제"
+                              width={20}
+                              height={20}
+                            />
                           </button>
                         </div>
                       );
@@ -587,7 +573,7 @@ const FormFile = ({
                       className={cn(
                         "flex items-center py-3 px-4 border border-gray-300 rounded-[16px] cursor-pointer",
                         validFiles.length >= maxfilecount &&
-                          "opacity-50 cursor-not-allowed"
+                          "cursor-not-allowed"
                       )}
                       onClick={() => {
                         if (validFiles.length < maxfilecount) {
@@ -601,34 +587,24 @@ const FormFile = ({
                         width={24}
                         height={24}
                       />
-                      <span className="ml-2 text-gray-500">파일 찾기</span>
+                      <span className="ml-2 text-gray-500">파일 첨부</span>
                     </div>
 
                     {validFiles.length > 0 && (
-                      <ul className="mt-1 border border-gray-300 rounded-[8px] divide-y divide-gray-300">
+                      <ul className="mt-1 space-y-1">
                         {validFiles.map((file, index) => (
                           <li
                             key={index}
-                            className="flex items-center justify-between p-3 text-sm"
+                            className="flex items-center justify-between border border-gray-300 rounded-[16px] py-3.25 px-4 text-2xs font-medium"
                           >
                             <div className="flex items-center gap-2 overflow-hidden">
-                              <File className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                              <span className="truncate">
-                                {getFileName(file)}
-                              </span>
-                              {file &&
-                              typeof file === "object" &&
-                              "fileSize" in file ? (
-                                <span className="text-xs text-gray-500 flex-shrink-0">
-                                  ({formatFileSize(file.fileSize)})
-                                </span>
-                              ) : file &&
-                                typeof file === "object" &&
-                                "size" in file ? (
-                                <span className="text-xs text-gray-500 flex-shrink-0">
-                                  ({formatFileSize(file.size)})
-                                </span>
-                              ) : null}
+                              <Img
+                                src="/images/icon/ic_close_circle_24.svg"
+                                alt="파일"
+                                width={20}
+                                height={20}
+                              />
+                              <span>{getFileName(file)}</span>
                             </div>
                             <button
                               type="button"
@@ -647,7 +623,7 @@ const FormFile = ({
                               }
                             >
                               <Img
-                                src="/images/icon/ic_default_close.svg"
+                                src="/images/icon/ic_default_close_gray.svg"
                                 alt="삭제"
                                 width={16}
                                 height={16}

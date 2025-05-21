@@ -369,23 +369,24 @@ export default function HomeContentsForm() {
           />
           <FormFile
             control={form.control}
-            maxfilesize={3}
+            maxfilesize={1}
             maxtotalsize={3}
             maxfilecount={3}
             minwidth={200}
             minheight={200}
             name="files"
             label="이미지 업로드"
-            description="이미지를 업로드해주세요."
+            description="이미지 최소 사이즈: 가로 200px X 세로 200px / 1MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 3개"
           />
 
           <FormFile
             control={form.control}
             maxfilecount={2}
+            maxtotalsize={2}
             name="files2"
             label="상품 설명 파일 첨부"
             fileType="document"
-            description="파일을 업로드해주세요."
+            description="파일 형식 제한:  2MB 이내의 pdf, hwp, doc, docx, ppt, pptx, jpg, jpeg, png, zip 파일 최대 2개"
           />
 
           <div className="flex gap-2">
@@ -395,6 +396,7 @@ export default function HomeContentsForm() {
           <SmartFactoryCertificationDialog />
           <Button
             type="button"
+            size="lg"
             onClick={() =>
               dialogOpen("smartFactoryCertification", {
                 onConfirm: handleCertification,
@@ -403,7 +405,7 @@ export default function HomeContentsForm() {
           >
             스마트공장 참여 기업 인증하기
           </Button>
-          <Button type="submit" className="w-full md:w-auto">
+          <Button type="submit" size="lg" className="w-full md:w-auto">
             제출하기
           </Button>
         </form>

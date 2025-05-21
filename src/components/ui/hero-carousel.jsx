@@ -73,7 +73,10 @@ export default function HeroCarousel() {
             backgroundImage: `url('/images/icon/page/home/rec.svg')`,
           }}
         >
-          <Button variant="brand" size="lg">
+          <button
+            type="button"
+            className="flex items-center gap-1 bg-gradient-brand text-white h-13 px-5 py-3.25 rounded-[16px] text-xs sm:text-sm sm:px-8 sm:py-4.25 sm:rounded-[20px] sm:h-15"
+          >
             지원절차 안내 바로가기
             <Img
               src="/images/icon/ic_inverse_right_up_arrow.svg"
@@ -81,7 +84,7 @@ export default function HeroCarousel() {
               width={24}
               height={24}
             />
-          </Button>
+          </button>
         </div>
 
         {/* 인디케이터 - 좌하단 */}

@@ -3,6 +3,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+const responsiveSizeMap = {
+  lg: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-14 md:px-7 md:py-3 md:rounded-full md:text-md",
+};
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap font-semibold transition-all disabled:pointer-events-none outline-none focus-visible:ring-2 focus-visible:ring-primary-blue focus-visible:ring-offset-2 disabled:cursor-not-allowed text-white",
@@ -20,9 +23,6 @@ const buttonVariants = cva(
         link: "text-primary-blue underline-offset-4 hover:brightness-[85%] hover:underline disabled:text-gray-500]",
       },
       size: {
-        lg: "h-15 px-8 py-4 rounded-[20px] body-3",
-        md: "h-11 px-6 py-3 rounded-[16px] body-4",
-        sm: "h-9 px-4 py-1.75 rounded-[12px] body-5",
         icon: "size-9 rounded-md",
       },
     },
@@ -35,7 +35,7 @@ const buttonVariants = cva(
 
 function Button({
   className,
-  variant,
+  variant = "primary",
   size = "md",
   asChild = false,
   children,
@@ -47,11 +47,15 @@ function Button({
   const brandGradientStyle = isBrand
     ? { backgroundImage: "var(--gradient-brand)" }
     : {};
-
+  const responsiveSizeClass = responsiveSizeMap[size] || "";
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }), {})}
+      className={cn(
+        buttonVariants({ variant }), // variant는 CVA로 관리
+        responsiveSizeClass, // 반응형 사이즈는 따로 매핑
+        className
+      )}
       style={brandGradientStyle}
       {...props}
     >

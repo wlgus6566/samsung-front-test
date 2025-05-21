@@ -1,6 +1,7 @@
 "use client";
 import HeroCarousel from "@/components/ui/hero-carousel";
 import { Button } from "@/components/ui/button";
+import ProgramSection from "@/components/home/program-section";
 
 const serviceItems = [
   { name: "전문가 양성교육 📚", isHighlighted: false },
@@ -19,40 +20,33 @@ export default function HomeContents() {
       <div className="container-fixed px-4 md:px-6 lg:px-10">
         <HeroCarousel />
         {/* 궁금하신 서비스가 있으세요? */}
-        <section className="py-7 md:py-10 lg:py-13">
+        <section className="p-5 sm:p-10 md:p-30">
           {/* 타이틀 영역 */}
-          <div className="flex flex-col items-center mb-7 md:mb-10 lg:mb-13">
-            <span className="text-blue-500 font-semibold font-poppins text-4xl sm:text-heading-2">
+          <div className="text-center">
+            <span className="text-primary-blue font-semibold font-poppins sm:text-md text-xs">
               Service
             </span>
 
-            <h2 className="font-bold text-2xl md:text-4xl lg:text-5xl text-center mt-1 md:mt-3 lg:mt-4">
+            <h2 className="font-bold text-ml sm:text-2xl md:text-3xl mt-1 sm:mt-3 md:mt-4">
               궁금하신 서비스가 있으세요?
             </h2>
           </div>
 
           {/* 서비스 아이템 버튼 영역 */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-5 px-0 md:px-8 lg:px-32">
+          <div className="flex flex-wrap justify-center w-full p-5 max-w-[932px] mx-auto mt-7 sm:mt-12 md:mt-13 gap-2 sm:gap-4 md:gap-5">
             {serviceItems.map((item, index) => (
               <Button
                 key={index}
-                variant={item.isHighlighted ? "brand" : "outline"}
-                className={`
-                  rounded-full 
-                  shadow-sm 
-                  text-sm md:text-base lg:text-xl 
-                  font-semibold 
-                  py-2 md:py-3 lg:py-4 
-                  px-3 md:px-7 lg:px-8
-                  h-auto
-                  ${item.isHighlighted ? "text-white" : "text-gray-700"}
-                `}
+                size="lg"
+                variant={"outline"}
+                className={"bg-white hover:bg-primary-blue hover:text-white"}
               >
                 {item.name}
               </Button>
             ))}
           </div>
         </section>
+        <ProgramSection />
       </div>
     </div>
   );
