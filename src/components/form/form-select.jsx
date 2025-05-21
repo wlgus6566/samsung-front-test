@@ -39,17 +39,9 @@ const FormSelect = ({
       render={({ field, fieldState: { error } }) => (
         <FormItem className={cn(className)}>
           {label && (
-            <div className="flex items-center mb-2">
-              <FormLabel
-                className={cn(
-                  labelClassName,
-                  required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
-                )}
-              >
-                {label}
-              </FormLabel>
-            </div>
+            <FormLabel required={required} className={cn(labelClassName)}>
+              {label}
+            </FormLabel>
           )}
           <Select
             onValueChange={field.onChange}
@@ -81,12 +73,7 @@ const FormSelect = ({
             </SelectContent>
           </Select>
           {description && !error && (
-            <FormDescription
-              className={cn(
-                "text-xs text-gray-600 mt-1.5",
-                descriptionClassName
-              )}
-            >
+            <FormDescription className={cn(descriptionClassName)}>
               {description}
             </FormDescription>
           )}

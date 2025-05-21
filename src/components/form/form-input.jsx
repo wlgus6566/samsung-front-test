@@ -19,7 +19,6 @@ const FormInput = ({
   placeholder,
   type,
   required = false,
-  labelSide,
   className,
   inputClassName,
   labelClassName,
@@ -35,20 +34,9 @@ const FormInput = ({
       render={({ field, fieldState: { error } }) => (
         <FormItem className={cn(className)}>
           {label && (
-            <div className="flex items-center mb-2">
-              <FormLabel
-                className={cn(
-                  "body-3 font-semibold ",
-                  { "text-destructive": !!error },
-                  labelClassName,
-                  required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
-                )}
-              >
-                {label}
-              </FormLabel>
-              {labelSide && <div className="ml-auto">{labelSide}</div>}
-            </div>
+            <FormLabel required={required} className={cn(labelClassName)}>
+              {label}
+            </FormLabel>
           )}
           <div className="flex items-center">
             <FormControl>
@@ -64,12 +52,7 @@ const FormInput = ({
             {action && action}
           </div>
           {description && !error && (
-            <FormDescription
-              className={cn(
-                "text-xs text-gray-600 mt-1.5",
-                descriptionClassName
-              )}
-            >
+            <FormDescription className={cn(descriptionClassName)}>
               {description}
             </FormDescription>
           )}

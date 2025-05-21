@@ -40,18 +40,9 @@ const FormPhone = ({
   return (
     <div className={cn("space-y-1", className)}>
       {label && (
-        <div className="flex items-center mb-2">
-          <FormLabel
-            className={cn(
-              "body-3 font-semibold",
-              labelClassName,
-              required &&
-                "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
-            )}
-          >
-            {label}
-          </FormLabel>
-        </div>
+        <FormLabel required={required} className={cn(labelClassName)}>
+          {label}
+        </FormLabel>
       )}
       <div className="flex gap-1">
         {/* 앞자리 번호 */}
@@ -74,7 +65,6 @@ const FormPhone = ({
                   ))}
                 </SelectContent>
               </Select>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -96,7 +86,6 @@ const FormPhone = ({
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -118,16 +107,13 @@ const FormPhone = ({
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
       </div>
 
       {description && (
-        <FormDescription
-          className={cn("text-xs text-gray-600 mt-1.5", descriptionClassName)}
-        >
+        <FormDescription className={cn(descriptionClassName)}>
           {description}
         </FormDescription>
       )}

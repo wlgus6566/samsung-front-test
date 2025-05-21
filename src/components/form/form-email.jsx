@@ -33,7 +33,6 @@ const FormEmail = ({
   placeholder = "이메일 입력",
   domainPlaceholder = "도메인 입력",
   required = false,
-  labelSide,
   className,
   inputClassName,
   labelClassName,
@@ -74,19 +73,9 @@ const FormEmail = ({
         return (
           <FormItem className={cn(className)}>
             {label && (
-              <div className="flex items-center mb-2">
-                <FormLabel
-                  className={cn(
-                    "body-3 font-semibold",
-                    labelClassName,
-                    required &&
-                      "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
-                  )}
-                >
-                  {label}
-                </FormLabel>
-                {labelSide && <div className="ml-auto">{labelSide}</div>}
-              </div>
+              <FormLabel required={required} className={cn(labelClassName)}>
+                {label}
+              </FormLabel>
             )}
             <div className="flex items-center w-[680px]">
               <div className="relative flex-1">
@@ -117,7 +106,7 @@ const FormEmail = ({
               </div>
             </div>
             {description && !error && (
-              <FormDescription className={cn("mt-2", descriptionClassName)}>
+              <FormDescription className={cn(descriptionClassName)}>
                 {description}
               </FormDescription>
             )}

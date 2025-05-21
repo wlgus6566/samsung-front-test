@@ -424,7 +424,7 @@ export default function Header() {
               onMouseEnter={() => handleMenuMouseEnter(currentMenuIndex)}
               onMouseLeave={handleHeaderMouseLeave}
             >
-              <div className="flex flex-row gap-25 max-w-[1920px] ml-[171px] px-40">
+              <div className="flex flex-row gap-25 max-w-[1760px] mx-auto ml-[240px]">
                 {gnbMenu[currentMenuIndex].children.map(
                   (subMenuItem, subMenuIndex) => (
                     <div key={subMenuIndex} className="flex flex-col gap-1">

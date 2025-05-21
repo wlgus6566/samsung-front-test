@@ -58,14 +58,7 @@ const FormAddress = ({
   return (
     <FormItem className={cn("flex flex-col gap-2", className)}>
       {label && (
-        <FormLabel
-          className={cn(
-            "text-sm font-medium",
-            required &&
-              "after:content-['*'] after:text-destructive after:ml-0.5",
-            labelClassName
-          )}
-        >
+        <FormLabel required={required} className={cn(labelClassName)}>
           {label}
         </FormLabel>
       )}

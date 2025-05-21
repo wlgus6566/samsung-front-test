@@ -35,7 +35,6 @@ const FormFile = ({
   name,
   label,
   description = "",
-  labelSide,
   className,
   labelClassName,
   descriptionClassName,
@@ -61,7 +60,7 @@ const FormFile = ({
       render={({ field }) => {
         const [fileList, setFileList] = useState([]);
         const [uploading, setUploading] = useState(false);
-        const [errors, setErrors] = useState(null);
+        const [error, setError] = useState(null);
         const [previewUrls, setPreviewUrls] = useState({});
         const [imageErrors, setImageErrors] = useState({});
 
@@ -484,18 +483,9 @@ const FormFile = ({
         return (
           <FormItem className={cn(wrapClassName)}>
             {label && (
-              <div className="flex items-center">
-                <FormLabel
-                  className={cn(
-                    required &&
-                      "after:content-['*'] after:text-destructive after:ml-0.5",
-                    labelClassName
-                  )}
-                >
-                  {label}
-                </FormLabel>
-                {labelSide && labelSide}
-              </div>
+              <FormLabel required={required} className={cn(labelClassName)}>
+                {label}
+              </FormLabel>
             )}
 
             <FormControl>
@@ -672,13 +662,7 @@ const FormFile = ({
               </div>
             </FormControl>
 
-            {errors && (
-              <p className="text-sm font-medium text-destructive mt-1">
-                {errors}
-              </p>
-            )}
-
-            {description && (
+            {description && !error && (
               <FormDescription className={cn("mt-1", descriptionClassName)}>
                 {description}
               </FormDescription>

@@ -31,13 +31,7 @@ const FormCheckbox = ({
         <FormItem>
           {label && (
             <div className="flex items-center mb-2">
-              <FormLabel
-                className={cn(
-                  labelClassName,
-                  required &&
-                    "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600"
-                )}
-              >
+              <FormLabel required={required} className={cn(labelClassName)}>
                 {label}
               </FormLabel>
             </div>

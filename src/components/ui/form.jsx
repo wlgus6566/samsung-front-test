@@ -57,14 +57,19 @@ function FormItem({ className, ...props }) {
   );
 }
 
-function FormLabel({ className, size = "default", ...props }) {
+function FormLabel({ className, size = "default", required, ...props }) {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
       data-slot="form-label"
       data-error={!!error}
-      className={cn("mt-2 body-3 font-semibold ", className)}
+      className={cn(
+        "mb-2 body-3 font-semibold",
+        required &&
+          "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600",
+        className
+      )}
       htmlFor={formItemId}
       {...props}
     />
@@ -97,7 +102,7 @@ function FormDescription({ className, ...props }) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("caption-1 font-medium text-gray-800", className)}
+      className={cn("caption-1 font-medium text-gray-800 mt-2", className)}
       {...props}
     />
   );
