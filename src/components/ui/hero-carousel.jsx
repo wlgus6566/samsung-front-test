@@ -70,7 +70,7 @@ export default function HeroCarousel() {
         <div
           className="absolute top-0 right-0 z-10 w-[289px] h-[96px] bg-cover bg-center bg-no-repeat flex justify-end"
           style={{
-            backgroundImage: `url('/images/icon/page/home/rec.svg')`,
+            backgroundImage: `url('/images/page/home/rec.svg')`,
           }}
         >
           <button

@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
+import Link from "next/link";
 import { cva } from "class-variance-authority";
-
+import Img from "@/components/ui/img";
 import { cn } from "@/lib/utils";
+
 const responsiveSizeMap = {
-  lg: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-14 md:px-7 md:py-3 md:rounded-full md:text-md",
+  lg: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-15 md:px-8 md:py-4 md:rounded-[20px] md:text-sm",
+  md: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-14 md:px-7 md:py-3 md:rounded-full md:text-md",
 };
 
 const buttonVariants = cva(
@@ -13,17 +15,14 @@ const buttonVariants = cva(
     variants: {
       variant: {
         brand:
-          "hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500",
         primary:
-          "border border-gray-300 bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "border border-gray-300 bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500",
         secondary:
-          "border border-gray-300 bg-green-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500]",
+          "border border-gray-300 bg-green-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500",
         outline:
           "border border-gray-300 text-black disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
-        link: "text-primary-blue underline-offset-4 hover:brightness-[85%] hover:underline disabled:text-gray-500]",
-      },
-      size: {
-        icon: "size-9 rounded-md",
+        link: "text-primary-blue underline-offset-4 hover:brightness-[85%] hover:underline disabled:text-gray-500",
       },
     },
     defaultVariants: {
@@ -33,35 +32,68 @@ const buttonVariants = cva(
   }
 );
 
-function Button({
+function ButtonBase({
   className,
   variant = "primary",
   size = "md",
-  asChild = false,
   children,
+  icon,
+  as = "button", // "button" | "a" | Slot
+  href,
   ...props
 }) {
-  const Comp = asChild ? Slot : "button";
-
   const isBrand = variant === "brand";
   const brandGradientStyle = isBrand
     ? { backgroundImage: "var(--gradient-brand)" }
     : {};
   const responsiveSizeClass = responsiveSizeMap[size] || "";
+
+  const commonProps = {
+    className: cn(buttonVariants({ variant }), responsiveSizeClass, className),
+    style: brandGradientStyle,
+    ...props,
+  };
+
+  if (href) {
+    return (
+      <Link href={href} passHref legacyBehavior>
+        <a {...commonProps}>
+          {children}
+          {icon === "topRight" && (
+            <Img
+              src="/images/icon/ic_btn_arrow_top_right.svg"
+              alt="arrow-up-right"
+              width={12}
+              height={12}
+              className="ml-2"
+            />
+          )}
+        </a>
+      </Link>
+    );
+  }
+
+  const Comp = as;
   return (
-    <Comp
-      data-slot="button"
-      className={cn(
-        buttonVariants({ variant }), // variant는 CVA로 관리
-        responsiveSizeClass, // 반응형 사이즈는 따로 매핑
-        className
-      )}
-      style={brandGradientStyle}
-      {...props}
-    >
+    <Comp {...commonProps}>
       {children}
+      {icon === "topRight" && (
+        <Img
+          src="/images/icon/ic_btn_arrow_top_right.svg"
+          alt="arrow-up-right"
+          width={12}
+          height={12}
+          className="ml-2"
+        />
+      )}
     </Comp>
   );
 }
 
-export { Button, buttonVariants };
+// 기본 버튼
+const Button = (props) => <ButtonBase as="button" {...props} />;
+
+// Next.js <Link> 버튼
+const ButtonLink = (props) => <ButtonBase as="a" {...props} />;
+
+export { Button, ButtonLink, buttonVariants };

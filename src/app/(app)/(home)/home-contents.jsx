@@ -2,7 +2,7 @@
 import HeroCarousel from "@/components/ui/hero-carousel";
 import { Button } from "@/components/ui/button";
 import ProgramSection from "@/components/home/program-section";
-
+import { cn } from "@/lib/utils";
 const serviceItems = [
   { name: "전문가 양성교육 📚", isHighlighted: false },
   { name: "제휴 프로그램 🤝", isHighlighted: true },
@@ -17,11 +17,10 @@ const serviceItems = [
 export default function HomeContents() {
   return (
     <div className="bg-gray-100">
-      <div className="container-fixed px-4 md:px-6 lg:px-10">
+      <div className="container-fixed px-4 md:px-6 lg:px-10 mt-10">
         <HeroCarousel />
         {/* 궁금하신 서비스가 있으세요? */}
-        <section className="p-5 sm:p-10 md:p-30">
-          {/* 타이틀 영역 */}
+        <section className="px-5 sm:px-10 md:px-30 mt-[152px]">
           <div className="text-center">
             <span className="text-primary-blue font-semibold font-poppins sm:text-md text-xs">
               Service
@@ -33,13 +32,15 @@ export default function HomeContents() {
           </div>
 
           {/* 서비스 아이템 버튼 영역 */}
-          <div className="flex flex-wrap justify-center w-full p-5 max-w-[932px] mx-auto mt-7 sm:mt-12 md:mt-13 gap-2 sm:gap-4 md:gap-5">
+          <div className="flex flex-wrap justify-center w-full px-5 max-w-[932px] mx-auto mt-7 sm:mt-12 md:mt-13 gap-2 sm:gap-4 md:gap-5">
             {serviceItems.map((item, index) => (
               <Button
                 key={index}
-                size="lg"
+                size="md"
                 variant={"outline"}
-                className={"bg-white hover:bg-primary-blue hover:text-white"}
+                className={cn(
+                  "bg-white hover:bg-primary-blue hover:text-white"
+                )}
               >
                 {item.name}
               </Button>

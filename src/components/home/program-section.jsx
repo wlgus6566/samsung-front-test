@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import { ButtonLink } from "@/components/ui/button";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ProgramSection() {
@@ -11,10 +11,40 @@ export default function ProgramSection() {
   const cardRefs = useRef([]);
   const titleRef = useRef(null);
 
+  const programList = [
+    {
+      tag: "인재교육",
+      title: "특화교육",
+      imgUrl: "/images/page/home/program_00.jpg",
+      description:
+        "전문화된 직무 교육으로 직무에 대한 이해도를<br />성장시킬 수 있는 프로그램을 확인해 보세요",
+      linkText: "인재교육 더 알아보기",
+      link: "https://www.samsung.com/sec/business/education/training/specialized-education/",
+    },
+    {
+      tag: "인재교육",
+      title: "전문가 양성교육",
+      imgUrl: "/images/page/home/program_01.jpg",
+      description:
+        "스마트공장 운영에 꼭 필요한 전문 기술과 실무 역량을 배우고<br />최신 트렌드를 반영해 현장에서 바로 활용해 보세요",
+      linkText: "인재교육 더 알아보기",
+      link: "https://www.samsung.com/sec/business/education/training/specialized-education/",
+    },
+    {
+      tag: "인재교육",
+      title: "벤치마킹 투어 신청",
+      imgUrl: "/images/page/home/program_02.jpg",
+      description:
+        "스마트공장 우수 구축 사례를 직접 둘러보고 체험해 보세요<br />현장에서 스마트공장 구축의 노하우를 직접 경험할 수 있어요",
+      linkText: "벤치마킹 투어 신청",
+      link: "https://www.samsung.com/sec/business/education/training/specialized-education/",
+    },
+  ];
+
   useEffect(() => {
     const cards = cardRefs.current;
     const cardCount = cards.length;
-    const scrollHeight = window.innerHeight * (cardCount + 1);
+    const scrollHeight = window.innerHeight * (cardCount + 0.5);
 
     const ctx = gsap.context(() => {
       // 섹션 높이 세팅
@@ -32,21 +62,21 @@ export default function ProgramSection() {
         });
       });
 
-      // 두 번째 카드부터 ScrollTrigger 생성
+      // 카드 애니메이션 설정
       cards.forEach((card, i) => {
         if (i === 0) return; // 첫 번째 카드는 트리거 설정 안함
 
         ScrollTrigger.create({
           trigger: sectionRef.current,
-          start: `top+=${i * window.innerHeight * 0.7} top`,
-          end: `top+=${(i + 1) * window.innerHeight * 0.7} top`,
+          start: () => `top+=${i * 368} top`,
+          end: () => `top+=${(i + 1) * 368 - 368 / 2} center`,
           scrub: true,
+          markers: true,
           onUpdate: (self) => {
             const progress = self.progress;
             const currentCard = cards[i];
             const prevCard = cards[i - 1];
 
-            // 현재 카드 등장
             gsap.to(currentCard, {
               opacity: progress,
               y: 50 - progress * 50,
@@ -54,10 +84,10 @@ export default function ProgramSection() {
               overwrite: "auto",
             });
 
-            // 이전 카드 퇴장
             if (prevCard) {
+              const minOpacity = i === 1 ? 0.2 : i === 2 ? 0.4 : 0;
               gsap.to(prevCard, {
-                opacity: 1 - progress,
+                opacity: Math.max(minOpacity, 1 - progress),
                 ease: "power1.out",
                 overwrite: "auto",
               });
@@ -65,20 +95,39 @@ export default function ProgramSection() {
           },
         });
       });
+
+      // 추가: 마지막 카드가 완전히 보이게 된 후에도 이전 카드들의 opacity가 유지되도록 설정
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: `top+=${cardCount * window.innerHeight * 0.7} top`,
+        end: `bottom bottom`,
+        scrub: true,
+        onEnter: () => {
+          // 첫 번째 카드는 opacity 0.2로 고정
+          gsap.set(cards[0], { opacity: 0.2 });
+          // 두 번째 카드는 opacity 0.4로 고정
+          gsap.set(cards[1], { opacity: 0.4 });
+          // 세 번째 카드는 opacity 1로 고정
+          gsap.set(cards[2], { opacity: 1 });
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-white">
+    <section ref={sectionRef} className="relative">
       {/* 상단 타이틀 영역 - 고정 */}
       <div
         ref={titleRef}
-        className="sticky top-0 z-50 bg-gradient-to-b from-[#f0f4ff] to-white pt-20 pb-10 text-center"
+        className="sticky top-0 z-50 pt-[152px] pb-10 text-center"
       >
-        <p className="text-sm text-blue-500 font-semibold">Program</p>
-        <h2 className="text-2xl sm:text-4xl font-bold mt-2">
+        <span className="text-primary-blue font-semibold font-poppins sm:text-md text-xs">
+          Program
+        </span>
+
+        <h2 className="font-bold text-ml sm:text-2xl md:text-3xl mt-1 sm:mt-3 md:mt-4">
           삼성만의 차별화된 프로그램으로
           <br />
           당신의 변화를 함께 만들어가요
@@ -86,9 +135,9 @@ export default function ProgramSection() {
       </div>
 
       {/* 카드 영역 */}
-      <div className="sticky top-[150px] h-[600px]">
-        <div className="relative w-full max-w-6xl mx-auto h-full">
-          {[...Array(3)].map((_, i) => (
+      <div className="sticky top-[368px] h-111 p-5">
+        <div className="relative w-full mx-auto h-full">
+          {programList.map((program, i) => (
             <div
               key={i}
               ref={(el) => {
@@ -96,20 +145,39 @@ export default function ProgramSection() {
                   cardRefs.current.push(el);
                 }
               }}
-              className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-full bg-white rounded-[30px] shadow-2xl flex overflow-hidden"
+              className="absolute top-0 left-0 w-full h-full bg-white rounded-3xl shadow-card flex overflow-hidden"
             >
-              <img
-                src={`https://picsum.photos/id/${100 + i}/600/400`}
-                alt={`Card ${i + 1}`}
-                className="w-1/2 h-full object-cover"
-              />
-              <div className="w-1/2 flex flex-col justify-center p-10">
-                <span className="text-sm text-gray-500 mb-2">인재교육</span>
-                <h3 className="text-2xl font-bold mb-4">카드 제목 {i + 1}</h3>
-                <p className="text-gray-600">
-                  이 영역에 카드 {i + 1}의 설명을 작성할 수 있어요. 애니메이션이
-                  재생되는 동안 배경과 타이틀은 그대로 고정됩니다.
-                </p>
+              <div className="w-[57.83%] overflow-hidden">
+                <img
+                  src={program.imgUrl}
+                  alt={program.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="w-[42.17%] flex flex-col justify-center px-8 py-10 md:px-10 md:py-12">
+                <div className="inline-block px-3 py-1 rounded-full bg-tag-gray mb-4">
+                  <span className="text-xs font-medium text-neutral-600">
+                    {program.tag}
+                  </span>
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-neutral-900">
+                  {program.title}
+                </h3>
+                <p
+                  className="text-sm md:text-base text-neutral-600 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: program.description }}
+                />
+                <div className="mt-6 md:mt-8">
+                  <ButtonLink
+                    href={program.link}
+                    icon="topRight"
+                    variant="brand"
+                    size="lg"
+                    className="md:text-xs"
+                  >
+                    {program.linkText}
+                  </ButtonLink>
+                </div>
               </div>
             </div>
           ))}
