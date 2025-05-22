@@ -56,7 +56,6 @@ export default function ProgramSection() {
       // 초기 zIndex 및 첫 카드 opacity 설정
       cards.forEach((card, i) => {
         gsap.set(card, {
-          zIndex: cardCount - i,
           opacity: i === 0 ? 1 : 0,
           y: 0,
         });
@@ -64,7 +63,7 @@ export default function ProgramSection() {
 
       // 카드 애니메이션 설정
       cards.forEach((card, i) => {
-        if (i === 0) return; // 첫 번째 카드는 트리거 설정 안함
+        if (i === 0) return;
 
         ScrollTrigger.create({
           trigger: sectionRef.current,
@@ -77,9 +76,14 @@ export default function ProgramSection() {
             const currentCard = cards[i];
             const prevCard = cards[i - 1];
 
+            // 올라오는 y 위치: 200 → 20(i=1), 200 → 40(i=2)
+            const startY = 400;
+            const endY = 120 * i;
+            const currentY = startY - progress * (startY - endY);
+
             gsap.to(currentCard, {
               opacity: progress,
-              y: 50 - progress * 50,
+              y: currentY,
               ease: "power1.out",
               overwrite: "auto",
             });
@@ -111,6 +115,19 @@ export default function ProgramSection() {
           gsap.set(cards[2], { opacity: 1 });
         },
       });
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: `top+=${cardCount * 368} top`, // 카드 끝나는 시점
+        end: `bottom bottom`,
+        onEnter: () => {
+          const el = document.querySelector("#cardWrapper");
+          el?.classList.remove("sticky");
+        },
+        onLeaveBack: () => {
+          const el = document.querySelector("#cardWrapper");
+          el?.classList.add("sticky");
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -135,8 +152,8 @@ export default function ProgramSection() {
       </div>
 
       {/* 카드 영역 */}
-      <div className="sticky top-[368px] h-111 p-5">
-        <div className="relative w-full mx-auto h-full">
+      <div className="sticky top-[368px] h-[484px] p-5 bg-white rounded-3xl shadow-card ">
+        <div className="relative mx-auto h-full">
           {programList.map((program, i) => (
             <div
               key={i}
@@ -145,7 +162,9 @@ export default function ProgramSection() {
                   cardRefs.current.push(el);
                 }
               }}
-              className="absolute top-0 left-0 w-full h-full bg-white rounded-3xl shadow-card flex overflow-hidden"
+              className={`z-${
+                i + 1
+              } absolute top-0 left-0 w-full h-full flex bg-white `}
             >
               <div className="w-[57.83%] overflow-hidden">
                 <img
