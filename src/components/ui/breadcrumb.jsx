@@ -50,7 +50,7 @@ function BreadcrumbPage({ className, ...props }) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("font-semibold text-gray-700 body5", className)}
+      className={cn("font-semibold text-black body5", className)}
       {...props}
     />
   );

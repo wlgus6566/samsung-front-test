@@ -13,6 +13,14 @@ import FormPrivacyConsent from "@/components/form/form-privacy-consent";
 import FormLayout from "@/components/layout/form-layout";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormTop from "@/components/form/form-top";
+import { useFieldArray, useWatch } from "react-hook-form";
+
+import {
+  countryOptions,
+  industryOptions,
+  yearsOptions,
+} from "@/constants/option";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -40,8 +48,12 @@ const formSchema = z.object({
     .string({ required_error: "업종을 선택해 주세요." })
     .min(1, "업종을 선택해 주세요."),
   mainMarket: z
-    .string({ required_error: "주요 시장을 선택해 주세요." })
-    .min(1, "주요 시장을 선택해 주세요."),
+    .array(
+      z
+        .string({ required_error: "주요 시장을 선택해 주세요." })
+        .min(1, "주요 시장을 선택해 주세요.")
+    )
+    .min(1, "최소 1개 이상의 주요 시장을 선택해 주세요."),
   companyDescription: z
     .string({ required_error: "회사 소개를 입력해 주세요." })
     .min(1, "회사 소개를 입력해 주세요.")
@@ -49,12 +61,17 @@ const formSchema = z.object({
   companyFile: z.any().refine((file) => file !== undefined, {
     message: "파일을 첨부해 주세요.",
   }),
+  mainImage: z.any().refine((file) => file !== undefined, {
+    message: "제품 대표 이미지를 첨부해 주세요.",
+  }),
+  additionalImages: z.any().optional(),
   privacyConsent: z.boolean().refine((val) => val === true, {
     message: "개인정보 수집에 동의해야 합니다.",
   }),
 });
 
 export default function FormExPage() {
+  // form 초기값
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,23 +88,28 @@ export default function FormExPage() {
       country: "",
       establishedYear: "2025",
       industry: "",
-      mainMarket: "",
+      mainMarket: [{ value: "none", label: "선택" }],
       companyDescription: "",
       companyFile: undefined,
+      mainImage: undefined,
+      additionalImages: undefined,
       privacyConsent: false,
     },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "mainMarket",
   });
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  const years = Array.from({ length: 100 }, (_, i) => ({
-    value: `${2025 - i}`,
-    label: `${2025 - i}`,
-  }));
-
   return (
     <>
+      <FormTop
+        text="교차협력 상품등록 참가 신청서를 작성해 주세요. 제출된 정보는 상품 등록 시 사용되며 작성된 정보는 심사에 이용됩니다."
+        children={<div>123</div>}
+      />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormLayout num={"01"} title="기업 기본 정보">
@@ -98,7 +120,6 @@ export default function FormExPage() {
                   control={form.control}
                   name="companyName"
                   label="기업명"
-                  placeholder="기업명 입력"
                   disabled
                 />
               </div>
@@ -112,15 +133,6 @@ export default function FormExPage() {
                 />
               </div>
             </div>
-            {/* 대표자 연락처 */}
-            <div>
-              <FormPhone
-                control={form.control}
-                name="representativePhone"
-                label="대표자 연락처"
-                required
-              />
-            </div>
             {/* 대표자 이메일 */}
             <div>
               <FormInput
@@ -132,6 +144,15 @@ export default function FormExPage() {
                 placeholder="이메일 입력"
                 required
                 description="입력하신 이메일로 상품 등록 신청 결과와 해당 상품의 고객 문의 내용이 발송됩니다. 정확한 이메일 주소를 입력해 주세요."
+              />
+            </div>
+            {/* 대표자 연락처 */}
+            <div>
+              <FormPhone
+                control={form.control}
+                name="representativePhone"
+                label="대표자 연락처"
+                required
               />
             </div>
 
@@ -165,12 +186,7 @@ export default function FormExPage() {
                   label="사업장 운영 국가"
                   placeholder="선택"
                   required
-                  items={[
-                    { value: "korea", label: "대한민국" },
-                    { value: "usa", label: "미국" },
-                    { value: "japan", label: "일본" },
-                    { value: "china", label: "중국" },
-                  ]}
+                  items={countryOptions}
                 />
               </div>
               <div className="flex-1">
@@ -180,13 +196,55 @@ export default function FormExPage() {
                   label="설립 연도"
                   placeholder="선택"
                   required
-                  items={years}
+                  items={yearsOptions}
                 />
               </div>
             </div>
 
             {/* 업종 및 주요 시장 */}
-            <div className="flex gap-5">
+            <div className="grid grid-cols-2 gap-5">
+              <div className="flex flex-wrap gap-2 flex-1">
+                {fields.map((_, index) => (
+                  <div key={index} className="w-full flex gap-2 mb-3">
+                    <div className="flex-1">
+                      <FormSelect
+                        control={form.control}
+                        name={`mainMarket.${index}`}
+                        label={index === 0 ? "주요 시장" : undefined}
+                        placeholder="선택"
+                        required
+                        items={industryOptions}
+                      />
+                    </div>
+
+                    <div className="self-end">
+                      {index === 0 ? (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={() => {
+                            console.log(fields);
+                            alert("click");
+                            console.log(form.getValues("mainMarket"));
+                            append({ value: "none", label: "선택" });
+                          }}
+                          className="border-blue-500 text-blue-500 hover:bg-white h-12"
+                        >
+                          추가하기
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          type="button"
+                          onClick={() => remove(index)}
+                        >
+                          삭제하기
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
               <div className="flex-1">
                 <FormSelect
                   control={form.control}
@@ -194,38 +252,8 @@ export default function FormExPage() {
                   label="업종"
                   placeholder="선택"
                   required
-                  items={[
-                    { value: "it", label: "IT" },
-                    { value: "manufacturing", label: "제조업" },
-                    { value: "finance", label: "금융" },
-                    { value: "service", label: "서비스" },
-                  ]}
+                  items={industryOptions}
                 />
-              </div>
-              <div className="flex gap-2 flex-1">
-                <div className="flex-1">
-                  <FormSelect
-                    control={form.control}
-                    name="mainMarket"
-                    label="주요 시장"
-                    placeholder="선택"
-                    required
-                    items={[
-                      { value: "domestic", label: "국내" },
-                      { value: "global", label: "해외" },
-                      { value: "both", label: "국내외" },
-                    ]}
-                  />
-                </div>
-                <div className="self-end">
-                  <Button
-                    variant="outline"
-                    type="button"
-                    className="border-blue-500 text-blue-500 hover:bg-white md:px-6"
-                  >
-                    추가하기
-                  </Button>
-                </div>
               </div>
             </div>
 
@@ -256,7 +284,40 @@ export default function FormExPage() {
               />
             </div>
           </FormLayout>
-          <FormLayout num={"02"} title="개인정보 수집 동의">
+
+          <FormLayout num={"02"} title="상품 상세 정보">
+            {/* 제품 대표 이미지 */}
+            <div>
+              <FormFile
+                control={form.control}
+                name="mainImage"
+                label="제품 대표 이미지"
+                required
+                maxfilesize={1}
+                minwidth={400}
+                minheight={400}
+                accept=".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp"
+                description="이미지 최소 사이즈: 가로 400px X 세로 400px / 1MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 1개"
+              />
+            </div>
+
+            {/* 제품 추가 이미지 */}
+            <div>
+              <FormFile
+                control={form.control}
+                name="additionalImages"
+                label="제품 추가 이미지"
+                maxfilesize={1}
+                maxfilecount={5}
+                minwidth={400}
+                minheight={400}
+                accept=".jpg, .jpeg, .png, .gif, .bmp, .tif, .webp"
+                description="이미지 최소 사이즈: 가로 400px X 세로 400px / 1MB 이내의 jpg, jpeg, png, gif, bmp, tif, webp 파일 최대 5개"
+              />
+            </div>
+          </FormLayout>
+
+          <FormLayout num={"03"} title="개인정보 수집 동의">
             <FormPrivacyConsent
               control={form.control}
               name="privacyConsent"

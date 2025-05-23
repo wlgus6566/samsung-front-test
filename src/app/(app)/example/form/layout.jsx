@@ -7,9 +7,7 @@ export const revalidate = 60;
 export default async function DetailLayout({ children }) {
   return (
     <Suspense fallback={<Loading />}>
-      <Contents title="예시" description="예시입니다.">
-        {children}
-      </Contents>
+      <Contents title="교차협력 상품 등록 신청">{children}</Contents>
     </Suspense>
   );
 }

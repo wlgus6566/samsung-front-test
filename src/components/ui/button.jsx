@@ -35,6 +35,7 @@ const buttonVariants = cva(
 function ButtonBase({
   className,
   variant = "primary",
+  onClick,
   size = "md",
   children,
   icon,
@@ -51,13 +52,24 @@ function ButtonBase({
   const commonProps = {
     className: cn(buttonVariants({ variant }), responsiveSizeClass, className),
     style: brandGradientStyle,
+    onClick,
+    ...(as === "button" && { type: "button" }),
     ...props,
   };
-
   if (href) {
     return (
-      <Link href={href} passHref legacyBehavior>
-        <a {...commonProps}>
+      <Link href={href}>
+        <button
+          type="button"
+          className={cn(
+            buttonVariants({ variant }),
+            responsiveSizeClass,
+            className
+          )}
+          style={brandGradientStyle}
+          onClick={onClick}
+          {...props}
+        >
           {children}
           {icon === "topRight" && (
             <Img
@@ -68,7 +80,7 @@ function ButtonBase({
               className="ml-2"
             />
           )}
-        </a>
+        </button>
       </Link>
     );
   }

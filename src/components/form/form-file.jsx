@@ -481,169 +481,186 @@ const FormFile = ({
         const validFiles = fileList.filter((file) => !file.delYn);
 
         return (
-          <FormItem className={cn(wrapClassName)}>
+          <FormItem
+            className={cn(
+              wrapClassName,
+              fileType === "image" && "flex items-start"
+            )}
+          >
             {label && (
-              <FormLabel required={required} className={cn(labelClassName)}>
+              <FormLabel
+                required={required}
+                className={cn(
+                  labelClassName,
+                  fileType === "image" && "mt-0, w-[25%]"
+                )}
+              >
                 {label}
               </FormLabel>
             )}
 
-            <FormControl>
-              <div>
-                <Input
-                  id={`file-input-${name}`}
-                  type="file"
-                  className="hidden"
-                  onChange={handleFileChange}
-                  multiple={maxfilecount > 1}
-                  disabled={uploading}
-                  {...props}
-                  accept={accept}
-                />
+            <div>
+              <FormControl>
+                <div>
+                  <Input
+                    id={`file-input-${name}`}
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    multiple={maxfilecount > 1}
+                    disabled={uploading}
+                    {...props}
+                    accept={accept}
+                  />
 
-                {/* 이미지 업로드 UI */}
-                {fileType === "image" && (
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    {validFiles.length < maxfilecount && (
-                      <div
-                        className="w-32 h-32 relative overflow-hidden bg-blue-50 aspect-square border border-gray-300 border-dashed rounded-[8px] flex items-center justify-center cursor-pointer"
-                        onClick={() =>
-                          document.getElementById(`file-input-${name}`).click()
-                        }
-                      >
-                        <div className="flex flex-col items-center justify-center">
-                          <Img
-                            src="/images/icon/ic_image_plus.png"
-                            alt="이미지 첨부"
-                            width={60}
-                            height={60}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {validFiles.map((file, index) => {
-                      const fileId = getFileIdentifier(file, index);
-                      const previewUrl = previewUrls[fileId];
-                      const hasError = imageErrors[fileId];
-
-                      return (
+                  {/* 이미지 업로드 UI */}
+                  {fileType === "image" && (
+                    <div className="flex flex-wrap gap-4 mt-0">
+                      {validFiles.length < maxfilecount && (
                         <div
-                          key={`${fileId}-${index}`}
-                          className="w-[120px] h-[120px] relative overflow-hidden bg-gray-100 aspect-square border border-gray-300 rounded-[8px] flex items-center justify-center"
+                          className="w-30 h-30 relative overflow-hidden bg-blue-50 aspect-square border border-gray-300 border-dashed rounded-[8px] flex items-center justify-center cursor-pointer"
+                          onClick={() =>
+                            document
+                              .getElementById(`file-input-${name}`)
+                              .click()
+                          }
                         >
-                          {previewUrl && !hasError ? (
-                            <img
-                              src={previewUrl}
-                              alt={getFileName(file)}
-                              className="w-full h-full object-cover"
-                              onError={() => handleImageError(fileId)}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center">
-                              <File className="h-6 w-6 text-gray-400 mb-1" />
-                              <span className="text-xs text-gray-500 line-clamp-2 max-w-full">
-                                {getFileName(file)}
-                              </span>
-                            </div>
-                          )}
-
-                          <button
-                            type="button"
-                            className="absolute top-2 right-2 rounded-full"
-                            onClick={() => handleRemoveFile(index)}
-                          >
+                          <div className="flex flex-col items-center justify-center">
                             <Img
-                              src="/images/icon/ic_image_close.svg"
-                              alt="삭제"
-                              width={20}
-                              height={20}
+                              src="/images/icon/ic_image_plus.png"
+                              alt="이미지 첨부"
+                              width={60}
+                              height={60}
                             />
-                          </button>
+                          </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* 문서 파일 업로드 UI */}
-                {fileType === "document" && (
-                  <div className="mt-2">
-                    <div
-                      className={cn(
-                        "flex items-center py-3 px-4 border border-gray-300 rounded-[16px] cursor-pointer",
-                        validFiles.length >= maxfilecount &&
-                          "cursor-not-allowed"
                       )}
-                      onClick={() => {
-                        if (validFiles.length < maxfilecount) {
-                          document.getElementById(`file-input-${name}`).click();
-                        }
-                      }}
-                    >
-                      <Img
-                        src="/images/icon/ic_default_search.svg"
-                        alt="파일 첨부"
-                        width={24}
-                        height={24}
-                      />
-                      <span className="ml-2 text-gray-500">파일 첨부</span>
-                    </div>
 
-                    {validFiles.length > 0 && (
-                      <ul className="mt-1 space-y-1">
-                        {validFiles.map((file, index) => (
-                          <li
-                            key={index}
-                            className="flex items-center justify-between border border-gray-300 rounded-[16px] py-3.25 px-4 text-2xs font-medium"
+                      {validFiles.map((file, index) => {
+                        const fileId = getFileIdentifier(file, index);
+                        const previewUrl = previewUrls[fileId];
+                        const hasError = imageErrors[fileId];
+
+                        return (
+                          <div
+                            key={`${fileId}-${index}`}
+                            className="w-[120px] h-[120px] relative overflow-hidden bg-gray-100 aspect-square border border-gray-300 rounded-[8px] flex items-center justify-center"
                           >
-                            <div className="flex items-center gap-2 overflow-hidden">
+                            {previewUrl && !hasError ? (
+                              <img
+                                src={previewUrl}
+                                alt={getFileName(file)}
+                                className="w-full h-full object-cover"
+                                onError={() => handleImageError(fileId)}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center">
+                                <File className="h-6 w-6 text-gray-400 mb-1" />
+                                <span className="text-xs text-gray-500 line-clamp-2 max-w-full">
+                                  {getFileName(file)}
+                                </span>
+                              </div>
+                            )}
+
+                            <button
+                              type="button"
+                              className="absolute top-2 right-2 rounded-full"
+                              onClick={() => handleRemoveFile(index)}
+                            >
                               <Img
-                                src="/images/icon/ic_close_circle_24.svg"
-                                alt="파일"
+                                src="/images/icon/ic_image_close.svg"
+                                alt="삭제"
                                 width={20}
                                 height={20}
                               />
-                              <span>{getFileName(file)}</span>
-                            </div>
-                            <button
-                              type="button"
-                              className="ml-2 p-1"
-                              onClick={() =>
-                                handleRemoveFile(
-                                  fileList.findIndex(
-                                    (f) =>
-                                      (f.name === file.name &&
-                                        f.size === file.size) ||
-                                      (f.fileOriginalName ===
-                                        file.fileOriginalName &&
-                                        f.fileSize === file.fileSize)
-                                  )
-                                )
-                              }
-                            >
-                              <Img
-                                src="/images/icon/ic_default_close_gray.svg"
-                                alt="삭제"
-                                width={16}
-                                height={16}
-                              />
                             </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
-            </FormControl>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
 
-            {description && !error && (
-              <FormDescription className={cn("mt-1", descriptionClassName)}>
-                {description}
-              </FormDescription>
-            )}
-            <FormMessage />
+                  {/* 문서 파일 업로드 UI */}
+                  {fileType === "document" && (
+                    <div className="mt-2">
+                      <div
+                        className={cn(
+                          "flex items-center py-3 px-4 border border-gray-300 rounded-[16px] cursor-pointer",
+                          validFiles.length >= maxfilecount &&
+                            "cursor-not-allowed"
+                        )}
+                        onClick={() => {
+                          if (validFiles.length < maxfilecount) {
+                            document
+                              .getElementById(`file-input-${name}`)
+                              .click();
+                          }
+                        }}
+                      >
+                        <Img
+                          src="/images/icon/ic_file.svg"
+                          alt="파일 첨부"
+                          width={24}
+                          height={24}
+                        />
+                        <span className="ml-2 text-gray-500">파일 첨부</span>
+                      </div>
+
+                      {validFiles.length > 0 && (
+                        <ul className="mt-1 space-y-1">
+                          {validFiles.map((file, index) => (
+                            <li
+                              key={index}
+                              className="flex items-center justify-between border border-gray-300 rounded-[16px] py-3.25 px-4 body-5 font-medium"
+                            >
+                              <div className="flex items-center gap-2 overflow-hidden">
+                                <Img
+                                  src="/images/icon/ic_close_circle_24.svg"
+                                  alt="파일"
+                                  width={20}
+                                  height={20}
+                                />
+                                <span>{getFileName(file)}</span>
+                              </div>
+                              <button
+                                type="button"
+                                className="ml-2 p-1"
+                                onClick={() =>
+                                  handleRemoveFile(
+                                    fileList.findIndex(
+                                      (f) =>
+                                        (f.name === file.name &&
+                                          f.size === file.size) ||
+                                        (f.fileOriginalName ===
+                                          file.fileOriginalName &&
+                                          f.fileSize === file.fileSize)
+                                    )
+                                  )
+                                }
+                              >
+                                <Img
+                                  src="/images/icon/ic_default_close_gray.svg"
+                                  alt="삭제"
+                                  width={16}
+                                  height={16}
+                                />
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </FormControl>
+
+              {description && !error && (
+                <FormDescription className={cn("mt-1", descriptionClassName)}>
+                  {description}
+                </FormDescription>
+              )}
+              <FormMessage />
+            </div>
           </FormItem>
         );
       }}

@@ -102,13 +102,12 @@ export default function HeadBreadcrumb() {
         <BreadcrumbList className="text-md flex items-center">
           <BreadcrumbLink href="/" className="flex items-center gap-1">
             <Img
-              src="/images/icon/ic_inverse_home.svg"
+              src="/images/icon/ic_home.svg"
               alt="home"
-              width={12}
-              height={12}
+              width={16}
+              height={16}
               priority={true}
             />
-            홈
           </BreadcrumbLink>
           {mounted &&
             segments.map((segment, index) => {
@@ -135,7 +134,7 @@ export default function HeadBreadcrumb() {
                 <Fragment key={href}>
                   <BreadcrumbSeparator className="mx-1">
                     <Img
-                      src="/images/icon/ic_default_right_angle.svg"
+                      src="/images/icon/ic_right_angle_16.svg"
                       alt="chevron-right"
                       width={16}
                       height={16}
