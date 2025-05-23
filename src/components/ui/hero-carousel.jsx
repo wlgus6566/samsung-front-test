@@ -38,7 +38,7 @@ export default function HeroCarousel() {
     };
 
     api.on("select", onSelect);
-    onSelect(); // 초기값 설정heading-0
+    onSelect(); // 초기값 설정
 
     return () => {
       api.off("select", onSelect);

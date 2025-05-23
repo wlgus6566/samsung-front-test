@@ -91,7 +91,7 @@ const FormEmail = ({
                   />
                 </FormControl>
               </div>
-              <div className="px-1 text-black body-2 font-semibold">@</div>
+              <div className="px-1 text-black body2 font-semibold">@</div>
               <div className="relative flex-1">
                 <FormControl>
                   <Input

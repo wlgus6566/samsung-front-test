@@ -21,10 +21,8 @@ export default function Error({ error, reset }) {
       />
 
       <div className="text-center">
-        <h1 className="heading-1 text-[44px] leading-[54px] mb-4">
-          오류가 발생했습니다
-        </h1>
-        <p className="body-1 text-gray-600 mb-8">
+        <h1 className="heading1 mb-4">오류가 발생했습니다</h1>
+        <p className="body1 text-gray-600 mb-8">
           페이지를 표시하는 중 문제가 발생했습니다.
           <br />
           잠시 후 다시 시도해 주세요.

@@ -14,9 +14,7 @@ export default function NotFound() {
       />
 
       <div className="text-center">
-        <h1 className="heading-1 text-[44px] leading-[54px] mb-4">
-          페이지를 찾을 수 없습니다
-        </h1>
+        <h1 className="heading1 mb-4">페이지를 찾을 수 없습니다</h1>
         <p className="body-1 text-gray-600 mb-8">
           요청하신 페이지가 존재하지 않거나, 이동되었을 수 있습니다.
           <br />

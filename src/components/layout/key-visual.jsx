@@ -9,8 +9,8 @@ export default function KeyVisual({ title, description, backgroundImage }) {
       <div className="key-visual relative h-[220px]">
         <div className="relative h-full px-[20px] z-10 text-center">
           <HeadBreadcrumb />
-          <h1 className="heading-1 font-bold mt-13">{title}</h1>
-          <p className="mt-5 body-2 font-medium">{description}</p>
+          <h1 className="heading1 font-bold mt-13">{title}</h1>
+          <p className="mt-5 body2 font-medium">{description}</p>
         </div>
       </div>
       <style jsx>{`

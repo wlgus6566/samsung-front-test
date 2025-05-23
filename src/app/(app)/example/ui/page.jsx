@@ -18,7 +18,9 @@ import { SmartFactoryCertificationDialog } from "@/components/dialog/smart-facto
 import SearchBar from "@/components/search-bar";
 import { Badge } from "@/components/ui/badge";
 import BoardTable from "@/components/ui/board-table";
-
+import Pagination from "@/components/ui/pagination";
+import { useBreakpoint } from "@/hooks/use-breakpoint";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 const categoryItems = [
   { label: "일반", value: "general" },
   { label: "기술", value: "tech" },
@@ -85,6 +87,7 @@ const categoryItems1 = [
 
 export default function HomeContentsForm() {
   const { dialogOpen } = useDialogStore();
+  const device = useBreakpoint();
   // 1. 폼 정의
   const form = useForm({
     resolver: zodResolver(createFormSchema),
@@ -180,11 +183,88 @@ export default function HomeContentsForm() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
+      <h2 className="text-xl font-bold mt-8 mb-4">
+        {device === "mobile" && <p>📱 모바일 환경입니다!</p>}
+        {device === "tablet" && <p>💻 태블릿 환경입니다!</p>}
+        {device === "pc" && <p>🖥 데스크탑 환경입니다!</p>}
+      </h2>
+      {/* 탭 예시 */}
+      <div className="mb-8">
+        <div className="mt-8">
+          <h4 className="text-md font-medium mb-3 text-gray-700">
+            자동 반응형 탭 예시
+          </h4>
+          <Tabs defaultValue="tab1" className="w-full">
+            <TabsList className="mb-4">
+              <TabsTrigger
+                value="tab1"
+                className={`${
+                  device === "mobile"
+                    ? "py-2 text-sm"
+                    : "py-4 lg:text-md md:text-base text-sm"
+                }`}
+              >
+                제품 소개
+              </TabsTrigger>
+              <TabsTrigger
+                value="tab2"
+                className={`${
+                  device === "mobile"
+                    ? "py-2 text-sm"
+                    : "py-4 lg:text-md md:text-base text-sm"
+                }`}
+              >
+                기술 명세
+              </TabsTrigger>
+              <TabsTrigger
+                value="tab3"
+                className={`${
+                  device === "mobile"
+                    ? "py-2 text-sm"
+                    : "py-4 lg:text-md md:text-base text-sm"
+                }`}
+              >
+                FAQ
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="tab1" className="p-4 border rounded-md">
+              <h4 className="font-bold mb-2">제품 소개</h4>
+              <p>
+                스마트공장 솔루션은 최신 기술을 활용하여 제조 공정을 자동화하고
+                데이터 기반 의사결정을 지원합니다. 생산성 향상과 품질 개선을
+                위한 최적의 선택입니다.
+              </p>
+            </TabsContent>
+            <TabsContent value="tab2" className="p-4 border rounded-md">
+              <h4 className="font-bold mb-2">기술 명세</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>AI 기반 생산 최적화 알고리즘</li>
+                <li>실시간 모니터링 시스템</li>
+                <li>클라우드 기반 데이터 저장 및 분석</li>
+                <li>모바일 앱 연동 지원</li>
+              </ul>
+            </TabsContent>
+            <TabsContent value="tab3" className="p-4 border rounded-md">
+              <h4 className="font-bold mb-2">자주 묻는 질문</h4>
+              <div className="space-y-3">
+                <div>
+                  <p className="font-semibold">
+                    Q: 설치 기간은 얼마나 걸리나요?
+                  </p>
+                  <p>A: 일반적으로 2-4주 정도 소요됩니다.</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Q: 직원 교육도 제공되나요?</p>
+                  <p>A: 네, 기본 교육 프로그램이 포함되어 있습니다.</p>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+
       <div className="stack-slide">
-        <img
-          src="https://cellhomeblob.blob.core.windows.net/files/permission/232715061220-7320e397-08d7-415e-9002-82768467b95a.png"
-          alt="유플라이마®"
-        />
+        <img src="/temp/main_slide_00.jpg" alt="유플라이마®" />
         <span className="btn-point">
           <span></span>
           <span></span>
@@ -425,6 +505,12 @@ export default function HomeContentsForm() {
           className="mb-6"
         />
       </div>
+      <Pagination
+        pageNum={1}
+        pageSize={10}
+        totalCount={1}
+        goToPage={() => {}}
+      />
     </div>
   );
 }

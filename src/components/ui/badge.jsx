@@ -26,8 +26,8 @@ const Badge = ({
   };
 
   const sizeStyles = {
-    medium: "body-5 py-0.75 px-3",
-    small: "caption-1 py-0.5 px-2",
+    medium: "body5 py-0.75 px-3",
+    small: "caption py-0.5 px-2",
   };
 
   return (

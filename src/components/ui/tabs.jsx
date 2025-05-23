@@ -7,7 +7,7 @@ function Tabs({ className, ...props }) {
   return (
     <TabsPrimitive.Root
       data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn("flex flex-col", className)}
       {...props}
     />
   );
@@ -17,10 +17,7 @@ function TabsList({ className, ...props }) {
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
-        className
-      )}
+      className={cn("flex w-full border-b border-gray-300 relative", className)}
       {...props}
     />
   );
@@ -31,7 +28,11 @@ function TabsTrigger({ className, ...props }) {
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "data-[state=active]:bg-white dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex-1 pb-2.5 text-center font-medium relative body3",
+        "text-gray-500 hover:text-primary-blue transition-colors duration-200",
+        "data-[state=active]:text-primary-blue data-[state=active]:font-semibold",
+        "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5",
+        "after:bg-transparent data-[state=active]:after:bg-primary-blue",
         className
       )}
       {...props}
@@ -43,7 +44,7 @@ function TabsContent({ className, ...props }) {
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
+      className={cn("mt-4 outline-none", className)}
       {...props}
     />
   );

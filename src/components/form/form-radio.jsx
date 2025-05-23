@@ -61,7 +61,7 @@ const FormRadio = ({
                     </FormControl>
                   </div>
                   <FormLabel
-                    className={`mt-0 ${size === "lg" ? "body-4" : "body-5"}`}
+                    className={`mt-0 ${size === "lg" ? "body4" : "body5"}`}
                   >
                     {item.label}
                   </FormLabel>

@@ -34,7 +34,7 @@ const BoardTable = ({ data, className, onRowClick }) => {
   // 데이터가 없을 경우
   if (!data || data.length === 0) {
     return (
-      <div className="w-full py-16 text-center text-gray-500 body-3">
+      <div className="w-full py-16 text-center text-gray-500 body3">
         등록된 게시물이 없습니다.
       </div>
     );
@@ -51,10 +51,10 @@ const BoardTable = ({ data, className, onRowClick }) => {
             onClick={() => onRowClick && onRowClick(item)}
           >
             <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-600 body-4">{item.category}</span>
-              <span className="text-gray-500 body-5">{item.date}</span>
+              <span className="text-gray-600 body4">{item.category}</span>
+              <span className="text-gray-500 body5">{item.date}</span>
             </div>
-            <h3 className="body-3 font-medium mb-2 line-clamp-2">
+            <h3 className="body3 font-medium mb-2 line-clamp-2">
               {item.href ? (
                 <Link href={item.href} className="hover:text-primary-blue">
                   {item.title}
@@ -64,7 +64,7 @@ const BoardTable = ({ data, className, onRowClick }) => {
               )}
             </h3>
             <div className="text-right">
-              <span className="text-gray-500 body-5">No. {item.id}</span>
+              <span className="text-gray-500 body5">No. {item.id}</span>
             </div>
           </div>
         ))}

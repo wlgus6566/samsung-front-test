@@ -26,7 +26,7 @@ export function Actions({ className }) {
           width={16}
           height={16}
         />
-        <span className="body-4 font-semibold">검색 초기화</span>
+        <span className="body4 font-semibold">검색 초기화</span>
       </button>
     </div>
   );

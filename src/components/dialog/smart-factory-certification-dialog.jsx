@@ -78,7 +78,7 @@ export function SmartFactoryCertificationDialog() {
         </Button>
       }
     >
-      <div className="body-2 text-gray-900 pt-2">
+      <div className="body2 text-gray-900 pt-2">
         스마트공장 사업에 참여한 기업만 신청할 수 있습니다. 아래 정보를 입력해
         인증해 주세요.
       </div>

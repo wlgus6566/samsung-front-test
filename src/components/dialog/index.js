@@ -57,7 +57,7 @@ export default function DialogBase({
           <DialogHeader className="relative shrink-0 z-10 pt-6">
             <DialogTitle
               className={cn(
-                "text-gray-900 body-1 font-semibold",
+                "text-gray-900 body1 font-semibold",
                 titleClassName
               )}
             >
