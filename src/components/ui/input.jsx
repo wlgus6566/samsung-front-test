@@ -10,27 +10,26 @@ function Input({
   type = "text",
   placeholder,
   onSearch,
-  leftIcon,
-  rightIcon,
   size = "md",
   value,
   onChange,
   ...inputProps
 }) {
   const inputRef = React.useRef(null);
-  const hasLeftIcon = !!leftIcon;
   const sizeStyles = {
     md: {
       height: "h-12",
-      textSize: "text-2xs",
-      rounded: "rounded-xl",
-      iconRight: "right-4",
+      textSize: "body5",
+      padding: "px-4 py-3.25",
+      rounded: "rounded-[16px]",
+      iconRight: "right-3",
     },
     lg: {
-      height: "h-14",
-      textSize: "text-xs",
-      rounded: "rounded-2xl",
-      iconRight: "right-5",
+      height: "h-15",
+      textSize: "body4",
+      padding: "px-4.5 py-4",
+      rounded: "rounded-[20px]",
+      iconRight: "right-4",
     },
   };
 
@@ -44,17 +43,6 @@ function Input({
 
   return (
     <div className={cn("relative w-full", className)}>
-      {hasLeftIcon && (
-        <div
-          className={cn(
-            "absolute top-1/2 -translate-y-1/2",
-            size === "lg" ? "left-5" : "left-4"
-          )}
-        >
-          {leftIcon}
-        </div>
-      )}
-
       <input
         ref={inputRef}
         type={type}
@@ -62,10 +50,11 @@ function Input({
         value={value}
         onChange={onChange}
         className={cn(
-          "w-full border bg-white text-black placeholder:text-gray-700 px-4",
+          "w-full border bg-white text-black placeholder:text-gray-700",
           currentSize.height,
           currentSize.textSize,
           currentSize.rounded,
+          currentSize.padding,
           "border-gray-300",
           "focus:border-blue-500",
           "transition-colors duration-150 ease-in-out",
@@ -80,7 +69,7 @@ function Input({
         {...inputProps}
       />
 
-      {/* ❌ X 아이콘: 입력 중일 때만 표시 */}
+      {/* X 아이콘: 입력 중일 때만 표시 */}
       {type === "search" && value && (
         <button
           type="button"
@@ -99,7 +88,7 @@ function Input({
       )}
 
       {/* 🔍 돋보기 아이콘 */}
-      {!rightIcon && type === "search" && (
+      {type === "search" && (
         <Image
           src="/images/icon/ic_default_search.svg"
           alt="search"
@@ -112,17 +101,6 @@ function Input({
             currentSize.iconRight
           )}
         />
-      )}
-
-      {rightIcon && (
-        <div
-          className={cn(
-            "absolute top-1/2 -translate-y-1/2",
-            currentSize.iconRight
-          )}
-        >
-          {rightIcon}
-        </div>
       )}
     </div>
   );

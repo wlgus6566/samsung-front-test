@@ -133,12 +133,12 @@ export default function HeadBreadcrumb() {
               const isLast = index === segments.length - 1;
               return (
                 <Fragment key={href}>
-                  <BreadcrumbSeparator className="mx-[6px]">
+                  <BreadcrumbSeparator className="mx-1">
                     <Img
                       src="/images/icon/ic_default_right_angle.svg"
                       alt="chevron-right"
-                      width={24}
-                      height={24}
+                      width={16}
+                      height={16}
                       priority={true}
                     />
                   </BreadcrumbSeparator>

@@ -37,7 +37,7 @@ function BreadcrumbLink({ asChild, className, ...props }) {
   return (
     <Comp
       data-slot="breadcrumb-link"
-      className={cn("text-gray-700", className)}
+      className={cn("text-gray-700 body5 font-medium", className)}
       {...props}
     />
   );
@@ -50,7 +50,7 @@ function BreadcrumbPage({ className, ...props }) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("text-gray-700 font-semibold", className)}
+      className={cn("font-semibold text-gray-700 body5", className)}
       {...props}
     />
   );

@@ -1,8 +1,25 @@
+// "use client";
+
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Img from "@/components/ui/img";
+
+const selectSizeStyles = {
+  md: {
+    trigger: "h-12 rounded-[16px] px-4 py-3.25 body5 font-medium",
+    item: "body5 font-semibold",
+    label: "body5 font-semibold",
+    iconSize: "size-5",
+  },
+  lg: {
+    trigger: "h-15 rounded-[20px] px-4 py-4.5 body4 font-medium",
+    item: "body font-semibold",
+    label: "text-base",
+    iconSize: "size-6",
+  },
+};
 
 function Select({ ...props }) {
   return <SelectPrimitive.Root {...props} />;
@@ -25,29 +42,20 @@ function SelectTrigger({
   ...props
 }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
+  const styles = selectSizeStyles[size] || selectSizeStyles.md;
 
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex w-full items-center justify-between border bg-white placeholder:text-gray-400 outline-none",
-
-        // 사이즈별 스타일
-        isLarge
-          ? "h-14 rounded-xl px-4 py-4 text-base"
-          : "h-12 rounded-lg px-4 py-3 text-sm",
-
-        // Light theme (default)
+        "group",
+        "flex w-full items-center justify-between border bg-white placeholder:text-black outline-none",
+        styles.trigger,
         "border-gray-300 text-gray-800",
-        "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10",
-        "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-200 disabled:text-gray-400",
-
-        // Dark theme styles
-        isDark &&
-          "bg-gray-900 border-none text-white focus:border-gray-500 focus:border-gray-500",
+        "focus:border-blue-500",
+        "disabled:cursor-not-allowed disabled:bg-gray-200 disabled:border-gray-300 disabled:text-gray-700",
+        isDark && "bg-gray-900 border-none text-white focus:border-gray-500",
         isDark &&
           "disabled:bg-gray-700 disabled:border-gray-600 disabled:text-gray-500",
-
         className
       )}
       disabled={disabled}
@@ -57,13 +65,15 @@ function SelectTrigger({
       <SelectPrimitive.Icon asChild>
         <ChevronDownIcon
           className={cn(
-            isLarge ? "size-6" : "size-5",
+            styles.iconSize,
+            "transition-transform duration-200",
+            "group-data-[state=open]:rotate-180",
             disabled
               ? isDark
-                ? "text-gray-600"
-                : "text-gray-300"
+                ? "text-white"
+                : "text-black"
               : isDark
-              ? "text-gray-300"
+              ? "text-white"
               : "text-gray-500"
           )}
         />
@@ -81,18 +91,14 @@ function SelectContent({
   ...props
 }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
 
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "w-[var(--radix-select-trigger-width)] relative z-50 overflow-hidden rounded-[20px] border bg-white",
-          // Light theme (default)
+          "w-[var(--radix-select-trigger-width)] relative z-50 overflow-hidden rounded-[20px] border bg-white max-h-60 overflow-y-auto",
           "border-gray-200 text-gray-800",
-          // Dark theme styles
           isDark && "bg-gray-900 border-none text-white",
-          // Animations and positioning
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
@@ -129,34 +135,24 @@ function SelectItem({
   ...props
 }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
+  const styles = selectSizeStyles[size] || selectSizeStyles.md;
 
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-lg outline-none data-[disabled]:pointer-events-none",
-
-        // 사이즈별 패딩 스타일
+        "relative flex w-full cursor-default select-none items-center rounded-[20px] outline-none data-[disabled]:pointer-events-none",
         "px-4 py-3",
-
-        // 사이즈별 텍스트 스타일
-        isLarge ? "text-sm" : "text-2xs",
-
-        // Light theme (default)
-        "focus:bg-gray-50 focus:text-gray-900",
+        styles.item,
+        "focus:bg-gray-50 focus:text-black text-gray-900",
         "data-[highlighted]:bg-gray-50 data-[highlighted]:text-gray-900",
         "data-[state=checked]:font-semibold data-[state=checked]:text-black",
-        "data-[disabled]:text-gray-500 data-[disabled]:hover:bg-transparent data-[disabled]:hover:text-gray-500",
-
-        // Dark theme styles
-        isDark && "text-gray-100",
+        "data-[disabled]:text-gray-700 data-[disabled]:hover:bg-transparent data-[disabled]:hover:text-gray-500",
+        isDark && "text-gray-200",
         isDark &&
           "focus:bg-gray-700 focus:text-gray-50 data-[highlighted]:bg-gray-700 data-[highlighted]:text-gray-50",
-        isDark &&
-          "data-[state=checked]:text-white data-[state=checked]:font-semibold",
+        isDark && "data-[state=checked]:text-white",
         isDark &&
           "data-[disabled]:text-gray-600 data-[disabled]:hover:bg-transparent",
-
         className
       )}
       disabled={disabled}
@@ -166,9 +162,9 @@ function SelectItem({
         <SelectPrimitive.ItemIndicator>
           <Img
             src="/images/icon/ic_default_check.svg"
-            alt="arrow-up"
-            width={isLarge ? 24 : 20}
-            height={isLarge ? 24 : 20}
+            alt="체크"
+            width={size === "lg" ? 24 : 20}
+            height={size === "lg" ? 24 : 20}
           />
         </SelectPrimitive.ItemIndicator>
       </span>
@@ -179,22 +175,15 @@ function SelectItem({
 
 function SelectLabel({ className, theme = "light", size = "md", ...props }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
+  const styles = selectSizeStyles[size] || selectSizeStyles.md;
 
   return (
     <SelectPrimitive.Label
       className={cn(
         "py-1.5 pl-8 pr-2 font-semibold",
-
-        // 사이즈별 텍스트 스타일
-        isLarge ? "text-base" : "text-sm",
-
-        // Light theme (default)
+        styles.label,
         "text-gray-900",
-
-        // Dark theme styles
         isDark && "text-white",
-
         className
       )}
       {...props}
@@ -208,9 +197,7 @@ function SelectSeparator({ className, theme = "light", ...props }) {
     <SelectPrimitive.Separator
       className={cn(
         "-mx-1 my-1 h-px",
-        // Light theme (default)
         "bg-gray-200",
-        // Dark theme styles
         isDark && "bg-gray-700",
         className
       )}
@@ -226,21 +213,19 @@ function SelectScrollUpButton({
   ...props
 }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
+  const styles = selectSizeStyles[size] || selectSizeStyles.md;
 
   return (
     <SelectPrimitive.ScrollUpButton
       className={cn(
         "flex cursor-default items-center justify-center py-1",
-        // Light theme (default)
         "text-gray-500 hover:text-gray-700",
-        // Dark theme styles
         isDark && "text-gray-400 hover:text-gray-200",
         className
       )}
       {...props}
     >
-      <ChevronUpIcon className={isLarge ? "size-6" : "size-5"} />
+      <ChevronUpIcon className={styles.iconSize} />
     </SelectPrimitive.ScrollUpButton>
   );
 }
@@ -252,21 +237,19 @@ function SelectScrollDownButton({
   ...props
 }) {
   const isDark = theme === "dark";
-  const isLarge = size === "lg";
+  const styles = selectSizeStyles[size] || selectSizeStyles.md;
 
   return (
     <SelectPrimitive.ScrollDownButton
       className={cn(
         "flex cursor-default items-center justify-center py-1",
-        // Light theme (default)
         "text-gray-500 hover:text-gray-700",
-        // Dark theme styles
         isDark && "text-gray-400 hover:text-gray-200",
         className
       )}
       {...props}
     >
-      <ChevronDownIcon className={isLarge ? "size-6" : "size-5"} />
+      <ChevronDownIcon className={styles.iconSize} />
     </SelectPrimitive.ScrollDownButton>
   );
 }

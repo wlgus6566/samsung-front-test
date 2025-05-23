@@ -61,7 +61,11 @@ const FormRadio = ({
                     </FormControl>
                   </div>
                   <FormLabel
-                    className={`mt-0 ${size === "lg" ? "body4" : "body5"}`}
+                    className={`mt-0 mb-0 ${
+                      size === "lg"
+                        ? "body4 font-semibold"
+                        : "body5 font-medium"
+                    }`}
                   >
                     {item.label}
                   </FormLabel>

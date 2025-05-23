@@ -17,13 +17,11 @@ export function SearchInput({ label, wrapClassName, className, placeholder }) {
       )}
     >
       {label && (
-        <Label className="text-xs font-medium text-muted-foreground">
-          {label}
-        </Label>
+        <Label className="body5 font-medium text-gray-700">{label}</Label>
       )}
       <Input
         type="search"
-        size="lg"
+        size="md"
         placeholder={placeholder || "검색어를 입력해 주세요"}
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}

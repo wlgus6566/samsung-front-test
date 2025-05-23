@@ -8,8 +8,6 @@ export default async function DetailLayout({ children }) {
   return (
     <Suspense fallback={<Loading />}>
       <Contents title="예시" description="예시입니다.">
-        <div className="text-display text-red-500">123 </div>
-        <Button variant="brand">123</Button>
         {children}
       </Contents>
     </Suspense>

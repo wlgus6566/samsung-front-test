@@ -5,8 +5,8 @@ import Img from "@/components/ui/img";
 import { cn } from "@/lib/utils";
 
 const responsiveSizeMap = {
-  lg: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-15 md:px-8 md:py-4 md:rounded-[20px] md:text-sm",
-  md: "h-9 px-3 py-2 rounded-[22px] text-2xs sm:h-13 sm:px-7 sm:py-3 sm:rounded-full sm:text-md md:h-14 md:px-7 md:py-3 md:rounded-full md:text-md",
+  lg: "body-3 h-9 px-3 py-2 rounded-[22px] sm:h-13 sm:px-7 sm:py-3 md:h-15 md:px-8 md:py-4 md:rounded-[20px]",
+  md: "body-4 h-9 px-3 py-2 rounded-[16px] sm:h-13 sm:px-7 sm:py-3 md:h-12 md:px-5 md:py-3 md:rounded-[16px]",
 };
 
 const buttonVariants = cva(
@@ -15,14 +15,14 @@ const buttonVariants = cva(
     variants: {
       variant: {
         brand:
-          "hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500 display text-red-500",
+          "hover:brightness-[90%] disabled:bg-gray-300 disabled:text-gray-500 display text-red-500",
         primary:
-          "border border-gray-300 bg-blue-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500",
+          "border border-gray-300 bg-blue-500 hover:brightness-[90%] disabled:bg-gray-300 disabled:text-gray-500",
         secondary:
-          "border border-gray-300 bg-green-500 hover:brightness-[85%] disabled:bg-gray-300 disabled:text-gray-500",
+          "border border-gray-300 bg-green-500 hover:brightness-[90%] disabled:bg-gray-300 disabled:text-gray-500",
         outline:
-          "border border-gray-300 text-black disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
-        link: "text-primary-blue underline-offset-4 hover:brightness-[85%] hover:underline disabled:text-gray-500",
+          "border border-gray-300 hover:bg-gray-300 text-black disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
+        link: "text-primary-blue underline-offset-4 hover:brightness-[90%] hover:underline disabled:text-gray-500",
       },
     },
     defaultVariants: {

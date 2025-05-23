@@ -52,7 +52,7 @@
   --breakpoint-sm: 48rem; /* 768px */
   --breakpoint-md: 64rem; /* 1024px */
   --breakpoint-lg: 80rem; /* 1280px */
-  --breakpoint-xl: 91.25rem; /* 1460px */
+  --breakpoint-xl: 92.25rem; /* 1476px */
   --breakpoint-2xl: 100rem; /* 1600px */
 
   --text-display: 2.5rem;
@@ -147,28 +147,28 @@
     @apply text-2xl sm:text-3xl md:text-4xl;
   }
   .heading1 {
-    @apply text-md sm:text-2xl md:text-3xl;
+    @apply text-ml sm:text-2xl md:text-3xl;
   }
   .heading2 {
-    @apply text-sm sm:text-xl md:text-2xl;
+    @apply text-md sm:text-xl md:text-2xl;
   }
   .heading3 {
-    @apply text-sm sm:text-lg md:text-xl;
+    @apply text-md sm:text-lg md:text-xl;
   }
   .heading4 {
-    @apply text-sm sm:text-md md:text-lg;
+    @apply text-md sm:text-ml md:text-lg;
   }
   .body1 {
-    @apply text-xs sm:text-sm md:text-ml;
+    @apply text-sm sm:text-md md:text-ml;
   }
   .body2 {
-    @apply text-2xs sm:text-xs md:text-md;
+    @apply text-xs sm:text-sm md:text-md;
   }
   .body3 {
-    @apply text-3xs sm:text-2xs md:text-sm;
+    @apply text-2xs sm:text-xs md:text-sm;
   }
   .body4 {
-    @apply text-3xs sm:text-3xs md:text-xs;
+    @apply text-3xs sm:text-xs md:text-sm;
   }
   .body5 {
     @apply text-3xs sm:text-3xs md:text-2xs;

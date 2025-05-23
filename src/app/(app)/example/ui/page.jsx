@@ -183,6 +183,80 @@ export default function HomeContentsForm() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
+      <h2 className="heading2 mb-4 font-bold">타이포그래피 예시</h2>
+      <table className="table-auto border-collapse w-full text-left text-sm text-gray-800">
+        <thead>
+          <tr>
+            <th className="border-b pb-2">클래스명</th>
+            <th className="border-b pb-2">PC (md)</th>
+            <th className="border-b pb-2">Tablet (sm)</th>
+            <th className="border-b pb-2">Mobile</th>
+          </tr>
+        </thead>
+        <tbody className="align-top">
+          <tr>
+            <td className="py-2 font-semibold">.display</td>
+            <td>4xl (60px)</td>
+            <td>3xl (52px)</td>
+            <td>2xl (40px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.heading1</td>
+            <td>3xl (52px)</td>
+            <td>2xl (40px)</td>
+            <td>ml (24px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.heading2</td>
+            <td>2xl (40px)</td>
+            <td>xl (36px)</td>
+            <td>md (20px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.heading3</td>
+            <td>xl (36px)</td>
+            <td>lg (32px)</td>
+            <td>md (20px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.body1</td>
+            <td>ml (24px)</td>
+            <td>md (20px)</td>
+            <td>sm (18px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.body2</td>
+            <td>md (20px)</td>
+            <td>sm (18px)</td>
+            <td>xs (16px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.body3</td>
+            <td>sm (18px)</td>
+            <td>xs (16px)</td>
+            <td>2xs (14px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.body4</td>
+            <td>sm (16px)</td>
+            <td>xs (14px)</td>
+            <td>3xs (12px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.body5</td>
+            <td>2xs (14px)</td>
+            <td>3xs (12px)</td>
+            <td>3xs (12px)</td>
+          </tr>
+          <tr>
+            <td className="py-2 font-semibold">.caption</td>
+            <td>3xs (12px)</td>
+            <td>3xs (12px)</td>
+            <td>3xs (12px)</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h2 className="text-xl font-bold mt-8 mb-4">
         {device === "mobile" && <p>📱 모바일 환경입니다!</p>}
         {device === "tablet" && <p>💻 태블릿 환경입니다!</p>}

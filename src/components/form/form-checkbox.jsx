@@ -67,7 +67,13 @@ const FormCheckbox = ({
                           />
                         </FormControl>
                       </div>
-                      <FormLabel size={size} className="mt-0">
+                      <FormLabel
+                        className={`mt-0 mb-0 ${
+                          size === "lg"
+                            ? "body4 font-semibold"
+                            : "body5 font-medium"
+                        }`}
+                      >
                         {item.label}
                       </FormLabel>
                     </FormItem>

@@ -1,8 +1,20 @@
 "use client";
 
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
+
+const sizeStyles = {
+  md: {
+    textSize: "body5",
+    padding: "px-4 py-3.25",
+    rounded: "rounded-[16px]",
+  },
+  lg: {
+    textSize: "body4",
+    padding: "px-4.5 py-4",
+    rounded: "rounded-[16px]",
+  },
+};
 
 function Textarea({
   className,
@@ -10,17 +22,19 @@ function Textarea({
   value,
   onChange,
   placeholder,
+  height = "h-[126px]",
+  size = "lg",
   ...props
 }) {
   const [charCount, setCharCount] = React.useState(value?.length || 0);
+  const currentSize = sizeStyles[size] || sizeStyles.md;
 
   const handleChange = (e) => {
     const newValue = e.target.value;
     setCharCount(newValue.length);
-    if (onChange) onChange(e);
+    onChange?.(e);
   };
 
-  // useEffect를 사용하여 외부에서 value가 변경될 때 charCount 동기화
   React.useEffect(() => {
     setCharCount(value?.length || 0);
   }, [value]);
@@ -33,22 +47,23 @@ function Textarea({
         placeholder={placeholder}
         maxLength={maxLength}
         className={cn(
-          "w-full border bg-white text-black placeholder:text-gray-700 placeholder:text-2xs p-4",
-          "h-32", // 기본 높이 설정
-          "text-2xs",
-          "rounded-xl",
+          "w-full border bg-white text-black placeholder:text-gray-700 placeholder:body4",
+          height,
+          currentSize.textSize,
+          currentSize.padding,
+          currentSize.rounded,
           "border-gray-300",
-          "focus:border-primary-blue focus:ring-1 focus:ring-primary-blue",
+          "focus:border-primary-blue",
           "transition-colors duration-150 ease-in-out",
           "outline-none appearance-none",
-          "disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-400",
-          "resize-none", // 사용자가 크기 조절 불가능하게 설정
+          "disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-700 disabled:border-gray-300",
+          "resize-none",
           className
         )}
         {...props}
       />
       {maxLength && (
-        <div className="absolute bottom-4 right-4 text-3xs text-gray-700">
+        <div className="absolute bottom-4 right-4 caption text-gray-700">
           <span className="text-black font-semibold">{charCount}</span>/
           {maxLength}
         </div>

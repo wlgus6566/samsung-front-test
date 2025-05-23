@@ -11,8 +11,52 @@ import FormPhone from "@/components/form/form-phone";
 import { Form } from "@/components/ui/form";
 import FormPrivacyConsent from "@/components/form/form-privacy-consent";
 import FormLayout from "@/components/layout/form-layout";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  companyName: z.string(),
+  representativeName: z
+    .string({ required_error: "대표자명을 입력해 주세요." })
+    .min(1, "대표자명을 입력해 주세요."),
+  representativePhone: z.object({
+    phone1: z.string().min(2, "전화번호를 입력해 주세요."),
+    phone2: z.string().min(3, "전화번호를 입력해 주세요."),
+    phone3: z.string().min(4, "전화번호를 입력해 주세요."),
+  }),
+  email: z
+    .string({ required_error: "이메일을 입력해 주세요." })
+    .email("유효한 이메일 주소를 입력해 주세요."),
+  zipCode: z.string().optional(),
+  address: z.string(),
+  detailAddress: z.string().optional(),
+  country: z
+    .string({ required_error: "사업장 운영 국가를 선택해 주세요." })
+    .min(1, "사업장 운영 국가를 선택해 주세요."),
+  establishedYear: z
+    .string({ required_error: "설립 연도를 선택해 주세요." })
+    .min(1, "설립 연도를 선택해 주세요."),
+  industry: z
+    .string({ required_error: "업종을 선택해 주세요." })
+    .min(1, "업종을 선택해 주세요."),
+  mainMarket: z
+    .string({ required_error: "주요 시장을 선택해 주세요." })
+    .min(1, "주요 시장을 선택해 주세요."),
+  companyDescription: z
+    .string({ required_error: "회사 소개를 입력해 주세요." })
+    .min(1, "회사 소개를 입력해 주세요.")
+    .max(1500, "회사 소개는 최대 1,500자까지 입력할 수 있어요."),
+  companyFile: z.any().refine((file) => file !== undefined, {
+    message: "파일을 첨부해 주세요.",
+  }),
+  privacyConsent: z.boolean().refine((val) => val === true, {
+    message: "개인정보 수집에 동의해야 합니다.",
+  }),
+});
+
 export default function FormExPage() {
   const form = useForm({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "이모션",
       representativePhone: {
@@ -33,7 +77,6 @@ export default function FormExPage() {
       privacyConsent: false,
     },
   });
-
   const onSubmit = (data) => {
     console.log(data);
   };
@@ -69,20 +112,23 @@ export default function FormExPage() {
                 />
               </div>
             </div>
-
-            <FormPhone
-              control={form.control}
-              name="representativePhone"
-              label="대표자 연락처"
-              required
-            />
-
+            {/* 대표자 연락처 */}
+            <div>
+              <FormPhone
+                control={form.control}
+                name="representativePhone"
+                label="대표자 연락처"
+                required
+              />
+            </div>
             {/* 대표자 이메일 */}
             <div>
-              <FormEmail
+              <FormInput
                 control={form.control}
                 name="email"
                 label="대표자 이메일"
+                type="email"
+                className="max-w-[546px]"
                 placeholder="이메일 입력"
                 required
                 description="입력하신 이메일로 상품 등록 신청 결과와 해당 상품의 고객 문의 내용이 발송됩니다. 정확한 이메일 주소를 입력해 주세요."
@@ -175,7 +221,7 @@ export default function FormExPage() {
                   <Button
                     variant="outline"
                     type="button"
-                    className="border-blue-500 text-blue-500 h-12 mt-8"
+                    className="border-blue-500 text-blue-500 hover:bg-white md:px-6"
                   >
                     추가하기
                   </Button>
@@ -219,10 +265,15 @@ export default function FormExPage() {
           </FormLayout>
 
           <div className="flex justify-center gap-4">
-            <Button size="lg" type="button" variant="outline" className="px-14">
+            <Button
+              size="lg"
+              type="button"
+              variant="outline"
+              className="md:min-w-[173px]"
+            >
               이전으로
             </Button>
-            <Button size="lg" type="submit" className="px-14">
+            <Button size="lg" type="submit" className="md:min-w-[173px]">
               제출하기
             </Button>
           </div>

@@ -40,7 +40,7 @@ const FormPrivacyConsent = ({
                 disabled={disabled}
               />
             </FormControl>
-            <FormLabel className="mt-0 font-medium">
+            <FormLabel className="mt-0 mb-0 body3 font-medium">
               {consentLabel}
               {required && <span className="text-primary-blue">(필수)</span>}
             </FormLabel>

@@ -57,7 +57,7 @@ function FormItem({ className, ...props }) {
   );
 }
 
-function FormLabel({ className, size = "default", required, ...props }) {
+function FormLabel({ className, labelSize = "default", required, ...props }) {
   const { error, formItemId } = useFormField();
 
   return (
@@ -65,7 +65,9 @@ function FormLabel({ className, size = "default", required, ...props }) {
       data-slot="form-label"
       data-error={!!error}
       className={cn(
-        "mb-2 text-sm font-semibold",
+        `mb-2 ${
+          labelSize === "sm" ? "body5 font-medium" : "body4 font-semibold"
+        }`,
         required &&
           "after:content-['*'] after:text-destructive after:ml-0.5 after:mt-0.5 after:text-red-600",
         className
