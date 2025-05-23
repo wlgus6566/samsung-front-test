@@ -28,7 +28,7 @@ function TabsTrigger({ className, ...props }) {
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "flex-1 pb-2.5 text-center font-medium relative body3",
+        "flex-1 pb-2.5 text-center font-medium relative body1",
         "text-gray-500 hover:text-primary-blue transition-colors duration-200",
         "data-[state=active]:text-primary-blue data-[state=active]:font-semibold",
         "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-0.5",

@@ -4,7 +4,7 @@ function FormLayout({ children, title, num, className }) {
   return (
     <>
       <div
-        className={`flex justify-between gap-[123px] max-w-[var(--breakpoint-xl)] p-8 ${className} form-layout`}
+        className={`flex justify-between gap-[123px] ${className} form-layout md:mt-20`}
       >
         <div className="w-51">
           <span className="block text-primary-blue font-semibold body2 font-poppins">

@@ -9,7 +9,7 @@ export default function Contents({
   marginBottom = "mb-[200px]",
 }) {
   return (
-    <div className="max-w-[1396px] mx-auto min-h-[calc(100vh-480px)]">
+    <div className="max-w-[var(--breakpoint-xl)] md:px-10 px-5 mx-auto min-h-[calc(100vh-480px)]">
       <KeyVisual
         title={title}
         description={description}

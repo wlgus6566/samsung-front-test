@@ -21,6 +21,8 @@ import BoardTable from "@/components/ui/board-table";
 import Pagination from "@/components/ui/pagination";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tag } from "@/components/ui/tag";
+
 const categoryItems = [
   { label: "일반", value: "general" },
   { label: "기술", value: "tech" },
@@ -195,61 +197,61 @@ export default function HomeContentsForm() {
         </thead>
         <tbody className="align-top">
           <tr>
-            <td className="py-2 font-semibold">.display</td>
+            <td className="py-2 font-semibold display">.display</td>
             <td>4xl (60px)</td>
             <td>3xl (52px)</td>
             <td>2xl (40px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.heading1</td>
+            <td className="py-2 font-semibold heading1">.heading1</td>
             <td>3xl (52px)</td>
             <td>2xl (40px)</td>
             <td>ml (24px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.heading2</td>
+            <td className="py-2 font-semibold heading2">.heading2</td>
             <td>2xl (40px)</td>
             <td>xl (36px)</td>
             <td>md (20px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.heading3</td>
+            <td className="py-2 font-semibold heading3">.heading3</td>
             <td>xl (36px)</td>
             <td>lg (32px)</td>
             <td>md (20px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.body1</td>
+            <td className="py-2 font-semibold body1">.body1</td>
             <td>ml (24px)</td>
             <td>md (20px)</td>
             <td>sm (18px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.body2</td>
+            <td className="py-2 font-semibold body2">.body2</td>
             <td>md (20px)</td>
             <td>sm (18px)</td>
             <td>xs (16px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.body3</td>
+            <td className="py-2 font-semibold body3">.body3</td>
             <td>sm (18px)</td>
             <td>xs (16px)</td>
             <td>2xs (14px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.body4</td>
+            <td className="py-2 font-semibold body4">.body4</td>
             <td>sm (16px)</td>
             <td>xs (14px)</td>
             <td>3xs (12px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.body5</td>
+            <td className="py-2 font-semibold body5">.body5</td>
             <td>2xs (14px)</td>
             <td>3xs (12px)</td>
             <td>3xs (12px)</td>
           </tr>
           <tr>
-            <td className="py-2 font-semibold">.caption</td>
+            <td className="py-2 font-semibold caption">.caption</td>
             <td>3xs (12px)</td>
             <td>3xs (12px)</td>
             <td>3xs (12px)</td>
@@ -270,36 +272,9 @@ export default function HomeContentsForm() {
           </h4>
           <Tabs defaultValue="tab1" className="w-full">
             <TabsList className="mb-4">
-              <TabsTrigger
-                value="tab1"
-                className={`${
-                  device === "mobile"
-                    ? "py-2 text-sm"
-                    : "py-4 lg:text-md md:text-base text-sm"
-                }`}
-              >
-                제품 소개
-              </TabsTrigger>
-              <TabsTrigger
-                value="tab2"
-                className={`${
-                  device === "mobile"
-                    ? "py-2 text-sm"
-                    : "py-4 lg:text-md md:text-base text-sm"
-                }`}
-              >
-                기술 명세
-              </TabsTrigger>
-              <TabsTrigger
-                value="tab3"
-                className={`${
-                  device === "mobile"
-                    ? "py-2 text-sm"
-                    : "py-4 lg:text-md md:text-base text-sm"
-                }`}
-              >
-                FAQ
-              </TabsTrigger>
+              <TabsTrigger value="tab1">제품 소개</TabsTrigger>
+              <TabsTrigger value="tab2">기술 명세</TabsTrigger>
+              <TabsTrigger value="tab3">FAQ</TabsTrigger>
             </TabsList>
             <TabsContent value="tab1" className="p-4 border rounded-md">
               <h4 className="font-bold mb-2">제품 소개</h4>
@@ -415,31 +390,57 @@ export default function HomeContentsForm() {
           <div>
             <p className="text-sm text-gray-500 mb-2">Medium 사이즈</p>
             <div className="flex gap-2">
-              <Badge type="blue">blue</Badge>
-              <Badge type="green">green</Badge>
-              <Badge type="red">red</Badge>
-              <Badge type="gray">gray</Badge>
+              <Badge color="blue">blue</Badge>
+              <Badge color="green">green</Badge>
+              <Badge color="red">red</Badge>
+              <Badge color="gray">gray</Badge>
             </div>
           </div>
           <div>
             <p className="text-sm text-gray-500 mb-2">Small 사이즈</p>
             <div className="flex gap-2">
-              <Badge type="blue" size="small">
+              <Badge color="blue" size="small">
                 blue
               </Badge>
-              <Badge type="green" size="small">
+              <Badge color="green" size="small">
                 green
               </Badge>
-              <Badge type="red" size="small">
+              <Badge color="red" size="small">
                 red
               </Badge>
-              <Badge type="gray" size="small">
+              <Badge color="gray" size="small">
                 gray
               </Badge>
             </div>
           </div>
         </div>
       </div>
+
+      <h2 className="text-lg font-bold my-8">Label 컴포넌트 예시</h2>
+      <div className="border rounded p-6 bg-white shadow mb-8">
+        <div className="flex flex-wrap gap-6">
+          <div>
+            <p className="text-sm text-gray-500 mb-2">기본 타입</p>
+            <div className="flex flex-wrap gap-2">
+              <Tag color="black">black</Tag>
+              <Tag color="white">white</Tag>
+              <Tag color="blue">blue</Tag>
+              <Tag color="gray">gray</Tag>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm text-gray-500 mb-2">활용 예시</p>
+            <div className="flex flex-wrap gap-2 items-center">
+              <Tag color="black">신규</Tag>
+              <Tag color="white">진행중</Tag>
+              <Tag color="blue">완료</Tag>
+              <Tag color="gray">마감</Tag>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

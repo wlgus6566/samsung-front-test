@@ -13,7 +13,7 @@ import FormPrivacyConsent from "@/components/form/form-privacy-consent";
 import FormLayout from "@/components/layout/form-layout";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormTop from "@/components/form/form-top";
+import FormTop from "@/components/layout/form-top";
 import { useFieldArray, useWatch } from "react-hook-form";
 
 import {
