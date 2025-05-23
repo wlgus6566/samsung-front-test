@@ -9,15 +9,13 @@ export default function Contents({
   marginBottom = "mb-[200px]",
 }) {
   return (
-    <div className="max-w-[var(--breakpoint-xl)] md:px-10 px-5 mx-auto min-h-[calc(100vh-480px)]">
+    <div className="max-w-[var(--breakpoint-xl)] mx-auto md:px-10 px-5 mx-auto min-h-[calc(100vh-480px)]">
       <KeyVisual
         title={title}
         description={description}
         backgroundImage={backgroundImage}
       />
-      <main
-        className={`container-fixed ${marginTop} ${marginBottom} ${className}`}
-      >
+      <main className={`${marginTop} ${marginBottom} ${className}`}>
         {children}
       </main>
     </div>

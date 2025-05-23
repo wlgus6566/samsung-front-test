@@ -484,7 +484,7 @@ const FormFile = ({
           <FormItem
             className={cn(
               wrapClassName,
-              fileType === "image" && "flex items-start"
+              fileType === "image" && "flex items-start max-md:flex-wrap"
             )}
           >
             {label && (
@@ -492,7 +492,7 @@ const FormFile = ({
                 required={required}
                 className={cn(
                   labelClassName,
-                  fileType === "image" && "mt-0, w-[25%]"
+                  fileType === "image" && "mt-0 min-md:w-[25%] w-full mb-3"
                 )}
               >
                 {label}
@@ -603,7 +603,9 @@ const FormFile = ({
                           width={24}
                           height={24}
                         />
-                        <span className="ml-2 text-gray-500">파일 첨부</span>
+                        <span className="ml-2 text-gray-500 body5">
+                          파일 첨부
+                        </span>
                       </div>
 
                       {validFiles.length > 0 && (
@@ -611,7 +613,7 @@ const FormFile = ({
                           {validFiles.map((file, index) => (
                             <li
                               key={index}
-                              className="flex items-center justify-between border border-gray-300 rounded-[16px] py-3.25 px-4 body-5 font-medium"
+                              className="flex items-center justify-between border border-gray-300 rounded-[16px] py-3.25 px-4 body5 font-medium"
                             >
                               <div className="flex items-center gap-2 overflow-hidden">
                                 <Img

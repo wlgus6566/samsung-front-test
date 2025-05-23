@@ -37,7 +37,7 @@ export function Field({ options = [], className }) {
     <Select
       value={searchField}
       onValueChange={setSearchField}
-      className={cn("w-[150px] max-md:w-full", className)}
+      className={cn("w-[150px] min-md:w-full", className)}
     >
       <SelectTrigger>
         <SelectValue placeholder="검색 조건" />

@@ -5,7 +5,7 @@ import Img from "@/components/ui/img";
 import { cn } from "@/lib/utils";
 
 const responsiveSizeMap = {
-  lg: "body-3 h-9 px-3 py-2 rounded-[22px] sm:h-13 sm:px-7 sm:py-3 md:h-15 md:px-8 md:py-4 md:rounded-[20px]",
+  lg: "body-3 px-5 py-3 rounded-[16px] min-md:h-15 min-md:px-8 min-md:py-4 min-md:rounded-[20px]",
   md: "body-4 h-9 px-3 py-2 rounded-[16px] sm:h-13 sm:px-7 sm:py-3 md:h-12 md:px-5 md:py-3 md:rounded-[16px]",
 };
 

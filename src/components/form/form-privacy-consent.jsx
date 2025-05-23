@@ -24,8 +24,8 @@ const FormPrivacyConsent = ({
       render={({ field }) => (
         <FormItem className={cn("space-y-5", className)}>
           {/* 개인정보 수집 동의 텍스트 박스 */}
-          <div className="rounded-[20px] overflow-hidden p-8 border border-gray-300  h-[200px]">
-            <div className="h-full whitespace-pre-line text-gray-700 body-5 bg-white overflow-y-auto">
+          <div className="rounded-[20px] overflow-hidden p-8 min-md:p-5 border border-gray-300 h-[200px]">
+            <div className="h-full whitespace-pre-line text-gray-700 body5 bg-white overflow-y-auto">
               {consentText}
             </div>
           </div>

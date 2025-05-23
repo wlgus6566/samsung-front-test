@@ -15,7 +15,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormTop from "@/components/layout/form-top";
 import { useFieldArray, useWatch } from "react-hook-form";
-
+import { useBreakpoint } from "@/hooks/use-breakpoint";
+import Img from "@/components/ui/img";
 import {
   countryOptions,
   industryOptions,
@@ -71,6 +72,7 @@ const formSchema = z.object({
 });
 
 export default function FormExPage() {
+  const breakpoint = useBreakpoint();
   // form 초기값
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -114,24 +116,22 @@ export default function FormExPage() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormLayout num={"01"} title="기업 기본 정보">
             {/* 기업명 및 대표자명 */}
-            <div className="flex gap-5">
-              <div className="flex-1">
-                <FormInput
-                  control={form.control}
-                  name="companyName"
-                  label="기업명"
-                  disabled
-                />
-              </div>
-              <div className="flex-1">
-                <FormInput
-                  control={form.control}
-                  name="representativeName"
-                  label="대표자명"
-                  placeholder="이름 입력"
-                  required
-                />
-              </div>
+            <div className="flex flex-wrap gap-5 max-md:gap-7">
+              <FormInput
+                control={form.control}
+                name="companyName"
+                label="기업명"
+                className="md:flex-1 max-md:w-full"
+                disabled
+              />
+              <FormInput
+                control={form.control}
+                name="representativeName"
+                label="대표자명"
+                placeholder="이름 입력"
+                className="md:flex-1 max-md:w-full"
+                required
+              />
             </div>
             {/* 대표자 이메일 */}
             <div>
@@ -140,21 +140,21 @@ export default function FormExPage() {
                 name="email"
                 label="대표자 이메일"
                 type="email"
-                className="max-w-[546px]"
+                className="md:max-w-[546px] max-md:w-full"
                 placeholder="이메일 입력"
                 required
                 description="입력하신 이메일로 상품 등록 신청 결과와 해당 상품의 고객 문의 내용이 발송됩니다. 정확한 이메일 주소를 입력해 주세요."
               />
             </div>
             {/* 대표자 연락처 */}
-            <div>
+            {/* <div>
               <FormPhone
                 control={form.control}
                 name="representativePhone"
                 label="대표자 연락처"
                 required
               />
-            </div>
+            </div> */}
 
             {/* 주소 */}
             <div>
@@ -178,32 +178,30 @@ export default function FormExPage() {
             </div>
 
             {/* 사업장 운영 국가 및 설립 연도 */}
-            <div className="flex gap-5">
-              <div className="flex-1">
-                <FormSelect
-                  control={form.control}
-                  name="country"
-                  label="사업장 운영 국가"
-                  placeholder="선택"
-                  required
-                  items={countryOptions}
-                />
-              </div>
-              <div className="flex-1">
-                <FormSelect
-                  control={form.control}
-                  name="establishedYear"
-                  label="설립 연도"
-                  placeholder="선택"
-                  required
-                  items={yearsOptions}
-                />
-              </div>
+            <div className="flex flex-wrap gap-5 max-md:gap-7">
+              <FormSelect
+                control={form.control}
+                name="country"
+                label="사업장 운영 국가"
+                placeholder="선택"
+                required
+                className="md:flex-1 max-md:w-full"
+                items={countryOptions}
+              />
+              <FormSelect
+                control={form.control}
+                name="establishedYear"
+                label="설립 연도"
+                placeholder="선택"
+                required
+                className="md:flex-1 max-md:w-full"
+                items={yearsOptions}
+              />
             </div>
 
             {/* 업종 및 주요 시장 */}
-            <div className="grid grid-cols-2 gap-5">
-              <div className="flex flex-wrap gap-2 flex-1">
+            <div className="flex flex-wrap gap-5 max-md:gap-7">
+              <div className="flex gap-2 md:flex-1 max-md:w-full">
                 {fields.map((_, index) => (
                   <div key={index} className="w-full flex gap-2 mb-3">
                     <div className="flex-1">
@@ -228,9 +226,16 @@ export default function FormExPage() {
                             console.log(form.getValues("mainMarket"));
                             append({ value: "none", label: "선택" });
                           }}
-                          className="border-blue-500 text-blue-500 hover:bg-white h-12"
+                          className="border-blue-500 text-blue-500 hover:bg-white h-12 flex items-center"
                         >
-                          추가하기
+                          {breakpoint !== "pc" ? "추가" : "추가하기"}
+                          <Img
+                            src="/images/icon/ic_plus_blue.svg"
+                            alt="추가"
+                            className="ml-1"
+                            width={16}
+                            height={16}
+                          />
                         </Button>
                       ) : (
                         <Button
@@ -245,16 +250,15 @@ export default function FormExPage() {
                   </div>
                 ))}
               </div>
-              <div className="flex-1">
-                <FormSelect
-                  control={form.control}
-                  name="industry"
-                  label="업종"
-                  placeholder="선택"
-                  required
-                  items={industryOptions}
-                />
-              </div>
+              <FormSelect
+                control={form.control}
+                name="industry"
+                label="업종"
+                placeholder="선택"
+                className="md:flex-1 max-md:w-full"
+                required
+                items={industryOptions}
+              />
             </div>
 
             {/* 회사 소개 */}
@@ -325,16 +329,20 @@ export default function FormExPage() {
             />
           </FormLayout>
 
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center mt-10.5 min-md:mt-20 gap-2 min-md:gap-4">
             <Button
               size="lg"
               type="button"
               variant="outline"
-              className="md:min-w-[173px]"
+              className="min-md:min-w-[173px] max-md:w-full"
             >
               이전으로
             </Button>
-            <Button size="lg" type="submit" className="md:min-w-[173px]">
+            <Button
+              size="lg"
+              type="submit"
+              className="min-md:min-w-[173px] max-md:w-full"
+            >
               제출하기
             </Button>
           </div>
