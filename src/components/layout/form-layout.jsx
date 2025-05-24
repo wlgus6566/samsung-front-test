@@ -5,7 +5,7 @@ function FormLayout({ children, title, num, className }) {
     <>
       <div
         className={cn(
-          "flex justify-between flex-wrap md:gap-[123px] ${className} form-layout md:mt-20 max-md:my-3 ",
+          "flex justify-between flex-wrap md:gap-[123px] form-layout md:mt-20 max-md:my-3 ",
           className
         )}
       >
@@ -23,9 +23,9 @@ function FormLayout({ children, title, num, className }) {
         .form-layout + .form-layout {
           margin-top: 64px;
         }
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
           .form-layout + .form-layout {
-            border-top: 1px solid var(--color-gray-300);
+            border-top: 1px solid var(--color-gray-900);
             margin-top: 110px;
             padding-top: 110px;
           }

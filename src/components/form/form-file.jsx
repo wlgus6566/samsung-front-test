@@ -484,7 +484,8 @@ const FormFile = ({
           <FormItem
             className={cn(
               wrapClassName,
-              fileType === "image" && "flex items-start max-md:flex-wrap"
+              fileType === "image" &&
+                "flex items-start max-md:flex-wrap form-image"
             )}
           >
             {label && (
@@ -657,7 +658,7 @@ const FormFile = ({
               </FormControl>
 
               {description && !error && (
-                <FormDescription className={cn("mt-1", descriptionClassName)}>
+                <FormDescription className={cn("mt-3", descriptionClassName)}>
                   {description}
                 </FormDescription>
               )}

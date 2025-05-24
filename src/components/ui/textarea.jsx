@@ -22,8 +22,7 @@ function Textarea({
   value,
   onChange,
   placeholder,
-  height = "h-[126px]",
-  size = "lg",
+  size = "md",
   ...props
 }) {
   const [charCount, setCharCount] = React.useState(value?.length || 0);
@@ -48,7 +47,6 @@ function Textarea({
         maxLength={maxLength}
         className={cn(
           "w-full border bg-white text-black placeholder:text-gray-700 placeholder:body4",
-          height,
           currentSize.textSize,
           currentSize.padding,
           currentSize.rounded,

@@ -3,6 +3,90 @@ export const yearsOptions = Array.from({ length: 100 }, (_, i) => ({
   label: `${2025 - i}`,
 }));
 
+// 제품 카테고리 옵션
+export const productCategoryOptions = [
+  {
+    value: "1",
+    label: "뷰티 & 패션",
+  },
+  {
+    value: "2",
+    label: "전자 & 기계",
+  },
+  {
+    value: "3",
+    label: "식품 & 음료",
+  },
+  {
+    value: "4",
+    label: "홈 & 키친",
+  },
+];
+
+// 단위 크기 옵션
+export const sizeOptions = [
+  {
+    value: "mm",
+    label: "mm",
+  },
+  {
+    value: "cm",
+    label: "cm",
+  },
+  {
+    value: "m",
+    label: "m",
+  },
+  {
+    value: "km",
+    label: "km",
+  },
+  {
+    value: "inch",
+    label: "inch",
+  },
+];
+
+// 단위 무게 옵션
+export const weightOptions = [
+  {
+    value: "mg",
+    label: "mg",
+  },
+  {
+    value: "g",
+    label: "g",
+  },
+  {
+    value: "kg",
+    label: "kg",
+  },
+  {
+    value: "ton",
+    label: "ton",
+  },
+  {
+    value: "lb",
+    label: "lb",
+  },
+  {
+    value: "oz",
+    label: "oz",
+  },
+  {
+    value: "ml",
+    label: "ml",
+  },
+  {
+    value: "L",
+    label: "L",
+  },
+  {
+    value: "cc",
+    label: "cc",
+  },
+];
+
 // 국가 옵션
 export const countryOptions = [
   {

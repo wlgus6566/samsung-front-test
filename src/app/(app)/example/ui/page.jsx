@@ -242,7 +242,7 @@ export default function HomeContentsForm() {
             <td className="py-2 font-semibold body4">.body4</td>
             <td>sm (16px)</td>
             <td>xs (14px)</td>
-            <td>3xs (12px)</td>
+            <td>xs (14px)</td>
           </tr>
           <tr>
             <td className="py-2 font-semibold body5">.body5</td>
