@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
+import Img from "@/components/ui/img";
 import { cn } from "@/lib/utils";
 
 function Input({
@@ -78,7 +78,7 @@ function Input({
             "absolute top-1/2 -translate-y-1/2 cursor-pointer right-11"
           )}
         >
-          <Image
+          <Img
             src="/images/icon/ic_default_close_circle.svg"
             alt="clear"
             width={24}
@@ -89,7 +89,7 @@ function Input({
 
       {/* 🔍 돋보기 아이콘 */}
       {type === "search" && (
-        <Image
+        <Img
           src="/images/icon/ic_default_search.svg"
           alt="search"
           role="button"

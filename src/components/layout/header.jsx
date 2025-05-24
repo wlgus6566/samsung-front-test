@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+
 import {
   XIcon,
   ChevronDownIcon,
@@ -22,7 +23,10 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMobileSubMenuIndex, setOpenMobileSubMenuIndex] = useState(null);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [mobileSearchInput, setMobileSearchInput] = useState("");
+
+  // 태블릿 검색 관련 상태
+  const [isTabletSearchOpen, setIsTabletSearchOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -49,7 +53,7 @@ export default function Header() {
   }, [mounted]);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || isTabletSearchOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -57,7 +61,7 @@ export default function Header() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isTabletSearchOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -274,7 +278,7 @@ export default function Header() {
     if (!newState) {
       setOpenMobileSubMenuIndex(null);
       setIsMobileSearchOpen(false);
-      setMobileSearchInput("");
+      setSearchInput("");
     }
   };
 
@@ -300,7 +304,17 @@ export default function Header() {
 
   const hideMobileSearch = () => {
     setIsMobileSearchOpen(false);
-    setMobileSearchInput("");
+    setSearchInput("");
+  };
+
+  // 태블릿 검색 관련 함수들
+  const showTabletSearch = () => {
+    setIsTabletSearchOpen(true);
+  };
+
+  const hideTabletSearch = () => {
+    setIsTabletSearchOpen(false);
+    setSearchInput("");
   };
 
   const recommendedKeywords = [
@@ -354,7 +368,7 @@ export default function Header() {
                       <Link
                         href={menuItem.url || menuItem.children[0]?.url || "/"}
                         className={cn(
-                          "text-sm flex items-center h-full transition-colors duration-200 py-9 whitespace-nowrap",
+                          "body4 flex items-center h-full transition-colors duration-200 py-9 whitespace-nowrap",
                           mounted &&
                             (menuIndex === currentMenuIndex || isActiveMenu)
                             ? "text-primary-blue"
@@ -373,6 +387,7 @@ export default function Header() {
               </ul>
             </nav>
           </div>
+          {/* 태블릿 검색 버튼 */}
           <div className="flex items-center">
             <Input
               type="search"
@@ -389,8 +404,9 @@ export default function Header() {
               }}
             />
             <button
-              className="w-12 h-12 hidden min-[1100px]:flex 2xl:hidden border border-gray-300 rounded-full  items-center justify-center"
+              className="w-12 h-12 hidden min-[1100px]:flex 2xl:hidden border border-gray-300 rounded-full items-center justify-center"
               type="button"
+              onClick={showTabletSearch}
             >
               <Img
                 src="/images/icon/ic_default_search.svg"
@@ -455,6 +471,101 @@ export default function Header() {
           )}
       </div>
 
+      {/* 태블릿 검색 오버레이 */}
+      {mounted && (
+        <div
+          className={cn(
+            "fixed inset-0 z-[200] bg-white transition-opacity duration-300",
+            isTabletSearchOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          )}
+        >
+          {/* 반투명 배경 */}
+          <div
+            className="absolute inset-0 bg-black/25"
+            onClick={hideTabletSearch}
+          />
+
+          {/* 검색 컨테이너 */}
+          <div className="relative z-10 flex flex-col h-full">
+            {/* 헤더 */}
+            <div className="flex items-center justify-between h-25 px-8 lg:px-30 bg-white border-b border-gray-300">
+              <Link href="/" className="flex items-center">
+                <Img
+                  src="/temp/logo.png"
+                  alt="삼성 스마트공장"
+                  width={111}
+                  height={40}
+                />
+              </Link>
+              <button
+                type="button"
+                onClick={hideTabletSearch}
+                className="w-6 h-6 flex items-center justify-center"
+                aria-label="검색 닫기"
+              >
+                <Img
+                  src="/images/icon/ic_default_close.svg"
+                  alt="close"
+                  width={24}
+                  height={24}
+                />
+              </button>
+            </div>
+
+            {/* 검색 콘텐츠 */}
+            <div className="flex-1 flex justify-center items-start">
+              <div className="bg-white w-full flex justify-center pb-13 px-5 mt-[-1px]">
+                <div className="w-full max-w-[792px] flex flex-col gap-6">
+                  {/* 검색 입력창 */}
+                  <Input
+                    type="search"
+                    placeholder="내용을 입력해 주세요"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        console.log("Tablet Search Enter:", searchInput);
+                      }
+                    }}
+                  />
+
+                  {/* 추천 검색어 */}
+                  <div className="flex flex-col gap-3">
+                    <h3 className="body3 font-semibold text-black">
+                      추천 검색어
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {recommendedKeywords.map((keyword, index) => (
+                        <Button
+                          key={index}
+                          variant={
+                            searchInput === keyword ? "primary" : "outline"
+                          }
+                          size="sm"
+                          className={
+                            searchInput === keyword
+                              ? "text-white"
+                              : "text-gray-800"
+                          }
+                          onClick={() => {
+                            setSearchInput(keyword);
+                            console.log("Recommended keyword search:", keyword);
+                          }}
+                        >
+                          {keyword}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {mounted && (
         <div
           className={cn(
@@ -515,14 +626,14 @@ export default function Header() {
                   type="search"
                   name="mobile_search"
                   placeholder="키워드로 검색해 보세요."
-                  value={mobileSearchInput}
-                  onChange={(e) => setMobileSearchInput(e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      console.log("Mobile Search Enter:", mobileSearchInput);
+                      console.log("Mobile Search Enter:", searchInput);
                     }
                   }}
-                  inputClassName="h-12 rounded-full pl-4 pr-12 text-sm"
+                  inputClassName="h-12 rounded-full pl-4 pr-12 body5"
                   icon={
                     <button
                       type="button"
@@ -532,22 +643,32 @@ export default function Header() {
                       }}
                       aria-label="검색 실행"
                     >
-                      <SearchIcon className="size-5" />
+                      <Img
+                        src="/images/icon/ic_default_search.svg"
+                        alt="search"
+                        width={24}
+                        height={24}
+                      />
                     </button>
                   }
                 />
                 <div className="mt-4">
-                  <h3 className="text-xs font-semibold">추천 검색어</h3>
+                  <h3 className="body4 font-semibold">추천 검색어</h3>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {recommendedKeywords.map((keyword, index) => (
                       <Button
                         key={index}
                         variant={
-                          mobileSearchInput === keyword ? "primary" : "outline"
+                          searchInput === keyword ? "primary" : "outline"
                         }
                         size="sm"
+                        className={
+                          searchInput === keyword
+                            ? "text-white"
+                            : "text-gray-800"
+                        }
                         onClick={() => {
-                          setMobileSearchInput(keyword);
+                          setSearchInput(keyword);
                           console.log("Recommended keyword search:", keyword);
                         }}
                       >
