@@ -1,9 +1,9 @@
-import ResultsList from "@/app/(app)/support/resources/list";
+import SupportResultsList from "./list";
 import { Suspense } from "react";
 import Loading from "@/components/ui/loading";
 export const revalidate = 60;
 
-export default async function SupportResourcesPage({ searchParams }) {
+export default async function SupportNoticePage({ searchParams }) {
   //const params = await searchParams;
   //const currentPage = parseInt(params.currentPage || "1", 10);
 
@@ -14,7 +14,7 @@ export default async function SupportResourcesPage({ searchParams }) {
   console.log(initialData);
   return (
     <Suspense fallback={<Loading />}>
-      <ResultsList initialData={initialData} />
+      <SupportResultsList initialData={initialData} />
     </Suspense>
   );
 }

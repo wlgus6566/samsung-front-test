@@ -1,7 +1,7 @@
 "use client";
 
 import Contents from "@/components/layout/contents";
-
+import UiTable from "@/components/ui/ui-table";
 export default function SupportResourcesList({ initialData }) {
   //const router = useRouter();
   //const searchParams = useSearchParams();
@@ -20,5 +20,9 @@ export default function SupportResourcesList({ initialData }) {
 
   //const { list, ...paginationData } = data;
 
-  return <Contents title="자료실"></Contents>;
+  return (
+    <Contents title="자료실">
+      <UiTable />
+    </Contents>
+  );
 }

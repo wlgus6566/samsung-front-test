@@ -179,6 +179,7 @@
   .container-fixed {
     @apply max-w-[1920px] mx-auto;
   }
+
   .flex-center {
     @apply flex justify-center items-center;
   }
