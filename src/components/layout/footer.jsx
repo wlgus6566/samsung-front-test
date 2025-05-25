@@ -4,75 +4,9 @@ import React from "react";
 import Link from "next/link";
 import Img from "@/components/ui/img";
 import { FamilySelect } from "@/components/ui/family-select";
+import { gnbMenu } from "@/constants/navigation";
 
 export default function Footer() {
-  const footerMenus = [
-    {
-      title: "사업소개",
-      links: [
-        { label: "스마트공장 소개", url: "/business/about" },
-        { label: "지원 프로그램", url: "/business/program" },
-        { label: "현황 제안", url: "/business/status" },
-        { label: "스마트365센터 안내", url: "/business/center" },
-        { label: "지원절차 안내", url: "/business/process" },
-        { label: "갤러리탭", url: "/business/gallery" },
-      ],
-    },
-    {
-      title: "미디어&우수사례",
-      links: [
-        { label: "보도자료", url: "/media/press" },
-        { label: "보도자료 상세", url: "/media/press/detail" },
-        { label: "성공스토리", url: "/media/story" },
-        { label: "업종별 우수사례", url: "/media/case-by-industry" },
-        {
-          label: "업종별 우수사례 상세",
-          url: "/media/case-by-industry/detail",
-        },
-      ],
-    },
-    {
-      title: "인재교육(인적양성)",
-      links: [
-        { label: "전문가양성교육", url: "/education/expert" },
-        { label: "직무별특화교육", url: "/education/worker" },
-        { label: "삼성 사업장 벤치마킹", url: "/education/samsung" },
-        { label: "우수기업 벤치마킹", url: "/education/excellent" },
-        { label: "우수기업 벤치마킹 신청", url: "/education/excellent/apply" },
-      ],
-    },
-    {
-      title: "스마트비즈엑스포",
-      links: [
-        { label: "스마트비즈엑스포 소개", url: "/expo/about" },
-        { label: "스마트비즈엑스포 참여안내", url: "/expo/guide" },
-        { label: "스마트비즈엑스포 신청", url: "/expo/apply" },
-      ],
-    },
-    {
-      title: "동반성장",
-      links: [
-        { label: "판로지원", url: "/growth/market" },
-        { label: "판로지원 신청", url: "/growth/market/apply" },
-        { label: "교차협력 마당", url: "/growth/cooperation" },
-        { label: "교차협력 사용 신청", url: "/growth/cooperation/apply" },
-        { label: "글로벌 홍보 방송", url: "/growth/global" },
-        { label: "어워즈 TV 신청", url: "/growth/awards" },
-      ],
-    },
-    {
-      title: "고객지원",
-      links: [
-        { label: "공지", url: "/support/notice" },
-        { label: "상세", url: "/support/notice/detail" },
-        { label: "자료실", url: "/support/resources" },
-        { label: "상세", url: "/support/resources/detail" },
-        { label: "FAQ", url: "/support/faq" },
-        { label: "1:1 문의", url: "/support/qna" },
-      ],
-    },
-  ];
-
   const legalLinks = [
     { label: "개인정보처리방침", url: "/privacy" },
     { label: "이용약관", url: "/terms" },
@@ -139,13 +73,13 @@ export default function Footer() {
       <div className="max-w-[1920px] mx-auto px-5 sm:px-10 lg:px-30">
         <div className="hidden sm:flex flex-row justify-between">
           <ul className="flex-1 flex space-between lg:gap-x-11 gap-y-10 gap-x-[38px]">
-            {footerMenus.map((menu) => (
-              <li key={menu.title} className="flex flex-col gap-3 lg:gap-4">
+            {gnbMenu.map((menu) => (
+              <li key={menu.label} className="flex flex-col gap-3 lg:gap-4">
                 <h3 className="text-sm font-semibold whitespace-nowrap tracking-[-0.05rem]">
-                  <Link href={menu.links[0].url}>{menu.title}</Link>
+                  <Link href={menu.url}>{menu.label}</Link>
                 </h3>
                 <ul className="flex-col gap-1 lg:gap-1.5 min-[1600px]:flex hidden">
-                  {menu.links.map((link) => (
+                  {menu.children?.map((link) => (
                     <li key={link.url}>
                       <Link href={link.url} className="text-sm text-gray-700">
                         {link.label}

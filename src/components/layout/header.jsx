@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { gnbMenu } from "@/constants/navigation";
 
 import {
   XIcon,
@@ -69,200 +70,6 @@ export default function Header() {
   }, [pathname, isMobileMenuOpen]);
 
   const [input, setInput] = useState("");
-
-  const gnbMenu = [
-    {
-      label: "사업소개",
-      url: "/business",
-      children: [
-        {
-          label: "스마트공장 소개",
-          url: "/business/about",
-          description: "스마트공장의 개념과 운영 방식 소개",
-        },
-        {
-          label: "지원 프로그램",
-          url: "/business/program",
-          description: "스마트공장 지원 프로그램 안내",
-        },
-        {
-          label: "현황 제안",
-          url: "/business/status",
-          description: "스마트공장 현황 제안",
-        },
-        {
-          label: "스마트365센터 안내",
-          url: "/business/center",
-          description: "스마트365센터 이용 안내",
-        },
-        {
-          label: "지원절차 안내",
-          url: "/business/process",
-          description: "스마트공장 지원절차 안내",
-        },
-        {
-          label: "갤러리탭",
-          url: "/business/gallery",
-          description: "스마트공장 갤러리",
-        },
-      ],
-    },
-    {
-      label: "미디어&우수사례",
-      url: "/media",
-      children: [
-        {
-          label: "보도자료",
-          url: "/media/press",
-          description: "스마트제조혁신의 보도자료를 소개",
-        },
-        {
-          label: "보도자료 상세",
-          url: "/media/press/detail",
-          description: "스마트제조혁신의 보도자료 상세내용",
-        },
-        {
-          label: "성공스토리",
-          url: "/media/story",
-          description: "스마트제조혁신의 성공 사례를 소개",
-        },
-        {
-          label: "업종별 우수사례",
-          url: "/media/case-by-industry",
-          description: "스마트제조혁신의 업종별 우수사례를 소개",
-        },
-        {
-          label: "업종별 우수사례 상세",
-          url: "/media/case-by-industry/detail",
-          description: "업종별 우수사례 상세 내용",
-        },
-      ],
-    },
-    {
-      label: "인재교육(인적양성)",
-      url: "/education",
-      children: [
-        {
-          label: "전문가양성교육",
-          url: "/education/expert",
-          description: "스마트제조혁신 전문가 양성과정 소개",
-        },
-        {
-          label: "직무별특화교육",
-          url: "/education/worker",
-          description: "스마트제조혁신 직무별 특화 과정 소개",
-        },
-        {
-          label: "삼성 사업장 벤치마킹",
-          url: "/education/samsung",
-          description: "삼성 사업장 벤치마킹 교육 안내",
-        },
-        {
-          label: "우수기업 벤치마킹",
-          url: "/education/excellent",
-          description: "우수기업 벤치마킹 교육 안내",
-        },
-        {
-          label: "우수기업 벤치마킹 신청",
-          url: "/education/excellent/apply",
-          description: "우수기업 벤치마킹 신청 페이지",
-        },
-      ],
-    },
-    {
-      label: "스마트비즈엑스포",
-      url: "/expo",
-      children: [
-        {
-          label: "스마트비즈엑스포 소개",
-          url: "/expo/about",
-          description: "스마트비즈엑스포 소개",
-        },
-        {
-          label: "스마트비즈엑스포 참여안내",
-          url: "/expo/guide",
-          description: "스마트비즈엑스포 참여안내",
-        },
-        {
-          label: "스마트비즈엑스포 신청",
-          url: "/expo/apply",
-          description: "스마트비즈엑스포 참가 신청",
-        },
-      ],
-    },
-    {
-      label: "동반성장",
-      url: "/growth",
-      children: [
-        {
-          label: "판로지원",
-          url: "/growth/market",
-          description: "판로지원 프로그램 안내",
-        },
-        {
-          label: "판로지원 신청",
-          url: "/growth/market/apply",
-          description: "판로지원 프로그램 신청",
-        },
-        {
-          label: "교차협력 마당",
-          url: "/growth/cooperation",
-          description: "교차협력 마당 안내",
-        },
-        {
-          label: "교차협력 사용 신청",
-          url: "/growth/cooperation/apply",
-          description: "교차협력 사용 신청",
-        },
-        {
-          label: "글로벌 홍보 방송",
-          url: "/growth/global",
-          description: "글로벌 홍보 방송 안내",
-        },
-        {
-          label: "어워즈 TV 신청",
-          url: "/growth/awards",
-          description: "어워즈 TV 신청",
-        },
-      ],
-    },
-    {
-      label: "고객지원",
-      url: "/support",
-      children: [
-        {
-          label: "공지",
-          url: "/support/notice",
-          description: "스마트제조혁신 공지사항",
-        },
-        {
-          label: "상세",
-          url: "/support/notice/detail",
-          description: "공지사항 상세보기",
-        },
-        {
-          label: "자료실",
-          url: "/support/resources",
-          description: "스마트제조혁신 관련 자료실",
-        },
-        {
-          label: "상세",
-          url: "/support/resources/detail",
-          description: "자료실 상세보기",
-        },
-        {
-          label: "FAQ",
-          url: "/support/faq",
-          description: "자주 묻는 질문 모음",
-        },
-        {
-          label: "1:1 문의",
-          url: "/support/qna",
-          description: "개별 문의를 위한 1:1 상담",
-        },
-      ],
-    },
-  ];
 
   const handleMenuMouseEnter = (menuIndex) => {
     setCurrentMenuIndex(menuIndex);
@@ -639,7 +446,7 @@ export default function Header() {
                       type="button"
                       className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
                       onClick={() => {
-                        console.log("Mobile Search Click:", mobileSearchInput);
+                        console.log("Mobile Search Click:", searchInput);
                       }}
                       aria-label="검색 실행"
                     >

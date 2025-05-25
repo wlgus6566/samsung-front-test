@@ -21,12 +21,12 @@ function Board({
   return (
     <div className="mt-20.5 max-md:mt-11">
       <div className="flex justify-between items-center py-4">
-        <div className="flex items-center gap-1">
-          <span className="body4 font-medium text-black">총</span>
-          <span className="body5 font-medium font-poppins text-blue-500 ml-1">
+        <div className="flex items-center gap-1 body4 font-medium text-black">
+          총
+          <span className="body5 font-medium font-poppins text-blue-500 ml-1 mt-0.75">
             {totalCount.toLocaleString()}
           </span>
-          <span className="body4 font-medium text-black">건</span>
+          건
         </div>
         {filterOptions.length > 0 && (
           <Select
@@ -35,7 +35,10 @@ function Board({
             items={filterOptions}
             placeholder="정렬 선택"
           >
-            <SelectTrigger className="body3 font-semibold text-gray-900 border-none shadow-none p-0 h-auto gap-1 hover:bg-transparent focus:ring-0 w-20">
+            <SelectTrigger
+              iconColor="text-black"
+              className="!text-xs font-semibold text-gray-900 border-none shadow-none p-0 h-auto gap-1 hover:bg-transparent focus:ring-0 w-20"
+            >
               <SelectValue placeholder="정렬 선택" />
             </SelectTrigger>
             <SelectContent className="w-25">
@@ -56,7 +59,7 @@ function Board({
       <div className="border-t border-black">
         <div className="flex py-4 border-b border-gray-300 items-center max-md:hidden">
           <div className="w-20 px-5 text-center flex-shrink-0 body2 font-medium font-poppins">
-            No
+            No.
           </div>
           <div className="body2 font-semibold pl-5 w-full box-border text-center">
             제목
@@ -77,7 +80,7 @@ function Board({
                   <div className="w-20 px-5 text-center flex-shrink-0 body5 max-md:hidden">
                     {index + 1}
                   </div>
-                  <div className="body3 px-5 w-full box-border max-md:px-0 max-md:mt-1.5">
+                  <div className="body3 px-5 w-full box-border max-md:px-0 max-md:mt-1.5 line-clamp-1">
                     <Link href={item.url} className="hover:text-blue-600">
                       {item.title}
                     </Link>

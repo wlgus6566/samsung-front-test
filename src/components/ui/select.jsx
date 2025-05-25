@@ -15,8 +15,8 @@ const selectSizeStyles = {
   },
   lg: {
     trigger: "h-15 rounded-[20px] px-4 py-4.5 body4 font-medium",
-    item: "body font-semibold",
-    label: "text-base",
+    item: "body4 font-semibold",
+    label: "body4 font-semibold",
     iconSize: "size-6",
   },
 };
@@ -39,6 +39,7 @@ function SelectTrigger({
   disabled,
   size = "md",
   theme = "light",
+  iconColor = "text-gray-500",
   ...props
 }) {
   const isDark = theme === "dark";
@@ -74,7 +75,8 @@ function SelectTrigger({
                 : "text-black"
               : isDark
               ? "text-white"
-              : "text-gray-500"
+              : "text-gray-500",
+            iconColor
           )}
         />
       </SelectPrimitive.Icon>
