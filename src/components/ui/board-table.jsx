@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePathname } from "next/navigation";
 function Board({
   data = [],
   totalCount = 0,
@@ -17,6 +18,7 @@ function Board({
   const handleFilterChange = (value) => {
     onFilterChange(value);
   };
+  const pathname = usePathname();
 
   return (
     <div className="mt-20.5 max-md:mt-11">
@@ -81,7 +83,10 @@ function Board({
                     {index + 1}
                   </div>
                   <div className="body3 px-5 w-full box-border max-md:px-0 max-md:mt-1.5 line-clamp-1">
-                    <Link href={item.url} className="hover:text-blue-600">
+                    <Link
+                      href={`${pathname}/${item.id}`}
+                      className="hover:text-blue-600"
+                    >
                       {item.title}
                     </Link>
                   </div>

@@ -122,21 +122,39 @@ export default function HomeContentsForm() {
     // 실제 인증 API 호출 로직
   };
 
-  const fieldOptions = [
-    { id: "name", label: "이름" },
-    { id: "email", label: "이메일" },
-    { id: "phone", label: "연락처" },
+  const data = [
+    {
+      id: 1,
+      title: "삼성스마트공장 홈페이지 서비스 중단 안내: 4.6(일) 09시~22시",
+      date: "2025-01-01",
+    },
+    {
+      id: 2,
+      title:
+        "[알림] 신용정보법 제 32조제7항6에 따른 개인신용정보 이용·제공 내역의 공지(김*호)",
+      date: "2025-01-01",
+    },
+    {
+      id: 3,
+      title: "[알림] 삼성화재 홈페이지 서비스 중단 안내: 11.17(일) 00시~08시",
+      date: "2025-01-01",
+    },
+    {
+      id: 4,
+      title: "[알림] 2023년 국가고객만족도(NCSI) 부문 23년 연속 1위",
+      date: "2025-01-01",
+    },
   ];
-
-  const handleSearch = (params) => {
-    console.log("검색 파라미터:", params);
-    // 여기에 실제 검색 API 호출 로직을 추가
+  const handleFilterChange = (value) => {
+    setCurrentFilter(value);
+    // 여기서 실제 데이터 정렬 로직을 구현할 수 있습니다
+    console.log("Filter changed to:", value);
   };
-
-  const handleReset = () => {
-    console.log("검색 조건 초기화됨");
-    // 초기화 후 추가 작업이 필요한 경우
-  };
+  const filterOptions = [
+    { label: "최신순", value: "latest" },
+    { label: "오래된순", value: "oldest" },
+    { label: "제목순", value: "title" },
+  ];
 
   // 게시판 데이터 예시
   const boardData = [
@@ -441,7 +459,7 @@ export default function HomeContentsForm() {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6">콘텐츠 작성 예시</h1>
+      <h1 className="text-2xl font-bold mb-6">폼 컴포넌트 예시</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormInput
@@ -569,17 +587,12 @@ export default function HomeContentsForm() {
       <h2 className="text-2xl font-bold mt-8 mb-6">
         게시판 테이블 컴포넌트 예시
       </h2>
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between">
-          <div className="text-sm text-gray-600">총 1,998 건</div>
-        </div>
-
-        <BoardTable
-          data={boardData}
-          onRowClick={handleRowClick}
-          className="mb-6"
-        />
-      </div>
+      <BoardTable
+        data={data}
+        totalCount={1998}
+        filterOptions={filterOptions}
+        onFilterChange={handleFilterChange}
+      />
       <Pagination
         pageNum={1}
         pageSize={10}
