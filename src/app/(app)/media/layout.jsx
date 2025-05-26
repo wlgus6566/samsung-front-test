@@ -1,20 +1,8 @@
-import MediaResultsList from "@/app/(app)/media/press/list";
-import fetcher from "@/lib/fetcher";
 import { Suspense } from "react";
 import Loading from "@/components/ui/loading";
 import Contents from "@/components/layout/contents";
-export const revalidate = 60;
 
-export default async function DetailLayout({ searchParams, children }) {
-  //const params = await searchParams;
-  //const currentPage = parseInt(params.currentPage || "1", 10);
-  const initialData = [];
-  //   const initialData = await fetcher(
-  //     `/api/v1/bbs/NEWS?currentPage=${currentPage}&size=10`
-  //   );
-
-  //console.log(initialData);
-
+export default function DetailLayout({ children }) {
   return (
     <Suspense fallback={<Loading />}>
       <Contents

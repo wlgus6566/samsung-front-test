@@ -4,7 +4,7 @@ import Image from "next/image";
 import { decode } from "html-entities";
 import "./post-content.css";
 
-export default function PostContent({ children, fileList, download }) {
+export default function PostContent({ children, fileList }) {
   const deepDecode = (input) => {
     if (!input) return "";
     let result = input;
@@ -53,44 +53,44 @@ export default function PostContent({ children, fileList, download }) {
     }
   };
 
+  // 파일 크기를 포맷하는 함수
+  const formatFileSize = (bytes) => {
+    if (!bytes) return "";
+    const mb = bytes / (1024 * 1024);
+    return `${mb.toFixed(1)}MB`;
+  };
+
   return (
     <>
-      {/* 링크 */}
+      {/* 내용 */}
+      <div
+        className="prose w-full max-w-none border-t-1 border-[#eee] text-[16px] md:pt-10 md:pb-21.5"
+        dangerouslySetInnerHTML={{
+          __html: decodedChildren,
+        }}
+      />
+      {/* 첨부파일 */}
       {fileList?.length > 0 && (
-        <div className="pt-[30px] pb-[40px] text-[15px]">
-          <div className="flex items-start gap-[40px]">
-            <span className="font-bold">{download ? "첨부파일" : "링크"}</span>
-            <div className="space-y-[12px] flex-1">
-              {fileList.map((link, index) => (
-                <button
-                  key={index}
-                  onClick={() => downloadFile(link)}
-                  className="text-black underline break-words flex w-full items-center justify-between whitespace-normal text-left"
-                >
-                  {link.fileOriginalName}
-                  {download && (
-                    <Image
-                      src="/images/icon/ic_download.svg"
-                      alt="download"
-                      width={24}
-                      height={24}
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
+        <div className="pt-4 pb-10 flex flex-col gap-4">
+          <h3 className="text-xs font-semibold text-black">첨부파일</h3>
+          <div className="flex flex-wrap gap-2">
+            {fileList.map((file, index) => (
+              <button
+                key={index}
+                onClick={() => downloadFile(file)}
+                className="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 transition-colors rounded-md px-4 py-1.5"
+              >
+                <span className="text-xs font-semibold text-gray-800">
+                  {file.fileOriginalName}
+                </span>
+                <span className="text-xs font-semibold text-blue-500">
+                  {formatFileSize(file.fileSize)}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       )}
-      {/* 내용 */}
-      <div>
-        <div
-          className="prose w-full max-w-none border-t-1 border-[#eee] text-[16px] pt-[40px] pb-[80px]"
-          dangerouslySetInnerHTML={{
-            __html: decodedChildren,
-          }}
-        />
-      </div>
     </>
   );
 }

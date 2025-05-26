@@ -24,6 +24,8 @@ const buttonVariants = cva(
         outline:
           "border border-gray-300 hover:bg-gray-300 text-black disabled:bg-white disabled:text-gray-500 disabled:border-gray-300",
         link: "text-primary-blue underline-offset-4 hover:brightness-[90%] hover:underline disabled:text-gray-500",
+        black:
+          "bg-black text-white hover:brightness-[90%] disabled:bg-gray-300 disabled:text-gray-500",
       },
     },
     defaultVariants: {
